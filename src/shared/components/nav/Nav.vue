@@ -1,7 +1,7 @@
 <template>
   <nav class="nav">
     <span class="nav__title">
-      <img src="../../assets/logo.svg" />
+      <img src="@/assets/logo.svg" />
       <h1>Track IT</h1>
     </span>
     <span class="nav__user">
@@ -17,9 +17,9 @@ import { Options, Vue } from "vue-class-component";
 @Options({})
 export default class Nav extends Vue {
   showUsername: boolean = false;
-  loggedInUser: any = {
+  loggedInUser: { name: string; avatar: string } = {
     name: "Alex Long",
-    avatar: require("../../assets/avatar.png"),
+    avatar: require("@/assets/avatar.png"),
   };
 }
 </script>
@@ -28,7 +28,6 @@ export default class Nav extends Vue {
 .nav {
   display: flex;
   justify-content: space-between;
-  padding: 10px 20px;
 
   &__title {
     display: flex;

@@ -1,17 +1,10 @@
 <template>
-  <div class="dashboard">
-    <Nav />
-  </div>
+  <div class="dashboard"></div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Nav from "@/shared/components/Nav.vue";
 
-@Options({
-  components: {
-    Nav,
-  },
-})
+@Options({})
 export default class Dashboard extends Vue {}
 </script>
