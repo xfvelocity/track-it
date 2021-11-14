@@ -7,26 +7,21 @@
   />
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-
-@Options({
-  props: {
-    outline: {
-      type: Boolean,
-      default: false,
-    },
-    placeholder: {
-      type: String,
-      default: "",
-    },
-    modelValue: {
-      type: String,
-      default: "",
-    },
+<script setup lang="ts">
+const props = defineProps({
+  outline: {
+    type: Boolean,
+    default: false,
   },
-})
-export default class Input extends Vue {}
+  placeholder: {
+    type: String,
+    default: "",
+  },
+  modelValue: {
+    type: String,
+    default: "",
+  },
+});
 </script>
 
 <style lang="scss">

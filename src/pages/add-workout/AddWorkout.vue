@@ -10,15 +10,11 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
+<script setup lang="ts">
 import { mockWorkoutData } from "./data/mockWorkoutData";
 import { AddWorkoutData } from "./types/addWorkout.types";
 
-@Options({})
-export default class AddWorkout extends Vue {
-  workout: AddWorkoutData = mockWorkoutData;
-}
+const workout: AddWorkoutData = mockWorkoutData;
 </script>
 
 <style lang="scss">

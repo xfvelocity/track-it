@@ -3,16 +3,8 @@
   <router-view />
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Nav from "./shared/components/nav/Nav.vue";
-
-@Options({
-  components: {
-    Nav,
-  },
-})
-export default class App extends Vue {}
+<script setup lang="ts">
+import Nav from "@/shared/components/nav/Nav.vue";
 </script>
 
 <style lang="scss">

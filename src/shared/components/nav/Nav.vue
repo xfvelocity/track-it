@@ -11,17 +11,12 @@
   </nav>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-
-@Options({})
-export default class Nav extends Vue {
-  showUsername: boolean = false;
-  loggedInUser: { name: string; avatar: string } = {
-    name: "Alex Long",
-    avatar: require("@/assets/avatar.png"),
-  };
-}
+<script setup lang="ts">
+const showUsername: boolean = false;
+const loggedInUser: { name: string; avatar: string } = {
+  name: "Alex Long",
+  avatar: require("@/assets/avatar.png"),
+};
 </script>
 
 <style lang="scss">
