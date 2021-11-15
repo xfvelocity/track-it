@@ -7,7 +7,8 @@ export type AddWorkoutData = {
 };
 
 export type AddWorkoutWorkout = {
-  name: string;
+  workoutType: string;
+  workoutTypeID: number;
   sets: AddWorkoutSets[];
 };
 

@@ -18,7 +18,7 @@ const props = defineProps({
     default: "",
   },
   modelValue: {
-    type: String,
+    type: [String, Number],
     default: "",
   },
 });
@@ -28,7 +28,7 @@ const props = defineProps({
 .input {
   border: none;
   background: none;
-  border-radius: 5px;
+  border-radius: 0.3rem;
   padding: 7px 10px;
   color: #919094;
 }

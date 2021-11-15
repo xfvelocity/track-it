@@ -1,3 +1,4 @@
+import { Select } from "@/shared/types/globalTypes";
 import { AddWorkoutData } from "../types/addWorkout.types";
 
 export const mockWorkoutData: AddWorkoutData = {
@@ -7,7 +8,26 @@ export const mockWorkoutData: AddWorkoutData = {
   difficulty: 0,
   workouts: [
     {
-      name: "Bench Press",
+      workoutType: "Bench Press",
+      workoutTypeID: 0,
+      sets: [
+        {
+          weight: 20,
+          reps: 12,
+        },
+        {
+          weight: 20,
+          reps: 12,
+        },
+        {
+          weight: 20,
+          reps: 12,
+        },
+      ],
+    },
+    {
+      workoutType: "Bicep Curl",
+      workoutTypeID: 1,
       sets: [
         {
           weight: 20,
@@ -25,3 +45,14 @@ export const mockWorkoutData: AddWorkoutData = {
     },
   ],
 };
+
+export const mockWorkouts: Select[] = [
+  {
+    text: "Bench Press",
+    value: 0,
+  },
+  {
+    text: "Bicep Curl",
+    value: 1,
+  },
+];
