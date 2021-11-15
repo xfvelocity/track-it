@@ -5,26 +5,33 @@
       <p class="secondary">{{ workout.time }}</p>
     </div>
     <div class="add-workout__workouts">
-      <div class="workout" v-for="(wrkOut, i) in workout.workouts">
+      <div
+        class="workout"
+        v-for="(exercise, exerciseIndex) in workout.exercises"
+      >
         <Select
           class="workout-type"
-          v-model="wrkOut.workoutTypeID"
-          :label="i === 0 ? 'Workout' : ''"
+          v-model="exercise.workoutTypeID"
+          :label="exerciseIndex === 0 ? 'Workout' : ''"
           :options="workoutsList"
+          selectStyle="width: 100%"
         />
         <div class="sets">
-          <div v-for="(set, i) in wrkOut.sets">
+          <div v-for="(set, setIndex) in exercise.sets">
             <Input
               v-model="set.weight"
               class="wgt"
-              :label="i === 0 ? 'KG' : ''"
+              :label="setIndex === 0 ? 'KG' : ''"
             />
             <Input
               v-model="set.reps"
               class="rps"
-              :label="i === 0 ? 'Reps' : ''"
+              :label="setIndex === 0 ? 'Reps' : ''"
             />
           </div>
+        </div>
+        <div class="add-set">
+          <Button class="width100" text="Add Set" @click="addSet(exercise)" />
         </div>
       </div>
     </div>
@@ -32,17 +39,19 @@
 </template>
 
 <script setup lang="ts">
-// import { Select } from "@/shared/types/globalTypes";
-import {
-  emptyWorkoutData,
-  mockWorkoutData,
-  mockWorkouts,
-} from "./data/mockWorkoutData";
-import { AddWorkoutData } from "./types/addWorkout.types";
+import { ref } from "vue";
+import { emptyWorkoutData, mockWorkouts } from "./data/mockWorkoutData";
+import { AddWorkoutData, AddWorkoutWorkout } from "./types/addWorkout.types";
 
-// const workout: AddWorkoutData = mockWorkoutData;
-const workout: AddWorkoutData = emptyWorkoutData;
+const workout = ref<AddWorkoutData>(emptyWorkoutData);
 const workoutsList: any[] = mockWorkouts;
+
+const addSet = (wrkOut: AddWorkoutWorkout) => {
+  wrkOut.sets.push({
+    weight: "",
+    reps: "",
+  });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -52,6 +61,7 @@ const workoutsList: any[] = mockWorkouts;
   &__heading {
     color: white;
     display: flex;
+
     justify-content: space-between;
     margin-bottom: 10px;
 
@@ -65,15 +75,12 @@ const workoutsList: any[] = mockWorkouts;
     .workout {
       display: flex;
       align-items: flex-start;
+      flex-wrap: wrap;
       justify-content: space-between;
       margin-bottom: 10px;
 
       .workout-type {
-        width: 200px;
-
-        select {
-          width: 100% !important;
-        }
+        min-width: 180px;
       }
 
       .sets {
@@ -87,8 +94,13 @@ const workoutsList: any[] = mockWorkouts;
         }
 
         .wgt {
-          margin-right: 5px;
+          margin-right: 10px;
         }
+      }
+
+      .add-set {
+        width: 100%;
+        margin-top: 5px;
       }
     }
   }

@@ -6,6 +6,7 @@
       id="select"
       :class="{ outline: outline }"
       :value="modelValue"
+      :style="selectStyle"
     >
       <option v-for="(option, i) in options" :value="option.value">
         {{ option.text }}
@@ -33,6 +34,10 @@ const props = defineProps({
   outline: {
     type: Boolean,
     default: true,
+  },
+  selectStyle: {
+    type: String,
+    default: "",
   },
 });
 </script>

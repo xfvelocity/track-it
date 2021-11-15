@@ -3,7 +3,7 @@ export type AddWorkoutData = {
   time: string;
   comments: string;
   difficulty: number;
-  workouts: AddWorkoutWorkout[];
+  exercises: AddWorkoutWorkout[];
 };
 
 export type AddWorkoutWorkout = {

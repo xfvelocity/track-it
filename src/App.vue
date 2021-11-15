@@ -27,7 +27,8 @@ body {
 
 body,
 input,
-select {
+select,
+button {
   font-family: "Poppins", sans-serif;
 }
 </style>

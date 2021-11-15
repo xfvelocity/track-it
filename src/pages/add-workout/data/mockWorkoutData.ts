@@ -6,7 +6,7 @@ export const mockWorkoutData: AddWorkoutData = {
   time: "43:02",
   comments: "",
   difficulty: 0,
-  workouts: [
+  exercises: [
     {
       workoutType: "Bench Press",
       workoutTypeID: 0,
@@ -62,19 +62,11 @@ export const emptyWorkoutData: AddWorkoutData = {
   time: "",
   comments: "",
   difficulty: 0,
-  workouts: [
+  exercises: [
     {
       workoutType: "",
       workoutTypeID: 0,
       sets: [
-        {
-          weight: "",
-          reps: "",
-        },
-        {
-          weight: "",
-          reps: "",
-        },
         {
           weight: "",
           reps: "",
