@@ -1,10 +1,14 @@
 <template>
-  <input
-    class="input"
-    :placeholder="placeholder"
-    :class="{ outline: outline }"
-    :value="modelValue"
-  />
+  <span class="input-container">
+    <label v-if="label" class="label" for="input">{{ label }}</label>
+    <input
+      class="input"
+      id="input"
+      :placeholder="placeholder"
+      :class="{ outline: outline }"
+      :value.number="modelValue"
+    />
+  </span>
 </template>
 
 <script setup lang="ts">
@@ -12,6 +16,10 @@ const props = defineProps({
   outline: {
     type: Boolean,
     default: true,
+  },
+  label: {
+    type: String,
+    default: "",
   },
   placeholder: {
     type: String,
@@ -24,16 +32,21 @@ const props = defineProps({
 });
 </script>
 
-<style lang="scss">
-.input {
-  border: none;
-  background: none;
-  border-radius: 0.3rem;
-  padding: 7px 10px;
-  color: #919094;
-}
+<style lang="scss" scoped>
+.input-container {
+  display: inline-block;
 
-.outline {
-  border: 1px solid #e5e5e5 !important;
+  .input {
+    border: none;
+    background: none;
+    border-radius: 0.3rem;
+    padding: 10px;
+    color: #919094;
+    width: 60px;
+  }
+
+  label {
+    display: block;
+  }
 }
 </style>

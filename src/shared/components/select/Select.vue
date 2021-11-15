@@ -1,9 +1,17 @@
 <template>
-  <select class="select" :class="{ outline: outline }" :value="modelValue">
-    <option v-for="(option, i) in options" :value="option.value">
-      {{ option.text }}
-    </option>
-  </select>
+  <div class="select-container">
+    <label v-if="label" class="label" for="select">{{ label }}</label>
+    <select
+      class="select"
+      id="select"
+      :class="{ outline: outline }"
+      :value="modelValue"
+    >
+      <option v-for="(option, i) in options" :value="option.value">
+        {{ option.text }}
+      </option>
+    </select>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -15,6 +23,10 @@ const props = defineProps({
     type: [Number, String],
     default: 0,
   },
+  label: {
+    type: String,
+    default: "",
+  },
   options: {
     type: Array as PropType<Select[]>,
   },
@@ -25,21 +37,18 @@ const props = defineProps({
 });
 </script>
 
-<style lang="scss">
-.select {
-  border: none;
-  background: none;
-  border-radius: 0.3rem;
-  padding: 7px 10px;
-  color: #919094;
-
-  option {
-    border-radius: 0;
+<style lang="scss" scoped>
+.select-container {
+  .select {
+    border: none;
+    background: none;
+    border-radius: 0.3rem;
+    padding: 10px;
+    color: #919094;
   }
-}
 
-.outline {
-  border: 1px solid #e5e5e5 !important;
-  background: none !important;
+  label {
+    display: block;
+  }
 }
 </style>

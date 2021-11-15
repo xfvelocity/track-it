@@ -9,13 +9,24 @@
         <Select
           class="workout-type"
           v-model="wrkOut.workoutTypeID"
+          :label="i === 0 ? 'Workout' : ''"
           :options="workoutsList"
         />
         <div class="sets">
-          <span v-for="(set, i) in wrkOut.sets">
-            <Input v-model="set.weight" class="wgt" placeholder="WGT" />
-            <Input v-model="set.reps" class="rps" placeholder="RPS" />
-          </span>
+          <div v-for="(set, i) in wrkOut.sets">
+            <Input
+              v-model="set.weight"
+              class="wgt"
+              :label="i === 0 ? 'WGT' : ''"
+              placeholder="WGT"
+            />
+            <Input
+              v-model="set.reps"
+              class="rps"
+              :label="i === 0 ? 'RPS' : ''"
+              placeholder="RPS"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -24,14 +35,19 @@
 
 <script setup lang="ts">
 // import { Select } from "@/shared/types/globalTypes";
-import { mockWorkoutData, mockWorkouts } from "./data/mockWorkoutData";
+import {
+  emptyWorkoutData,
+  mockWorkoutData,
+  mockWorkouts,
+} from "./data/mockWorkoutData";
 import { AddWorkoutData } from "./types/addWorkout.types";
 
-const workout: AddWorkoutData = mockWorkoutData;
+// const workout: AddWorkoutData = mockWorkoutData;
+const workout: AddWorkoutData = emptyWorkoutData;
 const workoutsList: any[] = mockWorkouts;
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .add-workout {
   margin-top: 10px;
 
@@ -55,7 +71,11 @@ const workoutsList: any[] = mockWorkouts;
       margin-bottom: 10px;
 
       .workout-type {
-        width: 180px;
+        width: 200px;
+
+        select {
+          width: 100% !important;
+        }
       }
 
       .sets {
@@ -64,7 +84,7 @@ const workoutsList: any[] = mockWorkouts;
 
         .wgt,
         .rps {
-          width: 60px;
+          max-width: 60px !important;
           margin-bottom: 5px;
         }
 

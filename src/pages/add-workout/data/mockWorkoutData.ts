@@ -56,3 +56,30 @@ export const mockWorkouts: Select[] = [
     value: 1,
   },
 ];
+
+export const emptyWorkoutData: AddWorkoutData = {
+  name: "",
+  time: "",
+  comments: "",
+  difficulty: 0,
+  workouts: [
+    {
+      workoutType: "",
+      workoutTypeID: 0,
+      sets: [
+        {
+          weight: "",
+          reps: "",
+        },
+        {
+          weight: "",
+          reps: "",
+        },
+        {
+          weight: "",
+          reps: "",
+        },
+      ],
+    },
+  ],
+};

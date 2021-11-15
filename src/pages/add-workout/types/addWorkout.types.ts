@@ -13,6 +13,6 @@ export type AddWorkoutWorkout = {
 };
 
 export type AddWorkoutSets = {
-  weight: number;
-  reps: number;
+  weight: number | string;
+  reps: number | string;
 };
