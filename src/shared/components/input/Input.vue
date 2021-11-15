@@ -7,6 +7,7 @@
       :placeholder="placeholder"
       :class="{ outline: outline }"
       :value.number="modelValue"
+      :type="type"
     />
   </span>
 </template>
@@ -28,6 +29,10 @@ const props = defineProps({
   modelValue: {
     type: [String, Number],
     default: "",
+  },
+  type: {
+    type: String,
+    default: "text",
   },
 });
 </script>

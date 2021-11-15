@@ -20,11 +20,13 @@
           <div v-for="(set, setIndex) in exercise.sets">
             <Input
               v-model="set.weight"
+              type="number"
               class="wgt"
               :label="setIndex === 0 ? 'KG' : ''"
             />
             <Input
               v-model="set.reps"
+              type="number"
               class="rps"
               :label="setIndex === 0 ? 'Reps' : ''"
             />
