@@ -17,14 +17,12 @@
             <Input
               v-model="set.weight"
               class="wgt"
-              :label="i === 0 ? 'WGT' : ''"
-              placeholder="WGT"
+              :label="i === 0 ? 'KG' : ''"
             />
             <Input
               v-model="set.reps"
               class="rps"
-              :label="i === 0 ? 'RPS' : ''"
-              placeholder="RPS"
+              :label="i === 0 ? 'Reps' : ''"
             />
           </div>
         </div>
@@ -85,7 +83,7 @@ const workoutsList: any[] = mockWorkouts;
         .wgt,
         .rps {
           max-width: 60px !important;
-          margin-bottom: 5px;
+          margin-bottom: 7px;
         }
 
         .wgt {

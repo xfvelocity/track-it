@@ -39,14 +39,16 @@ const props = defineProps({
   .input {
     border: none;
     background: none;
-    border-radius: 0.3rem;
-    padding: 10px;
+    border-radius: 2px;
+    padding: 3px 10px;
     color: #919094;
     width: 60px;
   }
 
   label {
     display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
   }
 }
 </style>
