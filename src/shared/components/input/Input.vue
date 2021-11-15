@@ -7,7 +7,7 @@
       :placeholder="placeholder"
       :class="{ outline: outline }"
       :value.number="modelValue"
-      :type="type"
+      :type="inputType"
     />
   </span>
 </template>
@@ -30,7 +30,7 @@ const props = defineProps({
     type: [String, Number],
     default: "",
   },
-  type: {
+  inputType: {
     type: String,
     default: "text",
   },
