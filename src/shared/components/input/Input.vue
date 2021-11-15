@@ -11,7 +11,7 @@
 const props = defineProps({
   outline: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   placeholder: {
     type: String,

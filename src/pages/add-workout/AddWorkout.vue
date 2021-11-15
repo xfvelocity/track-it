@@ -5,7 +5,8 @@
       <p class="secondary">{{ workout.time }}</p>
     </div>
     <div class="add-workout__workouts">
-      <Input :outline="true" placeholder="Test" />
+      <Input placeholder="Workout" />
+      <Select :options="test" />
     </div>
   </div>
 </template>
@@ -15,6 +16,16 @@ import { mockWorkoutData } from "./data/mockWorkoutData";
 import { AddWorkoutData } from "./types/addWorkout.types";
 
 const workout: AddWorkoutData = mockWorkoutData;
+const test = [
+  {
+    text: "Bench Press",
+    value: "Bench Press",
+  },
+  {
+    text: "Bench Press",
+    value: "Bench Press",
+  },
+];
 </script>
 
 <style lang="scss">
