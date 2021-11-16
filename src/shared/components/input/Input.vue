@@ -6,7 +6,7 @@
       id="input"
       :placeholder="placeholder"
       :class="{ outline: outline }"
-      :value.number="modelValue"
+      :modelValue.number="modelValue"
       :type="inputType"
     />
   </span>
@@ -44,7 +44,7 @@ const props = defineProps({
   .input {
     border: none;
     background: none;
-    border-radius: 2px;
+    border-radius: 4px;
     padding: 3px 10px;
     color: #919094;
     width: 60px;

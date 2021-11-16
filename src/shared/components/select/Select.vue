@@ -48,7 +48,7 @@ const props = defineProps({
   .select {
     border: none;
     background: none;
-    border-radius: 2px;
+    border-radius: 4px;
     padding: 3px 10px;
     color: #919094;
   }
