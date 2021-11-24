@@ -1,6 +1,6 @@
 <template>
   <nav class="nav">
-    <span class="nav__title">
+    <span class="nav__title" @click="$router.push('/')">
       <img src="@/assets/logo.svg" />
       <h1>Track IT</h1>
     </span>

@@ -1,6 +1,10 @@
 <template>
-  <Nav />
-  <router-view />
+  <v-app>
+    <Nav />
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
 <script setup lang="ts">
@@ -9,20 +13,19 @@ import Nav from "@/shared/components/nav/Nav.vue";
 
 <style lang="scss">
 @import "assets/styles/main.scss";
-
-* {
-  box-sizing: border-box;
-}
-
-body {
+.v-application__wrap {
   margin: 0;
   padding: 10px 20px;
-  background: rgb(9, 0, 66);
+  background: rgb(9, 0, 66) !important;
   background: linear-gradient(
     144deg,
     rgba(9, 0, 66, 1) 0%,
     rgba(11, 0, 78, 1) 100%
-  );
+  ) !important;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body,

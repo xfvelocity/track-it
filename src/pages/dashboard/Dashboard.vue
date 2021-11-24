@@ -1,7 +1,22 @@
 <template>
   <div class="dashboard">
-    <button @click="$router.push('add-workout')">Add Workout</button>
+    <div>
+      <v-btn color="primary" @click="$router.push('add-workout')">
+        Add Workout
+      </v-btn>
+    </div>
+    <div class="mt-4">
+      <v-btn color="primary" @click="$router.push('meal-prep')">
+        Meal prep
+      </v-btn>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts"></script>
+
+<style lang="scss" scoped>
+.dashboard {
+  margin-top: 20px;
+}
+</style>
