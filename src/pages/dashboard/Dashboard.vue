@@ -5,10 +5,15 @@
         Add Workout
       </v-btn>
     </div>
-    <div class="mt-4">
+    <div class="my-4">
       <v-btn color="primary" @click="$router.push('meal-prep')">
         Meal prep
       </v-btn>
+    </div>
+    <div>
+      <v-btn color="primary" @click="$router.push('/meal-prep/create-meal')"
+        >Create Meal</v-btn
+      >
     </div>
   </div>
 </template>

@@ -31,6 +31,21 @@
         </v-btn>
       </div>
     </div>
+    <div class="mt-6">
+      <p class="mb-4">Nutrients</p>
+      <div
+        class="d-flex align-center mb-4"
+        v-for="(nutrientKey, i) in Object.keys(meal.nutrients)"
+        :key="i"
+      >
+        <v-text-field
+          class="text-capitalize"
+          v-model="meal.nutrients[nutrientKey]"
+          :label="nutrientKey"
+        ></v-text-field>
+      </div>
+    </div>
+    <v-btn class="width100 mt-4" color="primary">Create Meal</v-btn>
   </div>
 </template>
 
@@ -48,7 +63,12 @@ const meal = ref<any>({
     },
   ],
   instructions: [""],
-  nutrients: {},
+  nutrients: {
+    calories: 0,
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+  },
 });
 
 const deleteIngredient = (ingredientIndex: number) => {
