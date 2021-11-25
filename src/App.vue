@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app theme="dark" app>
     <Nav />
     <v-main>
       <router-view />
@@ -33,5 +33,11 @@ input,
 select,
 button {
   font-family: "Poppins", sans-serif;
+}
+
+.v-input {
+  .v-input__details {
+    display: none;
+  }
 }
 </style>

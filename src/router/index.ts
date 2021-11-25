@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Dashboard from "../pages/dashboard/Dashboard.vue";
 import AddWorkout from "../pages/add-workout/AddWorkout.vue";
 import MealPrep from "../pages/meal-prep/MealPrep.vue";
+import CreateMeal from "../pages/meal-prep/add-meal/create-meal/CreateMeal.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,6 +19,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/meal-prep",
     name: "Meal Prep",
     component: MealPrep,
+  },
+  {
+    path: "/meal-prep/create-meal",
+    name: "Create Meal",
+    component: CreateMeal,
   },
 ];
 
