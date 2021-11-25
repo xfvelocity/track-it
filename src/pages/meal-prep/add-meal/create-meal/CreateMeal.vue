@@ -1,13 +1,13 @@
 <template>
-  <div class="create-meal my-6">
-    <v-text-field class="mb-6" v-model="meal.name" label="Name" />
+  <div class="create-meal my-8">
+    <v-text-field v-model="meal.name" label="Name" />
     <div
-      class="create-meal__upload-image mb-6 d-flex align-center justify-center"
+      class="create-meal__upload-image my-8 d-flex align-center justify-center"
     >
       Image placeholder
     </div>
-    <div>
-      <div class="d-flex align-center mb-4">
+    <div class="my-8">
+      <div class="d-flex align-center mb-6">
         <p>Ingredients</p>
         <v-spacer></v-spacer>
         <v-btn color="primary" @click="addIngredient">
@@ -31,8 +31,8 @@
         </v-btn>
       </div>
     </div>
-    <div class="mt-6">
-      <p class="mb-4">Nutrients</p>
+    <div>
+      <p class="mb-6">Nutrients</p>
       <div
         class="d-flex align-center mb-4"
         v-for="(nutrientKey, i) in Object.keys(meal.nutrients)"
@@ -45,7 +45,7 @@
         ></v-text-field>
       </div>
     </div>
-    <v-btn class="width100 mt-4" color="primary">Create Meal</v-btn>
+    <v-btn class="width100 my-8" color="primary">Create Meal</v-btn>
   </div>
 </template>
 
@@ -64,10 +64,10 @@ const meal = ref<any>({
   ],
   instructions: [""],
   nutrients: {
-    calories: 0,
-    protein: 0,
-    carbs: 0,
-    fat: 0,
+    calories: null,
+    protein: null,
+    carbs: null,
+    fat: null,
   },
 });
 

@@ -1,7 +1,7 @@
 <template>
   <nav class="nav">
     <span class="nav__title" @click="$router.push('/')">
-      <img src="@/assets/logo.svg" />
+      <img :src="require('./logo.svg')" />
       <h1>Track IT</h1>
     </span>
     <span class="nav__user">
@@ -15,7 +15,7 @@
 const showUsername: boolean = false;
 const loggedInUser: { name: string; avatar: string } = {
   name: "Alex Long",
-  avatar: require("@/assets/avatar.png"),
+  avatar: require("../../../assets/avatar.png"),
 };
 </script>
 
