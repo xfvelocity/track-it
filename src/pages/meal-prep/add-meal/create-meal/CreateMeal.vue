@@ -10,8 +10,11 @@
       <div class="d-flex align-center mb-4">
         <p>Ingredients</p>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="addIngredient">Add</v-btn>
+        <v-btn color="primary" @click="addIngredient">
+          <span class="material-icons"> add </span>
+        </v-btn>
       </div>
+
       <div
         class="d-flex align-center mb-4"
         v-for="(ingredient, i) in meal.ingredients"
@@ -23,8 +26,9 @@
           label="Ingredient"
           single-line
         ></v-text-field>
-        <!-- <v-icon color="white">add</v-icon> -->
-        <v-btn color="red" @click="deleteIngredient(i)">X</v-btn>
+        <v-btn color="red" @click="deleteIngredient(i)">
+          <span class="material-icons"> close </span>
+        </v-btn>
       </div>
     </div>
   </div>
