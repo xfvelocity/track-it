@@ -43,6 +43,7 @@
           v-model.number="meal.nutrients[nutrientKey]"
           type="number"
           :label="nutrientKey"
+          inputmode="decimal"
         ></v-text-field>
       </div>
     </div>
