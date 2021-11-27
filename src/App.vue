@@ -13,17 +13,6 @@
 
 <style lang="scss">
   @import 'assets/styles/main.scss';
-  .v-application__wrap {
-    margin: 0;
-    padding: 10px 20px;
-    background: rgb(9, 0, 66) !important;
-    background: linear-gradient(
-      144deg,
-      rgba(9, 0, 66, 1) 0%,
-      rgba(11, 0, 78, 1) 100%
-    ) !important;
-  }
-
   * {
     box-sizing: border-box;
   }
@@ -38,6 +27,26 @@
   .v-input {
     .v-input__details {
       display: none;
+    }
+  }
+
+  body {
+    background: rgb(119, 119, 119) !important;
+  }
+
+  .v-application {
+    max-width: 450px !important;
+    margin: 0 auto;
+
+    &__wrap {
+      margin: 0;
+      padding: 10px 20px;
+      background: rgb(9, 0, 66) !important;
+      background: linear-gradient(
+        144deg,
+        rgba(9, 0, 66, 1) 0%,
+        rgba(11, 0, 78, 1) 100%
+      ) !important;
     }
   }
 </style>
