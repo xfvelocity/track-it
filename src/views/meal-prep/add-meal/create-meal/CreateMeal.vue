@@ -5,17 +5,24 @@
       class="create-meal__upload-image my-8 d-flex align-center justify-center"
       @click="initCamera"
     >
-      Upload an Image
-      <!-- <input
-        ref="photo"
-        type="file"
-        accept="image/*"
-        hidden
-        capture="environment"
-      /> -->
-
-      <input ref="photo" type="file" accept="image/*" hidden />
+      <img
+        v-if="meal.img"
+        style="width: 100%; height: 100%; z-index: 10"
+        :src="meal.img"
+        alt=""
+      />
+      <div v-else>
+        Upload an Image
+        <input
+          ref="photo"
+          type="file"
+          accept="image/*"
+          hidden
+          @change="handleImageUpload"
+        />
+      </div>
     </div>
+
     <div class="my-8">
       <div class="d-flex align-center mb-6">
         <p>Ingredients</p>
@@ -87,6 +94,19 @@
 
   const initCamera = () => {
     if (photo && photo.value) photo.value.click()
+  }
+
+  const handleImageUpload = (event: any) => {
+    const files = event.target.files || event.dataTransfer.files
+    if (files.length) createImage(files[0])
+  }
+
+  const createImage = (file: any) => {
+    var image = new Image()
+    var reader = new FileReader()
+
+    reader.onload = (e) => (meal.value.img = e.target.result)
+    reader.readAsDataURL(file)
   }
 
   const deleteIngredient = (ingredientIndex: number) => {
