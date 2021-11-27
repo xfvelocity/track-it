@@ -3,8 +3,16 @@
     <v-text-field v-model="meal.name" label="Name" />
     <div
       class="create-meal__upload-image my-8 d-flex align-center justify-center"
+      @click="initCamera"
     >
-      Image placeholder
+      Upload an Image
+      <input
+        ref="photo"
+        type="file"
+        accept="image/*"
+        hidden
+        capture="environment"
+      />
     </div>
     <div class="my-8">
       <div class="d-flex align-center mb-6">
@@ -54,6 +62,8 @@
 <script setup lang="ts">
   import { ref } from 'vue'
 
+  const photo = ref<HTMLElement | null>(null)
+
   const meal = ref<any>({
     name: 'Protein Powder',
     img: null,
@@ -73,6 +83,10 @@
     },
   })
 
+  const initCamera = () => {
+    if (photo && photo.value) photo.value.click()
+  }
+
   const deleteIngredient = (ingredientIndex: number) => {
     meal.value.ingredients.splice(ingredientIndex, 1)
   }
@@ -89,6 +103,7 @@
 <style lang="scss" scoped>
   .create-meal {
     &__upload-image {
+      cursor: pointer;
       height: 200px;
       width: 100%;
       background: #ffffff1a;
