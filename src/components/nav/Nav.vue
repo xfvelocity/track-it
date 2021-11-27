@@ -6,7 +6,7 @@
     </span>
     <span class="nav__user d-flex align-center">
       <p v-if="showUsername">{{ loggedInUser.name }}</p>
-      <img :src="loggedInUser.avatar" alt="" />
+      <img src="/src/assets/avatar.png" alt="" />
     </span>
   </nav>
 </template>
@@ -15,7 +15,7 @@
   const showUsername: boolean = false
   const loggedInUser: { name: string; avatar: string } = {
     name: 'Alex Long',
-    avatar: '/src/assets/avatar.png',
+    avatar: '',
   }
 </script>
 
