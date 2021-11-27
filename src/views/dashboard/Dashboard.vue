@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <div>
+    <!-- <div>
       <v-btn color="primary" @click="$router.push('add-workout')">
         Add Workout
       </v-btn>
@@ -9,7 +9,7 @@
       <v-btn color="primary" @click="$router.push('meal-prep')">
         Meal prep
       </v-btn>
-    </div>
+    </div> -->
     <div>
       <v-btn color="primary" @click="$router.push('/meal-prep/create-meal')"
         >Create Meal</v-btn
@@ -21,7 +21,7 @@
 <script setup lang="ts"></script>
 
 <style lang="scss" scoped>
-.dashboard {
-  margin-top: 20px;
-}
+  .dashboard {
+    margin-top: 20px;
+  }
 </style>

@@ -19,8 +19,8 @@ export default defineConfig({
         short_name: 'Track IT',
         display: 'standalone',
         background_color: '#0098ff',
-        theme_color: '#0098ff',
-        description: 'TrackIT Gym Tracker',
+        theme_color: '#000',
+        description: 'Track IT Gym Tracker',
         icons: [
           {
             src: './img/icons/icon-128x128.png',
