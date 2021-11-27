@@ -40,7 +40,8 @@
       >
         <v-text-field
           class="text-capitalize"
-          v-model="meal.nutrients[nutrientKey]"
+          v-model.number="meal.nutrients[nutrientKey]"
+          type="number"
           :label="nutrientKey"
         ></v-text-field>
       </div>
@@ -50,46 +51,46 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+  import { ref } from 'vue'
 
-const meal = ref<any>({
-  name: "Protein Powder",
-  img: null,
-  ingredients: [
-    {
-      amount: 1,
-      unit: null,
-      name: "25g Protein Powder",
+  const meal = ref<any>({
+    name: 'Protein Powder',
+    img: null,
+    ingredients: [
+      {
+        amount: 1,
+        unit: null,
+        name: '25g Protein Powder',
+      },
+    ],
+    instructions: [''],
+    nutrients: {
+      calories: null,
+      protein: null,
+      carbs: null,
+      fat: null,
     },
-  ],
-  instructions: [""],
-  nutrients: {
-    calories: null,
-    protein: null,
-    carbs: null,
-    fat: null,
-  },
-});
+  })
 
-const deleteIngredient = (ingredientIndex: number) => {
-  meal.value.ingredients.splice(ingredientIndex, 1);
-};
+  const deleteIngredient = (ingredientIndex: number) => {
+    meal.value.ingredients.splice(ingredientIndex, 1)
+  }
 
-const addIngredient = () => {
-  meal.value.ingredients.push({
-    amount: null,
-    unit: null,
-    name: "",
-  });
-};
+  const addIngredient = () => {
+    meal.value.ingredients.push({
+      amount: null,
+      unit: null,
+      name: '',
+    })
+  }
 </script>
 
 <style lang="scss" scoped>
-.create-meal {
-  &__upload-image {
-    height: 200px;
-    width: 100%;
-    background: #ffffff1a;
+  .create-meal {
+    &__upload-image {
+      height: 200px;
+      width: 100%;
+      background: #ffffff1a;
+    }
   }
-}
 </style>
