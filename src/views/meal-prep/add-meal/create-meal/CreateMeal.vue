@@ -6,13 +6,15 @@
       @click="initCamera"
     >
       Upload an Image
-      <input
+      <!-- <input
         ref="photo"
         type="file"
         accept="image/*"
         hidden
         capture="environment"
-      />
+      /> -->
+
+      <input ref="photo" type="file" accept="image/*" hidden />
     </div>
     <div class="my-8">
       <div class="d-flex align-center mb-6">
@@ -106,7 +108,7 @@
       cursor: pointer;
       height: 200px;
       width: 100%;
-      background: #ffffff1a;
+      background: #ffffff0d;
     }
   }
 </style>
