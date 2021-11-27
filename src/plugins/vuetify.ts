@@ -1,17 +1,17 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/lib/styles/main.sass'
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/lib/components'
-import * as directives from 'vuetify/lib/directives'
+import * as components from 'vuetify/lib/components/index'
+import * as directives from 'vuetify/lib/directives/index'
 
-export const vuetify = createVuetify({
+export default createVuetify({
   components,
   directives,
   theme: {
     themes: {
       light: {
         colors: {
-          primary: '#41b883',
+          primary: '#008EF5',
           background: '#35495e',
           error: '#d63031',
           info: '#0984e3',
@@ -21,6 +21,20 @@ export const vuetify = createVuetify({
           warning: '#2d3436',
         },
         dark: false,
+        variables: {},
+      },
+      dark: {
+        colors: {
+          primary: '#008EF5',
+          background: '#35495e',
+          error: '#d63031',
+          info: '#0984e3',
+          secondary: '#fdcb6e',
+          success: '#00cec9',
+          surface: '#6c5ce7',
+          warning: '#2d3436',
+        },
+        dark: true,
         variables: {},
       },
     },
