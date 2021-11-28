@@ -7,7 +7,8 @@
     >
       <img
         v-if="meal.img"
-        style="width: 100%; height: 100%; z-index: 10"
+        class="w-100 h-100"
+        style="z-index: 10"
         :src="meal.img"
         alt=""
       />
@@ -39,7 +40,7 @@
       >
         <v-text-field
           class="mr-4"
-          v-model="ingredient.name"
+          v-model="meal.ingredients[i]"
           label="Ingredient"
           single-line
         ></v-text-field>
@@ -64,7 +65,7 @@
         ></v-text-field>
       </div>
     </div>
-    <v-btn class="width100 my-8" color="primary">Create Meal</v-btn>
+    <v-btn class="w-100 my-6 pa-6" color="primary">Create Meal</v-btn>
   </div>
 </template>
 
@@ -74,16 +75,10 @@
   const photo = ref<HTMLElement | null>(null)
 
   const meal = ref<any>({
-    name: 'Protein Powder',
+    name: '',
     img: null,
-    ingredients: [
-      {
-        amount: 1,
-        unit: null,
-        name: '25g Protein Powder',
-      },
-    ],
-    instructions: [''],
+    ingredients: [''],
+    instructions: [],
     nutrients: {
       calories: null,
       protein: null,
@@ -105,7 +100,8 @@
     var image = new Image()
     var reader = new FileReader()
 
-    reader.onload = (e) => (meal.value.img = e.target.result)
+    reader.onload = (e: ProgressEvent<FileReader>) =>
+      (meal.value.img = e.target!.result)
     reader.readAsDataURL(file)
   }
 
@@ -114,11 +110,7 @@
   }
 
   const addIngredient = () => {
-    meal.value.ingredients.push({
-      amount: null,
-      unit: null,
-      name: '',
-    })
+    meal.value.ingredients.push('')
   }
 </script>
 
@@ -126,8 +118,8 @@
   .create-meal {
     &__upload-image {
       cursor: pointer;
-      height: 200px;
-      width: 100%;
+      height: 400px;
+      width: 400px;
       background: #ffffff0d;
     }
   }

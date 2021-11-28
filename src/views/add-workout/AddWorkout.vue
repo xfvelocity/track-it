@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="add-set">
-          <Button class="width100" text="Add Set" @click="addSet(exercise)" />
+          <Button class="w-100" text="Add Set" @click="addSet(exercise)" />
         </div>
       </div>
     </div>
@@ -41,70 +41,70 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { emptyWorkoutData, mockWorkouts } from "./data/mockWorkoutData";
-import { AddWorkoutData, AddWorkoutWorkout } from "./types/addWorkout.types";
+  import { ref } from 'vue'
+  import { emptyWorkoutData, mockWorkouts } from './data/mockWorkoutData'
+  import { AddWorkoutData, AddWorkoutWorkout } from './types/addWorkout.types'
 
-const workout = ref<AddWorkoutData>(emptyWorkoutData);
-const workoutsList: any[] = mockWorkouts;
+  const workout = ref<AddWorkoutData>(emptyWorkoutData)
+  const workoutsList: any[] = mockWorkouts
 
-const addSet = (wrkOut: AddWorkoutWorkout) => {
-  wrkOut.sets.push({
-    weight: "",
-    reps: "",
-  });
-};
+  const addSet = (wrkOut: AddWorkoutWorkout) => {
+    wrkOut.sets.push({
+      weight: '',
+      reps: '',
+    })
+  }
 </script>
 
 <style lang="scss" scoped>
-.add-workout {
-  margin-top: 10px;
+  .add-workout {
+    margin-top: 10px;
 
-  &__heading {
-    color: white;
-    display: flex;
-
-    justify-content: space-between;
-    margin-bottom: 10px;
-
-    h3,
-    p {
-      margin: 0;
-    }
-  }
-
-  &__workouts {
-    .workout {
+    &__heading {
+      color: white;
       display: flex;
-      align-items: flex-start;
-      flex-wrap: wrap;
+
       justify-content: space-between;
       margin-bottom: 10px;
 
-      .workout-type {
-        min-width: 180px;
+      h3,
+      p {
+        margin: 0;
       }
+    }
 
-      .sets {
+    &__workouts {
+      .workout {
         display: flex;
-        flex-direction: column;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 10px;
 
-        .wgt,
-        .rps {
-          max-width: 60px !important;
-          margin-bottom: 7px;
+        .workout-type {
+          min-width: 180px;
         }
 
-        .wgt {
-          margin-right: 10px;
-        }
-      }
+        .sets {
+          display: flex;
+          flex-direction: column;
 
-      .add-set {
-        width: 100%;
-        margin-top: 5px;
+          .wgt,
+          .rps {
+            max-width: 60px !important;
+            margin-bottom: 7px;
+          }
+
+          .wgt {
+            margin-right: 10px;
+          }
+        }
+
+        .add-set {
+          width: 100%;
+          margin-top: 5px;
+        }
       }
     }
   }
-}
 </style>
