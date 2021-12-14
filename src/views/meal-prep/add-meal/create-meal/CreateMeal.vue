@@ -65,14 +65,18 @@
         ></v-text-field>
       </div>
     </div>
-    <v-btn class="w-100 my-6 pa-6" color="primary">Create Meal</v-btn>
+    <v-btn class="w-100 my-6 pa-6" color="primary" @click="addMeal"
+      >Create Meal</v-btn
+    >
   </div>
 </template>
 
 <script setup lang="ts">
+  import { useStore } from 'vuex'
   import { ref } from 'vue'
 
   const photo = ref<HTMLElement | null>(null)
+  const store = useStore()
 
   const meal = ref<any>({
     name: '',
@@ -112,6 +116,10 @@
   const addIngredient = () => {
     meal.value.ingredients.push('')
   }
+
+  const addMeal = () => {
+    store.commit('setRecipe', meal.value)
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -119,7 +127,8 @@
     &__upload-image {
       cursor: pointer;
       height: 400px;
-      width: 400px;
+      max-height: 400px;
+      max-width: 400px;
       background: #ffffff0d;
     }
   }

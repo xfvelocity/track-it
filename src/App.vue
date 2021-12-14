@@ -8,7 +8,16 @@
 </template>
 
 <script setup lang="ts">
+  import { useStore } from 'vuex'
   import Nav from './components/nav/Nav.vue'
+
+  const store = useStore()
+
+  const setStoreInStorage = () => {
+    store.commit('initialiseStore')
+  }
+
+  setStoreInStorage()
 </script>
 
 <style lang="scss">
