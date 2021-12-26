@@ -1,29 +1,7 @@
 <template>
   <div class="create-meal my-8">
     <v-text-field v-model="meal.name" label="Name" />
-    <div
-      class="create-meal__upload-image my-8 d-flex align-center justify-center"
-      @click="initCamera"
-    >
-      <img
-        v-if="meal.img"
-        class="w-100 h-100"
-        style="z-index: 10"
-        :src="meal.img"
-        alt=""
-      />
-      <div v-else>
-        Upload an Image
-        <input
-          ref="photo"
-          type="file"
-          accept="image/*"
-          hidden
-          @change="handleImageUpload"
-        />
-      </div>
-    </div>
-
+    <UploadImage :img="meal.img" @img-upload="setImage" />
     <div class="my-8">
       <div class="d-flex align-center mb-6">
         <p>Ingredients</p>
@@ -74,8 +52,8 @@
 <script setup lang="ts">
   import { useStore } from 'vuex'
   import { ref } from 'vue'
+  import UploadImage from '@/components/upload-image/UploadImage.vue'
 
-  const photo = ref<HTMLElement | null>(null)
   const store = useStore()
 
   const meal = ref<any>({
@@ -91,22 +69,8 @@
     },
   })
 
-  const initCamera = () => {
-    if (photo && photo.value) photo.value.click()
-  }
-
-  const handleImageUpload = (event: any) => {
-    const files = event.target.files || event.dataTransfer.files
-    if (files.length) createImage(files[0])
-  }
-
-  const createImage = (file: any) => {
-    var image = new Image()
-    var reader = new FileReader()
-
-    reader.onload = (e: ProgressEvent<FileReader>) =>
-      (meal.value.img = e.target!.result)
-    reader.readAsDataURL(file)
+  const setImage = (img: string) => {
+    meal.value.img = img
   }
 
   const deleteIngredient = (ingredientIndex: number) => {
@@ -121,15 +85,3 @@
     store.commit('setRecipe', meal.value)
   }
 </script>
-
-<style lang="scss" scoped>
-  .create-meal {
-    &__upload-image {
-      cursor: pointer;
-      height: 400px;
-      max-height: 400px;
-      max-width: 400px;
-      background: #ffffff0d;
-    }
-  }
-</style>
