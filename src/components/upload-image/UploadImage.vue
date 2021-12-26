@@ -3,8 +3,28 @@
     class="upload-image my-8 d-flex align-center justify-center"
     @click="initCamera"
   >
-    <img v-if="img" class="w-100 h-100" style="z-index: 10" :src="img" alt="" />
-    <div v-else>
+    <div
+      v-show="img && !editingImage"
+      class="w-100 h-100"
+      style="position: relative"
+    >
+      <img
+        class="w-100 h-100"
+        style="z-index: 10; position: relative"
+        :src="img"
+        alt=""
+      />
+      <div class="d-flex upload-image__edit">
+        <v-btn class="mr-2" color="blue" icon="" @click.stop="editImage">
+          <span class="material-icons"> edit </span>
+        </v-btn>
+        <v-btn color="red" icon="" @click.stop="deleteImage">
+          <span class="material-icons"> delete </span>
+        </v-btn>
+      </div>
+    </div>
+
+    <div v-show="!img || editingImage">
       Upload an Image
       <input
         ref="photo"
@@ -29,10 +49,21 @@
       },
     },
     setup(props, context) {
+      const editingImage = ref<boolean>(false)
       const photo = ref<HTMLElement | null>(null)
 
       const initCamera = () => {
-        if (photo && photo.value) photo.value.click()
+        if (photo.value) photo.value.click()
+        editingImage.value = false
+      }
+
+      const editImage = () => {
+        editingImage.value = true
+        initCamera()
+      }
+
+      const deleteImage = () => {
+        context.emit('img-upload', null)
       }
 
       const handleImageUpload = (event: Event) => {
@@ -53,6 +84,9 @@
         photo,
         initCamera,
         handleImageUpload,
+        editImage,
+        deleteImage,
+        editingImage,
       }
     },
   })
@@ -65,5 +99,12 @@
     max-height: 410px;
     max-width: 410px;
     background: #ffffff0d;
+
+    &__edit {
+      position: absolute;
+      top: 10px;
+      z-index: 100;
+      right: 10px;
+    }
   }
 </style>
