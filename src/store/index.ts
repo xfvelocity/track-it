@@ -1,9 +1,11 @@
 import { createStore } from 'vuex'
-import recipe from './modules/recipe.js'
+import recipe from './modules/recipe'
+import config from './modules/config'
 
 const store = createStore({
   modules: {
     recipe,
+    config
   },
   mutations: {
     initialiseStore(state) {
