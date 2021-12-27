@@ -1,7 +1,7 @@
 <template>
   <v-card
     v-if="snackbar && snackbar.isVisible"
-    class="snackbar pa-4 text-center font-weight-medium"
+    class="snackbar py-2 text-center font-weight-medium"
     :color="snackbar.color"
   >
     {{ snackbar.text }}
@@ -41,7 +41,7 @@
 <style lang="scss" scoped>
   .snackbar {
     position: sticky;
-    bottom: 10px;
+    bottom: 20px;
     width: 100%;
   }
 </style>
