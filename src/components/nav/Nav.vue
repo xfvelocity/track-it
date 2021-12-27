@@ -11,12 +11,24 @@
   </nav>
 </template>
 
-<script setup lang="ts">
-  const showUsername: boolean = false
-  const loggedInUser: { name: string; avatar: string } = {
-    name: 'Alex Long',
-    avatar: '',
-  }
+<script lang="ts">
+  import { defineComponent, ref } from 'vue'
+
+  export default defineComponent({
+    name: 'Nav',
+    setup() {
+      const showUsername = ref<boolean>(false)
+      const loggedInUser = ref({
+        name: 'Alex Long',
+        avatar: '',
+      })
+
+      return {
+        showUsername,
+        loggedInUser,
+      }
+    },
+  })
 </script>
 
 <style lang="scss" scoped>

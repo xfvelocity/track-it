@@ -1,11 +1,13 @@
 <template>
   <v-app theme="dark" app>
-    <v-progress-linear
-      v-if="isLoading"
-      color="green"
-      height="6"
-      indeterminate
-    ></v-progress-linear>
+    <div class="loading-bar">
+      <v-progress-linear
+        v-if="isLoading"
+        color="green"
+        height="8"
+        indeterminate
+      ></v-progress-linear>
+    </div>
     <Nav />
     <v-main>
       <router-view />
@@ -71,6 +73,12 @@
 
   body {
     background: rgb(119, 119, 119) !important;
+  }
+
+  .loading-bar {
+    position: sticky;
+    top: 10px;
+    width: 100%;
   }
 
   .v-application {

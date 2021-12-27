@@ -40,9 +40,8 @@
 
 <style lang="scss" scoped>
   .snackbar {
-    position: absolute;
-    bottom: 25px;
-    width: 90%;
-    margin: 0 auto;
+    position: sticky;
+    bottom: 10px;
+    width: 100%;
   }
 </style>
