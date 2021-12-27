@@ -52,6 +52,8 @@
 <script setup lang="ts">
   import { useStore } from 'vuex'
   import { ref } from 'vue'
+  import api from '../../../../api/api'
+  import axios from 'axios'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
 
   const store = useStore()
@@ -82,6 +84,7 @@
   }
 
   const addMeal = () => {
+    api('POST', '/meal/recipes', meal.value)
     store.commit('setRecipe', meal.value)
   }
 </script>
