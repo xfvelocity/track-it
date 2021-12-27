@@ -6,33 +6,48 @@
       height="6"
       indeterminate
     ></v-progress-linear>
-    <div class="app-content">
-      <Nav />
-      <v-main>
-        <router-view />
-      </v-main>
-    </div>
+    <Nav />
+    <v-main>
+      <router-view />
+    </v-main>
+    <Snackbar />
   </v-app>
 </template>
 
-<script setup lang="ts">
-  import { ref, watch } from 'vue'
+<script lang="ts">
+  import { defineComponent, ref, watch, onMounted } from 'vue'
   import { useStore } from 'vuex'
   import Nav from './components/nav/Nav.vue'
+  import Snackbar from './components/snackbar/Snackbar.vue'
 
-  const store = useStore()
-  const isLoading = ref<boolean>(false)
+  export default defineComponent({
+    name: 'App',
+    components: {
+      Nav,
+      Snackbar,
+    },
+    setup() {
+      const store = useStore()
+      const isLoading = ref<boolean>(false)
 
-  const setStoreInStorage = () => {
-    store.commit('initialiseStore')
-  }
+      const setStoreInStorage = () => {
+        store.commit('initialiseStore')
+      }
 
-  watch(
-    () => store.state.config.loading,
-    (loading) => {
-      isLoading.value = loading
-    }
-  )
+      onMounted(setStoreInStorage)
+
+      watch(
+        () => store.state.config.loading,
+        (loading) => {
+          isLoading.value = loading
+        }
+      )
+
+      return {
+        isLoading,
+      }
+    },
+  })
 </script>
 
 <style lang="scss">
@@ -62,7 +77,7 @@
     max-width: 450px !important;
     margin: 0 auto;
 
-    .app-content {
+    &__wrap {
       margin: 0;
       height: 100%;
       padding: 10px 20px;
