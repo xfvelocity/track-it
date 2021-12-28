@@ -27,6 +27,14 @@ export default {
     async getRecipes(context: any): Promise<void> {
       const res = await api('GET', '/meal/recipes');
       context.commit('setRecipe', res)
+    },
+    async editRecipe(context: any, payload: Recipe): Promise<void> {
+      console.log(payload);
+      const res = await api('PUT', `/meal/recipes/${payload._id}`);
+
+      if (res) {
+        console.log(res);
+      }
     }
   },
   modules: {},
