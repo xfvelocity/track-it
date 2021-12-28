@@ -49,39 +49,60 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
   import { Store, useStore } from 'vuex'
-  import { ref } from 'vue'
+  import { onMounted, ref, defineComponent } from 'vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
   import { Recipe } from './types/CreateMeal.types'
 
-  const store: Store<any> = useStore()
-  const meal = ref<Recipe>({
-    name: '',
-    img: '',
-    ingredients: [''],
-    instructions: [],
-    nutrients: {
-      calories: 0,
-      protein: 0,
-      carbs: 0,
-      fat: 0,
+  export default defineComponent({
+    name: 'CreateMeal',
+    components: {
+      UploadImage,
+    },
+    setup(props, context) {
+      const store: Store<any> = useStore()
+      const meal = ref<Recipe>({
+        name: '',
+        img: '',
+        ingredients: [''],
+        instructions: [],
+        nutrients: {
+          calories: 0,
+          protein: 0,
+          carbs: 0,
+          fat: 0,
+        },
+      })
+
+      onMounted(() => {
+        const editingMeal: Recipe | null = store.state.recipe.editingMeal
+        if (editingMeal) meal.value = editingMeal
+      })
+
+      const setImage = (img: string): void => {
+        meal.value.img = img
+      }
+
+      const deleteIngredient = (ingredientIndex: number): void => {
+        meal.value.ingredients.splice(ingredientIndex, 1)
+      }
+
+      const addIngredient = (): void => {
+        meal.value.ingredients.push('')
+      }
+
+      const addMeal = (): void => {
+        store.dispatch('addRecipe', meal.value)
+      }
+
+      return {
+        meal,
+        setImage,
+        deleteIngredient,
+        addIngredient,
+        addMeal,
+      }
     },
   })
-
-  const setImage = (img: string): void => {
-    meal.value.img = img
-  }
-
-  const deleteIngredient = (ingredientIndex: number): void => {
-    meal.value.ingredients.splice(ingredientIndex, 1)
-  }
-
-  const addIngredient = (): void => {
-    meal.value.ingredients.push('')
-  }
-
-  const addMeal = (): void => {
-    store.dispatch('addRecipe', meal.value)
-  }
 </script>

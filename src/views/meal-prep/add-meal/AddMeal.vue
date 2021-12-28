@@ -18,12 +18,21 @@
           <img class="w-100" :src="meal.img" alt="" />
         </div>
         <v-card-title>{{ meal.name }}</v-card-title>
+        <v-card-actions>
+          <v-btn color="blue" style="width: 48%" @click="editMeal(meal)">
+            <span class="material-icons"> edit </span>
+          </v-btn>
+          <v-btn color="red" style="width: 48%" @click="deleteMeal(meal)">
+            <span class="material-icons"> delete </span>
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+  import router from '@/router'
   import { defineComponent, onBeforeMount, ref } from 'vue'
   import { Store, useStore } from 'vuex'
   import { Recipe } from './create-meal/types/CreateMeal.types'
@@ -39,9 +48,18 @@
         mealList.value = store.state.recipe.recipes
       }
 
+      const editMeal = (meal: Recipe): void => {
+        store.commit('setEditingMeal', meal)
+        router.push('/meal-prep/create-meal')
+      }
+
+      const deleteMeal = (meal: Recipe): void => {}
+
       onBeforeMount(getMeals)
 
       return {
+        editMeal,
+        deleteMeal,
         mealList,
       }
     },

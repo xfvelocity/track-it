@@ -5,12 +5,16 @@ import { RecipeState } from '../types/recipe.types'
 export default {
   state: {
     recipes: [],
+    editingMeal: null
   },
   mutations: {
     setRecipe(state: RecipeState, payload: Recipe | Recipe[]): void {
       if (Array.isArray(payload) && payload.length > 0) state.recipes = payload
       else state.recipes.push(payload as Recipe)
     },
+    setEditingMeal(state: RecipeState, payload: Recipe): void {
+      state.editingMeal = payload;
+    }
   },
   actions: {
     async addRecipe(context: any, payload: Recipe): Promise<void> {
