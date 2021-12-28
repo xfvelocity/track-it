@@ -36,7 +36,7 @@
       >
         <v-text-field
           class="text-capitalize"
-          v-model.number="(meal.nutrients as { [key: string]: number} )[nutrientKey]"
+          v-model.number="meal.nutrients[nutrientKey]"
           type="number"
           :label="nutrientKey"
           inputmode="decimal"

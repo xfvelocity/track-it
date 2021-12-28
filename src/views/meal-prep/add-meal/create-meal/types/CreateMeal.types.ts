@@ -6,7 +6,7 @@ export type Recipe = {
     instructions: string[];
 }
 
-export type RecipeNutrients = {
+export interface RecipeNutrients {
     calories: number;
     protein: number;
     carbs: number;
