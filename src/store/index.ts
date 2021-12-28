@@ -8,7 +8,7 @@ const store = createStore({
     config
   },
   mutations: {
-    initialiseStore(state) {
+    initialiseStore(state: any): void {
       if (localStorage.getItem('store'))
         this.replaceState(
           Object.assign(state, JSON.parse(localStorage.getItem('store')!))
@@ -17,7 +17,7 @@ const store = createStore({
   },
 })
 
-store.subscribe((mutation, state) => {
+store.subscribe((mutation: any, state: any): void => {
   localStorage.setItem('store', JSON.stringify(state))
 })
 

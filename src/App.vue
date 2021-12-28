@@ -18,7 +18,7 @@
 
 <script lang="ts">
   import { defineComponent, ref, watch, onMounted } from 'vue'
-  import { useStore } from 'vuex'
+  import { Store, useStore } from 'vuex'
   import Nav from './components/nav/Nav.vue'
   import Snackbar from './components/snackbar/Snackbar.vue'
 
@@ -29,10 +29,10 @@
       Snackbar,
     },
     setup() {
-      const store = useStore()
+      const store: Store<any> = useStore()
       const isLoading = ref<boolean>(false)
 
-      const setStoreInStorage = () => {
+      const setStoreInStorage = (): void => {
         store.commit('initialiseStore')
       }
 

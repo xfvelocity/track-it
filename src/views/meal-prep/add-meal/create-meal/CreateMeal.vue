@@ -36,7 +36,7 @@
       >
         <v-text-field
           class="text-capitalize"
-          v-model.number="meal.nutrients[nutrientKey]"
+          v-model.number="(meal.nutrients as { [key: string]: number} )[nutrientKey]"
           type="number"
           :label="nutrientKey"
           inputmode="decimal"
@@ -50,41 +50,38 @@
 </template>
 
 <script setup lang="ts">
-  import { useStore } from 'vuex'
+  import { Store, useStore } from 'vuex'
   import { ref } from 'vue'
-  import api from '../../../../api/api'
-  import axios from 'axios'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
+  import { Recipe } from './types/CreateMeal.types'
 
-  const store = useStore()
-
-  const meal = ref<any>({
+  const store: Store<any> = useStore()
+  const meal = ref<Recipe>({
     name: '',
-    img: null,
+    img: '',
     ingredients: [''],
     instructions: [],
     nutrients: {
-      calories: null,
-      protein: null,
-      carbs: null,
-      fat: null,
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fat: 0,
     },
   })
 
-  const setImage = (img: string) => {
+  const setImage = (img: string): void => {
     meal.value.img = img
   }
 
-  const deleteIngredient = (ingredientIndex: number) => {
+  const deleteIngredient = (ingredientIndex: number): void => {
     meal.value.ingredients.splice(ingredientIndex, 1)
   }
 
-  const addIngredient = () => {
+  const addIngredient = (): void => {
     meal.value.ingredients.push('')
   }
 
-  const addMeal = () => {
-    api('POST', '/meal/recipes', meal.value)
-    store.commit('setRecipe', meal.value)
+  const addMeal = (): void => {
+    store.dispatch('addRecipe', meal.value)
   }
 </script>

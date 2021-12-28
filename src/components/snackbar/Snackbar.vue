@@ -10,13 +10,14 @@
 
 <script lang="ts">
   import { defineComponent, watch, ref } from 'vue'
-  import { useStore } from 'vuex'
+  import { Snackbar } from './types/Snackbar.types'
+  import { Store, useStore } from 'vuex'
 
   export default defineComponent({
     name: 'Snackbar',
     setup() {
-      const store = useStore()
-      const snackbar = ref<any>(null)
+      const store: Store<any> = useStore()
+      const snackbar = ref<Snackbar | null>(null)
 
       watch(
         () => store.state.config.snackbar.isVisible,
@@ -41,7 +42,7 @@
 <style lang="scss" scoped>
   .snackbar {
     position: sticky;
-    bottom: 20px;
+    bottom: 30px;
     width: 100%;
   }
 </style>

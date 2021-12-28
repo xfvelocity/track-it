@@ -1,3 +1,6 @@
+import { Snackbar } from "@/components/snackbar/types/Snackbar.types";
+import { ConfigState } from "../types/config.types";
+
 export default {
   state: {
     loading: false,
@@ -8,13 +11,13 @@ export default {
     }
   },
   mutations: {
-    setLoading(state: any, payload: boolean) {
+    setLoading(state: ConfigState, payload: boolean): void {
       state.loading = payload
     },
-    setSnackbar(state: any, payload: any) {
+    setSnackbar(state: ConfigState, payload: Snackbar): void {
       state.snackbar = payload;
     },
-    setSnackbarVisibility(state: any, payload: boolean) {
+    setSnackbarVisibility(state: ConfigState, payload: boolean): void {
       state.snackbar.isVisible = payload
     }
   },

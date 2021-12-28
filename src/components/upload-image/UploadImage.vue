@@ -52,27 +52,27 @@
       const editingImage = ref<boolean>(false)
       const photo = ref<HTMLElement | null>(null)
 
-      const initCamera = () => {
+      const initCamera = (): void => {
         if (photo.value) photo.value.click()
         editingImage.value = false
       }
 
-      const editImage = () => {
+      const editImage = (): void => {
         editingImage.value = true
         initCamera()
       }
 
-      const deleteImage = () => {
+      const deleteImage = (): void => {
         context.emit('img-upload', null)
       }
 
-      const handleImageUpload = (event: Event) => {
+      const handleImageUpload = (event: Event): void => {
         const target = <HTMLInputElement>event.target
         const files: FileList | null = target.files
         if (files && files.length) createImage(files[0])
       }
 
-      const createImage = (file: File) => {
+      const createImage = (file: File): void => {
         const reader: FileReader = new FileReader()
 
         reader.onload = (e: ProgressEvent<FileReader>) =>

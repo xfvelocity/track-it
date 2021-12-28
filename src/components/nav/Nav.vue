@@ -13,12 +13,13 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
+  import { LoggedInUser } from './types/Nav.types'
 
   export default defineComponent({
     name: 'Nav',
     setup() {
       const showUsername = ref<boolean>(false)
-      const loggedInUser = ref({
+      const loggedInUser = ref<LoggedInUser>({
         name: 'Alex Long',
         avatar: '',
       })
