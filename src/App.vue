@@ -32,11 +32,11 @@
       const store: Store<any> = useStore()
       const isLoading = ref<boolean>(false)
 
-      const setStoreInStorage = (): void => {
-        store.commit('initialiseStore')
-      }
+      // const setStoreInStorage = (): void => {
+      //   store.commit('initialiseStore')
+      // }
 
-      onMounted(setStoreInStorage)
+      // onMounted(setStoreInStorage)
 
       watch(
         () => store.state.config.loading,

@@ -8,17 +8,17 @@ const store = createStore({
     config
   },
   mutations: {
-    initialiseStore(state: any): void {
-      if (localStorage.getItem('store'))
-        this.replaceState(
-          Object.assign(state, JSON.parse(localStorage.getItem('store')!))
-        )
-    },
+    // initialiseStore(state: any): void {
+    //   if (localStorage.getItem('store'))
+    //     this.replaceState(
+    //       Object.assign(state, JSON.parse(localStorage.getItem('store')!))
+    //     )
+    // },
   },
 })
 
-store.subscribe((mutation: any, state: any): void => {
-  localStorage.setItem('store', JSON.stringify(state))
-})
+// store.subscribe((mutation: any, state: any): void => {
+//   localStorage.setItem('store', JSON.stringify(state))
+// })
 
 export default store

@@ -1,7 +1,7 @@
 import store from '@/store';
 import axios from 'axios'
 
-export default async function api(type: string, path: string, data: any) {
+export default async function api(type: string, path: string, data?: any) {
   store.commit('setLoading', true)
 
   let res;

@@ -7,18 +7,23 @@ export default {
     recipes: [],
   },
   mutations: {
-    setRecipe(state: RecipeState, payload: Recipe) {
-      state.recipes.push(payload)
+    setRecipe(state: RecipeState, payload: Recipe | Recipe[]): void {
+      if (Array.isArray(payload) && payload.length > 0) state.recipes = payload
+      else state.recipes.push(payload as Recipe)
     },
   },
   actions: {
-    async addRecipe(context: any, payload: Recipe) {
+    async addRecipe(context: any, payload: Recipe): Promise<void> {
       const res = await api('POST', '/meal/recipes', payload)
 
-      if (res) {
+      if (res)
         context.commit('setRecipe', payload)
-      }
+
     },
+    async getRecipes(context: any): Promise<void> {
+      const res = await api('GET', '/meal/recipes');
+      context.commit('setRecipe', res)
+    }
   },
   modules: {},
 }

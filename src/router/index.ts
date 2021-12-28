@@ -3,6 +3,7 @@ import Dashboard from '../views/dashboard/Dashboard.vue'
 import AddWorkout from '../views/add-workout/AddWorkout.vue'
 import MealPrep from '../views/meal-prep/MealPrep.vue'
 import CreateMeal from '../views/meal-prep/add-meal/create-meal/CreateMeal.vue'
+import AddMeal from '../views/meal-prep/add-meal/AddMeal.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -19,6 +20,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/meal-prep',
     name: 'Meal Prep',
     component: MealPrep,
+  },
+  {
+    path: '/meal-prep/add-meal',
+    name: 'Add Meal',
+    component: AddMeal,
   },
   {
     path: '/meal-prep/create-meal',
