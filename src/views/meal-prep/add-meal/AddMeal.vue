@@ -1,5 +1,5 @@
 <template>
-  <div class="add-meal mt-4">
+  <div class="add-meal">
     <div class="d-flex justify-space-between">
       <h2>Meals</h2>
       <v-btn color="blue" @click="$router.push('/meal-prep/create-meal')"

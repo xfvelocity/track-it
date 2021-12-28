@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav d-flex justify-space-between mt-4">
+  <nav class="nav d-flex justify-space-between mt-4 mb-6">
     <span class="nav__title d-flex align-center" @click="$router.push('/')">
       <img src="/src/assets/logo.svg" />
       <h1>Track IT</h1>
