@@ -14,6 +14,13 @@ export default {
     },
     setEditingMeal(state: RecipeState, payload: Recipe): void {
       state.editingMeal = payload;
+    },
+    editRecipe(state: RecipeState, payload: Recipe): void {
+      const matchingRecipe: number = state.recipes.findIndex(x => x._id === payload._id)
+      if (matchingRecipe) state.recipes[matchingRecipe] = payload
+    },
+    removeSelectedRecipe(state: RecipeState, payload: number): void {
+      state.recipes.splice(payload, 1)
     }
   },
   actions: {
@@ -25,16 +32,18 @@ export default {
 
     },
     async getRecipes(context: any): Promise<void> {
-      const res = await api('GET', '/meal/recipes');
+      const res: Recipe[] = await api('GET', '/meal/recipes');
       context.commit('setRecipe', res)
     },
     async editRecipe(context: any, payload: Recipe): Promise<void> {
-      console.log(payload);
-      const res = await api('PUT', `/meal/recipes/${payload._id}`);
+      const res: Recipe = await api('PUT', `/meal/recipes/${payload._id}`, payload);
 
-      if (res) {
-        console.log(res);
-      }
+      if (res) context.commit('editRecipe', payload)
+    },
+    async delRecipe(context: any, payload: Recipe): Promise<void> {
+      const res = await api('DEL', `/meal/recipes/${payload._id}`);
+
+      if (res) context.commit('removeSelectedRecipe', context.state.recipes.indexOf(payload))
     }
   },
   modules: {},

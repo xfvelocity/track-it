@@ -18,6 +18,10 @@ export default async function api(type: string, path: string, data?: any) {
     res = await axios.put(`${import.meta.env.VITE_API_URL}${path}`, data).catch(err => err)
   }
 
+  if (type === 'DEL') {
+    res = await axios.delete(`${import.meta.env.VITE_API_URL}${path}`).catch(err => err)
+  }
+
   store.commit('setLoading', false)
 
   if (res.data) return res.data

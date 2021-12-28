@@ -95,7 +95,7 @@
       const addMeal = (): void => {
         if (store.state.recipe.editingMeal)
           store.dispatch('editRecipe', meal.value)
-        store.dispatch('addRecipe', meal.value)
+        else store.dispatch('addRecipe', meal.value)
       }
 
       return {

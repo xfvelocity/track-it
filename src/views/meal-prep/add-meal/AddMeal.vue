@@ -33,7 +33,7 @@
 
 <script lang="ts">
   import router from '@/router'
-  import { defineComponent, onBeforeMount, ref } from 'vue'
+  import { defineComponent, onBeforeMount, ref, watch } from 'vue'
   import { Store, useStore } from 'vuex'
   import { Recipe } from './create-meal/types/CreateMeal.types'
 
@@ -45,7 +45,6 @@
 
       const getMeals = async (): Promise<void> => {
         await store.dispatch('getRecipes')
-        mealList.value = store.state.recipe.recipes
       }
 
       const editMeal = (meal: Recipe): void => {
@@ -53,7 +52,16 @@
         router.push('/meal-prep/create-meal')
       }
 
-      const deleteMeal = (meal: Recipe): void => {}
+      const deleteMeal = (meal: Recipe): void => {
+        store.dispatch('delRecipe', meal)
+      }
+
+      watch(
+        () => store.state.recipe.recipes,
+        (recipes) => {
+          mealList.value = recipes
+        }
+      )
 
       onBeforeMount(getMeals)
 
