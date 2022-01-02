@@ -1,5 +1,5 @@
 export type Recipe = {
-    _id?: number;
+    id?: number;
     name: string;
     img: string;
     nutrients: RecipeNutrients;

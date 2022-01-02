@@ -16,8 +16,8 @@ export default {
       state.editingMeal = payload;
     },
     editRecipe(state: RecipeState, payload: Recipe): void {
-      const matchingRecipe: number = state.recipes.findIndex(x => x._id === payload._id)
-      if (matchingRecipe) state.recipes[matchingRecipe] = payload
+      // const matchingRecipe: number = state.recipes.findIndex(x => x._id === payload._id)
+      // if (matchingRecipe) state.recipes[matchingRecipe] = payload
     },
     removeSelectedRecipe(state: RecipeState, payload: number): void {
       state.recipes.splice(payload, 1)
@@ -25,14 +25,14 @@ export default {
   },
   actions: {
     async addRecipe(context: any, payload: Recipe): Promise<void> {
-      const res = await api('POST', '/meal/recipes', payload)
+      const res = await api('POST', 'recipes', payload)
 
       if (res)
         context.commit('setRecipe', payload)
 
     },
     async getRecipes(context: any): Promise<Recipe[]> {
-      const res: Recipe[] = await api('GET', '/meal/recipes');
+      const res: Recipe[] = await api('GET', 'recipes');
       context.commit('setRecipe', res)
 
       return res;
@@ -43,10 +43,8 @@ export default {
       // context.commit('editRecipe', payload)
     },
     async delRecipe(context: any, payload: Recipe): Promise<void> {
-      console.log('not implemented');
-      // const res = await api('DEL', `/meal/recipes/${payload._id}`);
-
-      // if (res) context.commit('removeSelectedRecipe', context.state.recipes.indexOf(payload))
+      const res = await api('DEL', "recipes", payload.id);
+      if (res) context.commit('removeSelectedRecipe', context.state.recipes.indexOf(payload))
     }
   },
   modules: {},
