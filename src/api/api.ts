@@ -1,5 +1,5 @@
 import store from '@/store';
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore"
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from "firebase/firestore"
 
 export default async function api(type: string, col: string, data?: any) {
   let res;
@@ -8,22 +8,27 @@ export default async function api(type: string, col: string, data?: any) {
 
   store.commit('setLoading', true)
 
-  if (type === 'GET') {
-    res = await getDocs(colref).then(snapshot => snapshot.docs.map(doc =>
-      ({ ...doc.data(), id: doc.id })
-    )).catch(err => ({ error: err }))
-  }
+  switch (type) {
+    case 'GET':
+      res = await getDocs(colref).then(snapshot => snapshot.docs.map(doc =>
+        ({ ...doc.data(), id: doc.id })
+      )).catch(err => ({ error: err }))
+      break;
 
-  if (type === 'POST') {
-    res = await addDoc(colref, data).then(() => ({})).catch(err => ({ error: err }))
-  }
+    case "POST":
+      res = await addDoc(colref, data).then(() => ({})).catch(err => ({ error: err }))
+      break;
 
-  if (type === 'DEL') {
-    const docRef = doc(db, col, data)
-    res = await deleteDoc(docRef).then(() => ({})).catch(err => ({ error: err }))
-  }
+    case "DEL":
+      const delRef = doc(db, col, data)
+      res = await deleteDoc(delRef).then(() => ({})).catch(err => ({ error: err }))
+      break;
 
-  if (type === 'PUT') { }
+    case "PUT":
+      const updRef = doc(db, col, data.id)
+      res = await updateDoc(updRef, data).then(res => ({})).catch(err => ({ error: err }))
+      break;
+  }
 
   store.commit('setLoading', false)
 

@@ -55,10 +55,21 @@ export default {
       context.commit('setRecipe', res)
       return res;
     },
-    async editRecipe(context: any, payload: Recipe): Promise<void> {
-      console.log('not implemented');
-      // await api('PUT', "recipes", payload);
-      // context.commit('editRecipe', payload)
+    async editRecipe(context: any, payload: Recipe): Promise<boolean> {
+      const res: any = await api('PUT', "recipes", payload);
+
+      if (!res || res.error) {
+        context.commit('setSnackbar', {
+          color: 'red',
+          text: `An error occured updating recipe, please try again.`,
+          isVisible: true
+        })
+
+        return false
+      }
+
+      context.commit('editRecipe', payload)
+      return true;
     },
     async delRecipe(context: any, payload: Recipe): Promise<boolean> {
       const res: any = await api('DEL', "recipes", payload.id);
