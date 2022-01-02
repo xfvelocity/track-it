@@ -6,7 +6,6 @@
         >Create Meal</v-btn
       >
     </div>
-
     <div class="d-flex flex-wrap justify-space-between">
       <v-card
         style="width: 48%"
@@ -33,7 +32,7 @@
 
 <script lang="ts">
   import router from '@/router'
-  import { defineComponent, onBeforeMount, ref, watch } from 'vue'
+  import { defineComponent, onBeforeMount, ref } from 'vue'
   import { Store, useStore } from 'vuex'
   import { Recipe } from './create-meal/types/CreateMeal.types'
 
@@ -44,7 +43,7 @@
       const store: Store<any> = useStore()
 
       const getMeals = async (): Promise<void> => {
-        await store.dispatch('getRecipes')
+        mealList.value = await store.dispatch('getRecipes')
       }
 
       const editMeal = (meal: Recipe): void => {
@@ -55,13 +54,6 @@
       const deleteMeal = (meal: Recipe): void => {
         store.dispatch('delRecipe', meal)
       }
-
-      watch(
-        () => store.state.recipe.recipes,
-        (recipes) => {
-          mealList.value = recipes
-        }
-      )
 
       onBeforeMount(getMeals)
 

@@ -31,19 +31,22 @@ export default {
         context.commit('setRecipe', payload)
 
     },
-    async getRecipes(context: any): Promise<void> {
+    async getRecipes(context: any): Promise<Recipe[]> {
       const res: Recipe[] = await api('GET', '/meal/recipes');
       context.commit('setRecipe', res)
+
+      return res;
     },
     async editRecipe(context: any, payload: Recipe): Promise<void> {
-      const res: Recipe = await api('PUT', `/meal/recipes/${payload._id}`, payload);
-
-      if (res) context.commit('editRecipe', payload)
+      console.log('not implemented');
+      // await api('PUT', `/meal/recipes/${payload.key}`, payload);
+      // context.commit('editRecipe', payload)
     },
     async delRecipe(context: any, payload: Recipe): Promise<void> {
-      const res = await api('DEL', `/meal/recipes/${payload._id}`);
+      console.log('not implemented');
+      // const res = await api('DEL', `/meal/recipes/${payload._id}`);
 
-      if (res) context.commit('removeSelectedRecipe', context.state.recipes.indexOf(payload))
+      // if (res) context.commit('removeSelectedRecipe', context.state.recipes.indexOf(payload))
     }
   },
   modules: {},
