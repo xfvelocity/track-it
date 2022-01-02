@@ -6,13 +6,7 @@
       <div class="d-flex align-center mb-2">
         <p>Ingredients</p>
         <v-spacer></v-spacer>
-        <v-btn
-          class="ingredient-add"
-          color="transparent"
-          @click="addIngredient"
-        >
-          <span class="material-icons"> add </span>
-        </v-btn>
+        <v-btn icon="mdi-plus" color="transparent" @click="addIngredient" />
       </div>
 
       <div
@@ -27,12 +21,11 @@
           single-line
         ></v-text-field>
         <v-btn
-          class="ingredient-delete"
           color="transparent"
+          text-color="red"
+          icon="mdi-close"
           @click="deleteIngredient(i)"
-        >
-          <span class="material-icons"> close </span>
-        </v-btn>
+        />
       </div>
     </div>
     <div>

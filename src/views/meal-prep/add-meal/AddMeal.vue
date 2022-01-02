@@ -16,15 +16,26 @@
         <!-- <div>
           <img class="w-100" :src="meal.img" alt="" />
         </div> -->
-        <v-card-title>{{ meal.name }}</v-card-title>
-        <v-card-actions>
-          <v-btn color="blue" style="width: 48%" @click="editMeal(meal)">
-            <span class="material-icons"> edit </span>
-          </v-btn>
-          <v-btn color="red" style="width: 48%" @click="deleteMeal(meal)">
-            <span class="material-icons"> delete </span>
-          </v-btn>
-        </v-card-actions>
+        <div class="d-flex align-center">
+          <v-card-title>{{ meal.name }}</v-card-title>
+          <v-spacer></v-spacer>
+          <v-icon @click="toggleOptions">mdi-dots-vertical</v-icon>
+        </div>
+        <!-- <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            icon="mdi-pencil"
+            size="x-small"
+            color="blue"
+            @click="editMeal(meal)"
+          />
+          <v-btn
+            icon="mdi-delete"
+            size="x-small"
+            color="red"
+            @click="deleteMeal(meal)"
+          />
+        </v-card-actions> -->
       </v-card>
     </div>
   </div>
@@ -39,6 +50,7 @@
   export default defineComponent({
     name: 'AddMeal',
     setup(props, context) {
+      const isOptionsShowing = ref<boolean>(false)
       const mealList = ref<Recipe[]>([])
       const store: Store<any> = useStore()
 
@@ -55,9 +67,13 @@
         store.dispatch('delRecipe', meal)
       }
 
+      const toggleOptions = () => {}
+
       onBeforeMount(getMeals)
 
       return {
+        toggleOptions,
+        isOptionsShowing,
         editMeal,
         deleteMeal,
         mealList,

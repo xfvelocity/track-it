@@ -10,12 +10,13 @@
     >
       <img style="z-index: 10; position: relative" :src="img" alt="" />
       <div class="d-flex upload-image__edit">
-        <v-btn class="mr-2" color="blue" icon="" @click.stop="editImage">
-          <span class="material-icons"> edit </span>
-        </v-btn>
-        <v-btn color="red" icon="" @click.stop="deleteImage">
-          <span class="material-icons"> delete </span>
-        </v-btn>
+        <v-btn
+          class="mr-2"
+          color="blue"
+          icon="mdi-pencil"
+          @click.stop="editImage"
+        />
+        <v-btn color="red" icon="mdi-delete" @click.stop="deleteImage" />
       </div>
     </div>
 
