@@ -1,12 +1,16 @@
 <template>
-  <div class="create-meal">
+  <div class="create-recipe">
     <v-text-field v-model="meal.name" label="Name" />
     <!-- <UploadImage :img="meal.img" @img-upload="setImage" /> -->
     <div class="my-8">
-      <div class="d-flex align-center mb-6">
+      <div class="d-flex align-center mb-2">
         <p>Ingredients</p>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="addIngredient">
+        <v-btn
+          class="ingredient-add"
+          color="transparent"
+          @click="addIngredient"
+        >
           <span class="material-icons"> add </span>
         </v-btn>
       </div>
@@ -17,12 +21,16 @@
         :key="i"
       >
         <v-text-field
-          class="mr-4"
+          class="mr-1"
           v-model="meal.ingredients[i]"
           label="Ingredient"
           single-line
         ></v-text-field>
-        <v-btn color="red" @click="deleteIngredient(i)">
+        <v-btn
+          class="ingredient-delete"
+          color="transparent"
+          @click="deleteIngredient(i)"
+        >
           <span class="material-icons"> close </span>
         </v-btn>
       </div>
@@ -55,7 +63,6 @@
   import { onMounted, ref, defineComponent } from 'vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
   import { Recipe } from './types/CreateMeal.types'
-  import SnackbarVue from '@/components/snackbar/Snackbar.vue'
 
   export default defineComponent({
     name: 'CreateMeal',
@@ -141,3 +148,19 @@
     },
   })
 </script>
+
+<style lang="scss" scoped>
+  .create-recipe {
+    .ingredient-add.v-btn,
+    .ingredient-delete.v-btn {
+      padding: 0px !important;
+      min-width: 40px !important;
+    }
+
+    .ingredient-delete {
+      .material-icons {
+        color: rgb(255, 77, 77);
+      }
+    }
+  }
+</style>
