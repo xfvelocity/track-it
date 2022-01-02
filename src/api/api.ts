@@ -23,21 +23,9 @@ export default async function api(type: string, col: string, data?: any) {
     res = await deleteDoc(docRef).then(() => ({})).catch(err => err)
   }
 
-  // if (type === 'PUT') {
-  //   await update(ref(db), { path: data });
-  //   // res = await axios.put(`${import.meta.env.VITE_API_URL}${path}`, data).catch(err => err)
-  // }
-
-
+  if (type === 'PUT') { }
 
   store.commit('setLoading', false)
 
-  if (res) return res
-  else
-    store.commit('setSnackbar', {
-      color: 'red',
-      text: `An error occured, please try again.`,
-      isVisible: true
-    })
-
+  return res;
 }

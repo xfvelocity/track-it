@@ -40,6 +40,7 @@
           type="number"
           :label="nutrientKey"
           inputmode="decimal"
+          @focus="$event.target.select()"
         ></v-text-field>
       </div>
     </div>
@@ -54,6 +55,7 @@
   import { onMounted, ref, defineComponent } from 'vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
   import { Recipe } from './types/CreateMeal.types'
+  import SnackbarVue from '@/components/snackbar/Snackbar.vue'
 
   export default defineComponent({
     name: 'CreateMeal',
@@ -92,10 +94,35 @@
         meal.value.ingredients.push('')
       }
 
-      const addMeal = (): void => {
-        if (store.state.recipe.editingMeal)
-          store.dispatch('editRecipe', meal.value)
-        else store.dispatch('addRecipe', meal.value)
+      const addMeal = async (): Promise<void> => {
+        let res: boolean = false
+
+        if (store.state.recipe.editingMeal) {
+          res = await store.dispatch('editRecipe', meal.value)
+        } else {
+          res = await store.dispatch('addRecipe', meal.value)
+        }
+
+        if (res) {
+          store.commit('setSnackbar', {
+            color: 'green',
+            text: `${meal.value.name} was added`,
+            isVisible: true,
+          })
+
+          meal.value = {
+            name: '',
+            img: '',
+            ingredients: [''],
+            instructions: [],
+            nutrients: {
+              calories: 0,
+              protein: 0,
+              carbs: 0,
+              fat: 0,
+            },
+          }
+        }
       }
 
       return {

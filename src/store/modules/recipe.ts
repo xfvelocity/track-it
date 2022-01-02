@@ -24,11 +24,21 @@ export default {
     }
   },
   actions: {
-    async addRecipe(context: any, payload: Recipe): Promise<void> {
+    async addRecipe(context: any, payload: Recipe): Promise<boolean> {
       const res = await api('POST', 'recipes', payload)
 
-      if (res)
+      if (res) {
         context.commit('setRecipe', payload)
+        return true
+      }
+
+      context.commit('setSnackbar', {
+        color: 'red',
+        text: `An error occured adding recipe, please try again.`,
+        isVisible: true
+      })
+      return false;
+
 
     },
     async getRecipes(context: any): Promise<Recipe[]> {
