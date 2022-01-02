@@ -11,16 +11,16 @@ export default async function api(type: string, col: string, data?: any) {
   if (type === 'GET') {
     res = await getDocs(colref).then(snapshot => snapshot.docs.map(doc =>
       ({ ...doc.data(), id: doc.id })
-    )).catch(err => err)
+    )).catch(err => ({ error: err }))
   }
 
   if (type === 'POST') {
-    res = await addDoc(colref, data).then(() => ({})).catch(err => err)
+    res = await addDoc(colref, data).then(() => ({})).catch(err => ({ error: err }))
   }
 
   if (type === 'DEL') {
     const docRef = doc(db, col, data)
-    res = await deleteDoc(docRef).then(() => ({})).catch(err => err)
+    res = await deleteDoc(docRef).then(() => ({})).catch(err => ({ error: err }))
   }
 
   if (type === 'PUT') { }

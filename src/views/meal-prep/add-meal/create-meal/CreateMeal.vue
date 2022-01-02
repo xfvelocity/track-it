@@ -95,32 +95,38 @@
       }
 
       const addMeal = async (): Promise<void> => {
-        let res: boolean = false
-
         if (store.state.recipe.editingMeal) {
-          res = await store.dispatch('editRecipe', meal.value)
+          const res = await store.dispatch('editRecipe', meal.value)
+
+          if (res) {
+            store.commit('setSnackbar', {
+              color: 'green',
+              text: `${meal.value.name} was updated`,
+              isVisible: true,
+            })
+          }
         } else {
-          res = await store.dispatch('addRecipe', meal.value)
-        }
+          const res = await store.dispatch('addRecipe', meal.value)
 
-        if (res) {
-          store.commit('setSnackbar', {
-            color: 'green',
-            text: `${meal.value.name} was added`,
-            isVisible: true,
-          })
+          if (res) {
+            store.commit('setSnackbar', {
+              color: 'green',
+              text: `${meal.value.name} was added`,
+              isVisible: true,
+            })
 
-          meal.value = {
-            name: '',
-            img: '',
-            ingredients: [''],
-            instructions: [],
-            nutrients: {
-              calories: 0,
-              protein: 0,
-              carbs: 0,
-              fat: 0,
-            },
+            meal.value = {
+              name: '',
+              img: '',
+              ingredients: [''],
+              instructions: [],
+              nutrients: {
+                calories: 0,
+                protein: 0,
+                carbs: 0,
+                fat: 0,
+              },
+            }
           }
         }
       }

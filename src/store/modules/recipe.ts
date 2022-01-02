@@ -25,36 +25,56 @@ export default {
   },
   actions: {
     async addRecipe(context: any, payload: Recipe): Promise<boolean> {
-      const res = await api('POST', 'recipes', payload)
+      const res: any = await api('POST', 'recipes', payload)
 
-      if (res) {
-        context.commit('setRecipe', payload)
-        return true
+      if (!res || res.error) {
+        context.commit('setSnackbar', {
+          color: 'red',
+          text: `An error occured adding recipe, please try again.`,
+          isVisible: true
+        })
+        return false;
       }
 
-      context.commit('setSnackbar', {
-        color: 'red',
-        text: `An error occured adding recipe, please try again.`,
-        isVisible: true
-      })
-      return false;
-
-
+      context.commit('setRecipe', payload)
+      return true
     },
-    async getRecipes(context: any): Promise<Recipe[]> {
-      const res: Recipe[] = await api('GET', 'recipes');
-      context.commit('setRecipe', res)
+    async getRecipes(context: any): Promise<Recipe[] | boolean> {
+      const res: any = await api('GET', 'recipes');
 
+      if (!res || res.error) {
+        context.commit('setSnackbar', {
+          color: 'red',
+          text: `An error occured getting recipes, please try again.`,
+          isVisible: true
+        })
+
+        return false;
+      }
+
+      context.commit('setRecipe', res)
       return res;
     },
     async editRecipe(context: any, payload: Recipe): Promise<void> {
       console.log('not implemented');
-      // await api('PUT', `/meal/recipes/${payload.key}`, payload);
+      // await api('PUT', "recipes", payload);
       // context.commit('editRecipe', payload)
     },
-    async delRecipe(context: any, payload: Recipe): Promise<void> {
-      const res = await api('DEL', "recipes", payload.id);
-      if (res) context.commit('removeSelectedRecipe', context.state.recipes.indexOf(payload))
+    async delRecipe(context: any, payload: Recipe): Promise<boolean> {
+      const res: any = await api('DEL', "recipes", payload.id);
+
+      if (!res || res.error) {
+        context.commit('setSnackbar', {
+          color: 'red',
+          text: `An error occured deleting recipe, please try again.`,
+          isVisible: true
+        })
+
+        return false;
+      }
+
+      context.commit('removeSelectedRecipe', context.state.recipes.indexOf(payload))
+      return true;
     }
   },
   modules: {},
