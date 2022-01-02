@@ -13,9 +13,9 @@
         v-for="(meal, i) in mealList"
         :key="i"
       >
-        <div>
+        <!-- <div>
           <img class="w-100" :src="meal.img" alt="" />
-        </div>
+        </div> -->
         <v-card-title>{{ meal.name }}</v-card-title>
         <v-card-actions>
           <v-btn color="blue" style="width: 48%" @click="editMeal(meal)">

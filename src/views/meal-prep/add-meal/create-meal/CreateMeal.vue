@@ -1,7 +1,7 @@
 <template>
   <div class="create-meal">
     <v-text-field v-model="meal.name" label="Name" />
-    <UploadImage :img="meal.img" @img-upload="setImage" />
+    <!-- <UploadImage :img="meal.img" @img-upload="setImage" /> -->
     <div class="my-8">
       <div class="d-flex align-center mb-6">
         <p>Ingredients</p>

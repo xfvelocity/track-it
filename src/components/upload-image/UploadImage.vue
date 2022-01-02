@@ -5,15 +5,10 @@
   >
     <div
       v-show="img && !editingImage"
-      class="w-100 h-100"
+      class="upload-image__img w-100 h-100"
       style="position: relative"
     >
-      <img
-        class="w-100 h-100"
-        style="z-index: 10; position: relative"
-        :src="img"
-        alt=""
-      />
+      <img style="z-index: 10; position: relative" :src="img" alt="" />
       <div class="d-flex upload-image__edit">
         <v-btn class="mr-2" color="blue" icon="" @click.stop="editImage">
           <span class="material-icons"> edit </span>
@@ -96,9 +91,18 @@
   .upload-image {
     cursor: pointer;
     height: 410px;
-    max-height: 410px;
-    max-width: 410px;
     background: #ffffff0d;
+
+    &__img {
+      text-align: center;
+      height: 410px;
+      width: 410px;
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
 
     &__edit {
       position: absolute;
