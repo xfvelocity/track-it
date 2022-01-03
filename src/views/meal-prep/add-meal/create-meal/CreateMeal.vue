@@ -6,7 +6,9 @@
       <div class="d-flex align-center mb-2">
         <p>Ingredients</p>
         <v-spacer></v-spacer>
-        <v-btn icon="mdi-plus" color="transparent" @click="addIngredient" />
+        <v-icon class="px-6 py-4 cursor-pointer" @click="addIngredient">
+          mdi-plus
+        </v-icon>
       </div>
 
       <div
@@ -20,12 +22,14 @@
           label="Ingredient"
           single-line
         ></v-text-field>
-        <v-btn
-          color="transparent"
-          text-color="red"
-          icon="mdi-close"
+
+        <v-icon
+          color="red"
+          class="px-6 py-4 cursor-pointer"
           @click="deleteIngredient(i)"
-        />
+        >
+          mdi-close
+        </v-icon>
       </div>
     </div>
     <div>

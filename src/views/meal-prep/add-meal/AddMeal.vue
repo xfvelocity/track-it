@@ -2,9 +2,9 @@
   <div class="add-meal">
     <div class="d-flex justify-space-between">
       <h2>Meals</h2>
-      <v-btn color="blue" @click="$router.push('/meal-prep/create-meal')"
-        >Create Meal</v-btn
-      >
+      <v-btn color="primary" @click="$router.push('/meal-prep/create-meal')">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
     </div>
     <div class="d-flex flex-wrap justify-space-between">
       <v-card
