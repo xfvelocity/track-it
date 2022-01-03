@@ -19,23 +19,24 @@
         <div class="d-flex align-center">
           <v-card-title>{{ meal.name }}</v-card-title>
           <v-spacer></v-spacer>
-          <v-icon @click="toggleOptions">mdi-dots-vertical</v-icon>
+          <v-icon class="mr-2" @click="isOptionsShowing = !isOptionsShowing"
+            >mdi-chevron-down</v-icon
+          >
         </div>
-        <!-- <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            icon="mdi-pencil"
-            size="x-small"
-            color="blue"
-            @click="editMeal(meal)"
-          />
-          <v-btn
-            icon="mdi-delete"
-            size="x-small"
-            color="red"
-            @click="deleteMeal(meal)"
-          />
-        </v-card-actions> -->
+        <v-expand-transition>
+          <div v-show="isOptionsShowing">
+            <v-divider></v-divider>
+            <div class="d-flex py-2 mr-2">
+              <v-spacer></v-spacer>
+              <v-btn class="mr-2" color="blue" @click="editMeal(meal)">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn color="red" @click="deleteMeal(meal)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </div>
+          </div>
+        </v-expand-transition>
       </v-card>
     </div>
   </div>
@@ -67,12 +68,9 @@
         store.dispatch('delRecipe', meal)
       }
 
-      const toggleOptions = () => {}
-
       onBeforeMount(getMeals)
 
       return {
-        toggleOptions,
         isOptionsShowing,
         editMeal,
         deleteMeal,
