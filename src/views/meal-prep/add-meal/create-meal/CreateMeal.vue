@@ -19,10 +19,11 @@
         </v-icon>
       </div>
 
-      <div
+      <SwipeActions
         class="d-flex align-center mb-4"
         v-for="(ingredient, i) in meal.ingredients"
         :key="i"
+        @delete="deleteIngredient(i)"
       >
         <v-text-field
           style="width: 15%"
@@ -43,15 +44,15 @@
           v-model="ingredient.name"
           label="Ingredient"
         ></v-text-field>
+      </SwipeActions>
 
-        <v-icon
+      <!-- <v-icon
           color="red"
           class="pl-4 pr-6 py-4 cursor-pointer"
           @click="deleteIngredient(i)"
         >
           mdi-close
-        </v-icon>
-      </div>
+        </v-icon> -->
     </div>
     <div v-if="currentScreen === 3">
       <p class="mb-6">Nutrients</p>
@@ -92,6 +93,7 @@
 <script lang="ts">
   import { Store, useStore } from 'vuex'
   import { onMounted, ref, defineComponent, computed } from 'vue'
+  import SwipeActions from '../../../../components/swipe-actions/SwipeActions.vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
   import { Meal } from './types/CreateMeal.types'
   import router from '@/router'
@@ -100,6 +102,7 @@
     name: 'CreateMeal',
     components: {
       UploadImage,
+      SwipeActions,
     },
     setup() {
       const currentScreen = ref<number>(1)
