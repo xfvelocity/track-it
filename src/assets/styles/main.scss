@@ -15,10 +15,21 @@
   width: 100%;
 }
 
+w-50 {
+  width: 50%;
+}
+
 .h-100 {
   width: 100%;
 }
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.text-ellipsis {
+  display: inline-block !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }

@@ -49,6 +49,7 @@
       const photo = ref<HTMLElement | null>(null)
 
       const initCamera = (): void => {
+        return
         if (photo.value) photo.value.click()
         editingImage.value = false
       }

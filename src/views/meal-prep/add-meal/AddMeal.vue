@@ -1,6 +1,6 @@
 <template>
   <div class="add-meal">
-    <div class="d-flex justify-space-between">
+    <div class="d-flex justify-space-between mb-4">
       <h2>Meals</h2>
       <v-btn color="primary" @click="$router.push('/meal-prep/create-meal')">
         <v-icon>mdi-plus</v-icon>
@@ -8,35 +8,28 @@
     </div>
     <div class="d-flex flex-wrap justify-space-between">
       <v-card
-        style="width: 48%"
-        class="add-meal__card my-4"
+        class="add-meal__card my-2 w-100"
         v-for="(meal, i) in mealList"
         :key="i"
       >
-        <!-- <div>
-          <img class="w-100" :src="meal.img" alt="" />
-        </div> -->
         <div class="d-flex align-center">
-          <v-card-title>{{ meal.name }}</v-card-title>
+          <v-card-title class="text-ellipsis">{{ meal.name }}</v-card-title>
           <v-spacer></v-spacer>
-          <v-icon class="mr-2" @click="isOptionsShowing = !isOptionsShowing"
-            >mdi-chevron-down</v-icon
-          >
-        </div>
-        <v-expand-transition>
-          <div v-show="isOptionsShowing">
-            <v-divider></v-divider>
-            <div class="d-flex py-2 mr-2">
-              <v-spacer></v-spacer>
-              <v-btn class="mr-2" color="blue" @click="editMeal(meal)">
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-btn color="red" @click="deleteMeal(meal)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </div>
+          <div class="d-flex py-2 mr-2">
+            <v-spacer></v-spacer>
+            <v-btn
+              class="mr-2"
+              size="small"
+              color="blue"
+              @click="editMeal(meal)"
+            >
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+            <v-btn color="red" size="small" @click="deleteMeal(meal)">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
           </div>
-        </v-expand-transition>
+        </div>
       </v-card>
     </div>
   </div>
@@ -50,7 +43,7 @@
 
   export default defineComponent({
     name: 'AddMeal',
-    setup(props, context) {
+    setup() {
       const isOptionsShowing = ref<boolean>(false)
       const mealList = ref<Recipe[]>([])
       const store: Store<any> = useStore()

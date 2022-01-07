@@ -1,8 +1,16 @@
 <template>
   <div class="create-recipe">
-    <v-text-field v-model="meal.name" label="Name" />
-    <!-- <UploadImage :img="meal.img" @img-upload="setImage" /> -->
-    <div class="my-8">
+    <v-progress-linear class="mb-6" color="green" v-model="progress" />
+    <div v-if="currentScreen === 1">
+      <v-text-field
+        v-model="meal.name"
+        label="Name"
+        :rules="[(v) => !v || 'Name is required']"
+        required
+      />
+      <UploadImage class="my-6" :img="''" @img-upload="setImage" />
+    </div>
+    <div v-if="currentScreen === 2" class="my-8">
       <div class="d-flex align-center mb-2">
         <p>Ingredients</p>
         <v-spacer></v-spacer>
@@ -32,7 +40,7 @@
         </v-icon>
       </div>
     </div>
-    <div>
+    <div v-if="currentScreen === 3">
       <p class="mb-6">Nutrients</p>
       <div
         class="d-flex align-center mb-4"
@@ -49,24 +57,39 @@
         ></v-text-field>
       </div>
     </div>
-    <v-btn class="w-100 my-6 pa-6" color="primary" @click="addMeal"
-      >Create Meal</v-btn
-    >
+    <div class="d-flex mt-16">
+      <v-btn
+        v-if="currentScreen > 1"
+        class="w-50 ma-2"
+        color="primary"
+        @click="backScreen"
+      >
+        <v-icon class="mr-1">mdi-arrow-left</v-icon>
+        Back
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn class="ma-2" color="primary" @click="nextScreen">
+        {{ currentScreen === 3 ? 'Add Meal' : 'Next' }}
+        <v-icon v-if="currentScreen !== 3" class="ml-1">mdi-arrow-right</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
   import { Store, useStore } from 'vuex'
-  import { onMounted, ref, defineComponent } from 'vue'
+  import { onMounted, ref, defineComponent, computed } from 'vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
   import { Recipe } from './types/CreateMeal.types'
+  import router from '@/router'
 
   export default defineComponent({
     name: 'CreateMeal',
     components: {
       UploadImage,
     },
-    setup(props, context) {
+    setup() {
+      const currentScreen = ref<number>(1)
       const store: Store<any> = useStore()
       const meal = ref<Recipe>({
         name: '',
@@ -81,7 +104,9 @@
         },
       })
 
-      onMounted(() => {
+      const progress = computed<number>(() => currentScreen.value * 33)
+
+      onMounted((): void => {
         const editingMeal: Recipe | null = store.state.recipe.editingMeal
         if (editingMeal) meal.value = editingMeal
       })
@@ -90,17 +115,19 @@
         meal.value.img = img
       }
 
-      const deleteIngredient = (ingredientIndex: number): void => {
-        meal.value.ingredients.splice(ingredientIndex, 1)
-      }
-
       const addIngredient = (): void => {
         meal.value.ingredients.push('')
       }
 
+      const deleteIngredient = (ingredientIndex: number): void => {
+        meal.value.ingredients.splice(ingredientIndex, 1)
+      }
+
       const addMeal = async (): Promise<void> => {
+        let res: any
+
         if (store.state.recipe.editingMeal) {
-          const res = await store.dispatch('editRecipe', meal.value)
+          res = await store.dispatch('editRecipe', meal.value)
 
           if (res) {
             store.commit('setSnackbar', {
@@ -110,7 +137,7 @@
             })
           }
         } else {
-          const res = await store.dispatch('addRecipe', meal.value)
+          res = await store.dispatch('addRecipe', meal.value)
 
           if (res) {
             store.commit('setSnackbar', {
@@ -133,14 +160,28 @@
             }
           }
         }
+
+        if (res) router.push('/meal-prep/add-meal')
+      }
+
+      const backScreen = (): void => {
+        --currentScreen.value
+      }
+
+      const nextScreen = (): void => {
+        if (currentScreen.value === 3) addMeal()
+        else ++currentScreen.value
       }
 
       return {
         meal,
-        setImage,
+        progress,
+        currentScreen,
         deleteIngredient,
         addIngredient,
-        addMeal,
+        backScreen,
+        nextScreen,
+        setImage,
       }
     },
   })
