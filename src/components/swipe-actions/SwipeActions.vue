@@ -2,6 +2,8 @@
   <div
     class="swipe-actions"
     draggable="true"
+    @touchstart="dragStart"
+    @touchend="dragEnd"
     @dragstart="dragStart"
     @dragend="dragEnd"
   >
