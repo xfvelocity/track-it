@@ -1,4 +1,4 @@
-import { Recipe } from '@/views/meal-prep/add-meal/create-meal/types/CreateMeal.types'
+import { Meal } from '@/views/meal-prep/add-meal/create-meal/types/CreateMeal.types'
 import api from '../../api/api'
 import { RecipeState } from '../types/recipe.types'
 
@@ -8,14 +8,14 @@ export default {
     editingMeal: null
   },
   mutations: {
-    setRecipe(state: RecipeState, payload: Recipe | Recipe[]): void {
+    setRecipe(state: RecipeState, payload: Meal | Meal[]): void {
       if (Array.isArray(payload) && payload.length > 0) state.recipes = payload
-      else state.recipes.push(payload as Recipe)
+      else state.recipes.push(payload as Meal)
     },
-    setEditingMeal(state: RecipeState, payload: Recipe): void {
+    setEditingMeal(state: RecipeState, payload: Meal): void {
       state.editingMeal = payload;
     },
-    editRecipe(state: RecipeState, payload: Recipe): void {
+    editRecipe(state: RecipeState, payload: Meal): void {
       // const matchingRecipe: number = state.recipes.findIndex(x => x._id === payload._id)
       // if (matchingRecipe) state.recipes[matchingRecipe] = payload
     },
@@ -24,7 +24,7 @@ export default {
     }
   },
   actions: {
-    async addRecipe(context: any, payload: Recipe): Promise<boolean> {
+    async addRecipe(context: any, payload: Meal): Promise<boolean> {
       const res: any = await api('POST', 'recipes', payload)
 
       if (!res || res.error) {
@@ -39,7 +39,7 @@ export default {
       context.commit('setRecipe', payload)
       return true
     },
-    async getRecipes(context: any): Promise<Recipe[] | boolean> {
+    async getRecipes(context: any): Promise<Meal[] | boolean> {
       const res: any = await api('GET', 'recipes');
 
       if (!res || res.error) {
@@ -55,7 +55,7 @@ export default {
       context.commit('setRecipe', res)
       return res;
     },
-    async editRecipe(context: any, payload: Recipe): Promise<boolean> {
+    async editRecipe(context: any, payload: Meal): Promise<boolean> {
       const res: any = await api('PUT', "recipes", payload);
 
       if (!res || res.error) {
@@ -71,7 +71,7 @@ export default {
       context.commit('editRecipe', payload)
       return true;
     },
-    async delRecipe(context: any, payload: Recipe): Promise<boolean> {
+    async delRecipe(context: any, payload: Meal): Promise<boolean> {
       const res: any = await api('DEL', "recipes", payload.id);
 
       if (!res || res.error) {

@@ -25,15 +25,28 @@
         :key="i"
       >
         <v-text-field
+          style="width: 15%"
+          label="Amount"
+          class="mr-2"
+          v-model.number="ingredient.amount"
+          @focus="$event.target.select()"
+        ></v-text-field>
+        <v-text-field
+          style="width: 10%"
+          class="mr-2"
+          label="Unit"
+          v-model="ingredient.unit"
+        ></v-text-field>
+        <v-text-field
+          style="width: 50%"
           class="mr-1"
-          v-model="meal.ingredients[i]"
+          v-model="ingredient.name"
           label="Ingredient"
-          single-line
         ></v-text-field>
 
         <v-icon
           color="red"
-          class="px-6 py-4 cursor-pointer"
+          class="pl-4 pr-6 py-4 cursor-pointer"
           @click="deleteIngredient(i)"
         >
           mdi-close
@@ -80,7 +93,7 @@
   import { Store, useStore } from 'vuex'
   import { onMounted, ref, defineComponent, computed } from 'vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
-  import { Recipe } from './types/CreateMeal.types'
+  import { Meal } from './types/CreateMeal.types'
   import router from '@/router'
 
   export default defineComponent({
@@ -91,10 +104,16 @@
     setup() {
       const currentScreen = ref<number>(1)
       const store: Store<any> = useStore()
-      const meal = ref<Recipe>({
+      const meal = ref<Meal>({
         name: '',
         img: '',
-        ingredients: [''],
+        ingredients: [
+          {
+            amount: 0,
+            unit: 'g',
+            name: '',
+          },
+        ],
         instructions: [],
         nutrients: {
           calories: 0,
@@ -107,7 +126,7 @@
       const progress = computed<number>(() => currentScreen.value * 33)
 
       onMounted((): void => {
-        const editingMeal: Recipe | null = store.state.recipe.editingMeal
+        const editingMeal: Meal | null = store.state.recipe.editingMeal
         if (editingMeal) meal.value = editingMeal
       })
 
@@ -116,7 +135,11 @@
       }
 
       const addIngredient = (): void => {
-        meal.value.ingredients.push('')
+        meal.value.ingredients.push({
+          amount: 0,
+          unit: 'g',
+          name: '',
+        })
       }
 
       const deleteIngredient = (ingredientIndex: number): void => {
@@ -149,7 +172,13 @@
             meal.value = {
               name: '',
               img: '',
-              ingredients: [''],
+              ingredients: [
+                {
+                  amount: 0,
+                  unit: 'g',
+                  name: '',
+                },
+              ],
               instructions: [],
               nutrients: {
                 calories: 0,

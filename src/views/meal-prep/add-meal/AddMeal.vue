@@ -39,25 +39,25 @@
   import router from '@/router'
   import { defineComponent, onBeforeMount, ref } from 'vue'
   import { Store, useStore } from 'vuex'
-  import { Recipe } from './create-meal/types/CreateMeal.types'
+  import { Meal } from './create-meal/types/CreateMeal.types'
 
   export default defineComponent({
     name: 'AddMeal',
     setup() {
       const isOptionsShowing = ref<boolean>(false)
-      const mealList = ref<Recipe[]>([])
+      const mealList = ref<Meal[]>([])
       const store: Store<any> = useStore()
 
       const getMeals = async (): Promise<void> => {
         mealList.value = await store.dispatch('getRecipes')
       }
 
-      const editMeal = (meal: Recipe): void => {
+      const editMeal = (meal: Meal): void => {
         store.commit('setEditingMeal', meal)
         router.push('/meal-prep/create-meal')
       }
 
-      const deleteMeal = (meal: Recipe): void => {
+      const deleteMeal = (meal: Meal): void => {
         store.dispatch('delRecipe', meal)
       }
 
