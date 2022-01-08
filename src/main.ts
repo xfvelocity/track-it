@@ -5,6 +5,7 @@ import router from './router'
 import store from './store/index'
 import { registerSW } from 'virtual:pwa-register'
 import { initializeApp } from "firebase/app";
+import Vue3TouchEvents from "vue3-touch-events";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCkXVGOHGuqrYX4gmuTONArkIFwkIU-6dE",
@@ -20,4 +21,4 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 registerSW()
 
-createApp(App).use(store).use(router).use(vuetify).mount('#app')
+createApp(App).use(store).use(router).use(Vue3TouchEvents).use(vuetify).mount('#app')

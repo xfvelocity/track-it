@@ -3,8 +3,9 @@
     <div
       class="swipe-actions__item"
       ref="itemRef"
+      v-touch:swipe="mouseDown"
+      v-touch:release="mouseUp"
       @mousedown="mouseDown"
-      @mouseup="mouseUp"
     >
       <slot />
     </div>
@@ -28,6 +29,15 @@
 
       const mouseUp = (): void => {
         window.removeEventListener('mousemove', move, true)
+
+        if (!itemRef.value) return
+
+        if (parseInt(itemRef.value.style.left.split('px')[0]) < -100) {
+          context.emit('delete')
+        }
+
+        itemRef.value.style.left = '0'
+        itemRef.value.style.top = '0'
       }
 
       const move = (e: MouseEvent): void => {

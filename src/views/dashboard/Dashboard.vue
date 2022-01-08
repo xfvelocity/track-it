@@ -5,7 +5,7 @@
         >Add Meal</v-btn
       >
 
-      <SwipeActions>
+      <SwipeActions @delete="del">
         <v-card color="background" class="pa-4">
           <v-card-title>Test swipe</v-card-title>
         </v-card>
@@ -22,6 +22,15 @@
     name: 'MealPrep',
     components: {
       SwipeActions,
+    },
+    setup() {
+      const del = () => {
+        console.log('delete')
+      }
+
+      return {
+        del,
+      }
     },
   })
 </script>
