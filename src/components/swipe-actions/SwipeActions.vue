@@ -3,14 +3,8 @@
     <div
       class="swipe-actions__item"
       ref="itemRef"
-      v-touch:drag="mouseDown"
-      v-touch:release="mouseUp"
       @mouseup="mouseUp"
       @mousedown="mouseDown"
-      @touchstart="mouseDown"
-      @touchend="mouseDown"
-      @dragstart="mouseDown"
-      @dragend="mouseDown"
     >
       <slot />
       {{ testValue }}
@@ -30,6 +24,12 @@
 
       const mouseDown = (e: MouseEvent): void => {
         testValue.value = 'mouse down triggered'
+        // if (
+        //   (e as TouchEvent).targetTouches &&
+        //   (e as TouchEvent).targetTouches.length > 0
+        // ) {
+
+        // }
         if (!itemRef.value) return
         offsetX = e.clientX - itemRef.value.offsetLeft
         window.addEventListener('mousemove', move, true)
