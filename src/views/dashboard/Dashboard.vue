@@ -4,12 +4,12 @@
       <v-btn color="primary" @click="$router.push('/meal-prep/add-meal')"
         >Add Meal</v-btn
       >
-      <!-- 
+
       <SwipeActions>
         <v-card color="background" class="pa-4">
           <v-card-title>Test swipe</v-card-title>
         </v-card>
-      </SwipeActions> -->
+      </SwipeActions>
     </div>
   </div>
 </template>

@@ -1,45 +1,57 @@
 <template>
-  <div
-    class="swipe-actions"
-    draggable="true"
-    @touchstart="dragStart"
-    @touchend="dragEnd"
-    @dragstart="dragStart"
-    @dragend="dragEnd"
-  >
-    <slot />
+  <div class="swipe-actions">
+    <div
+      class="swipe-actions__item"
+      ref="itemRef"
+      @mousedown="mouseDown"
+      @mouseup="mouseUp"
+    >
+      <slot />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue'
+  import { defineComponent, ref } from 'vue'
 
   export default defineComponent({
     name: 'SwipeActions',
     setup(props, context) {
-      let startCoordinates: any
+      let offsetX: number = 0
+      const itemRef = ref<HTMLElement | null>(null)
 
-      const dragStart = (e: any): void => {
-        startCoordinates = {
-          x: e.clientX,
-          y: e.clientY,
+      const mouseDown = (e: MouseEvent): void => {
+        if (!itemRef.value) return
+        offsetX = e.clientX - itemRef.value.offsetLeft
+        window.addEventListener('mousemove', move, true)
+      }
+
+      const mouseUp = (): void => {
+        window.removeEventListener('mousemove', move, true)
+      }
+
+      const move = (e: MouseEvent): void => {
+        if (itemRef.value) {
+          itemRef.value.style.left = `${e.clientX - offsetX}px`
         }
       }
 
-      const dragEnd = (e: any) => {
-        const xDiff = Math.abs(
-          Math.abs(startCoordinates.x) - Math.abs(e.clientX)
-        )
-
-        if (xDiff >= 100) context.emit('delete')
-      }
-
       return {
-        dragStart,
-        dragEnd,
+        itemRef,
+        mouseDown,
+        mouseUp,
       }
     },
   })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .swipe-actions {
+    position: relative;
+
+    &__item {
+      position: absolute;
+      width: 100%;
+    }
+  }
+</style>
