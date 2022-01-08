@@ -3,7 +3,7 @@
     <div
       class="swipe-actions__item"
       ref="itemRef"
-      v-touch:swipe="mouseDown"
+      v-touch:drag="mouseDown"
       v-touch:release="mouseUp"
       @mousedown="mouseDown"
     >
