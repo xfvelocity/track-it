@@ -1,8 +1,11 @@
 <template>
   <div class="meal-prep">
-    <v-btn color="primary" @click="$router.push('/meal-prep/add-meal')"
-      >Add Meal</v-btn
-    >
+    <div class="d-flex">
+      <v-spacer></v-spacer>
+      <v-btn color="primary" @click="$router.push('/meal-prep/add-meal')">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 

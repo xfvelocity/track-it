@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
-    <v-btn color="primary" @click="$router.push('/meal-prep/add-meal')">
-      Add Meal
+    <v-btn class="w-100" color="primary" @click="$router.push('/meal-prep')">
+      Meal Prep
     </v-btn>
   </div>
 </template>

@@ -1,10 +1,10 @@
 import store from '@/store';
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from "firebase/firestore"
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc, Firestore, CollectionReference, DocumentData, DocumentReference } from "firebase/firestore"
 
 export default async function api(type: string, col: string, data?: any) {
-  let res;
-  const db = getFirestore();
-  const colref = collection(db, col)
+  let res: any;
+  const db: Firestore = getFirestore();
+  const colref: CollectionReference<DocumentData> = collection(db, col)
 
   store.commit('setLoading', true)
 
@@ -20,13 +20,13 @@ export default async function api(type: string, col: string, data?: any) {
       break;
 
     case "DEL":
-      const delRef = doc(db, col, data)
+      const delRef: DocumentReference<DocumentData> = doc(db, col, data)
       res = await deleteDoc(delRef).then(() => ({})).catch(err => ({ error: err }))
       break;
 
     case "PUT":
-      const updRef = doc(db, col, data.id)
-      res = await updateDoc(updRef, data).then(res => ({})).catch(err => ({ error: err }))
+      const updRef: DocumentReference<DocumentData> = doc(db, col, data.id)
+      res = await updateDoc(updRef, data).then(() => ({})).catch(err => ({ error: err }))
       break;
   }
 
