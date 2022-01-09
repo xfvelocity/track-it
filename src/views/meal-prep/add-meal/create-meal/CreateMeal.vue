@@ -18,8 +18,7 @@
           mdi-plus
         </v-icon>
       </div>
-
-      <SwipeActions
+      <div
         class="d-flex align-center mb-4"
         v-for="(ingredient, i) in meal.ingredients"
         :key="i"
@@ -44,15 +43,14 @@
           v-model="ingredient.name"
           label="Ingredient"
         ></v-text-field>
-      </SwipeActions>
-
-      <!-- <v-icon
+        <v-icon
           color="red"
           class="pl-4 pr-6 py-4 cursor-pointer"
           @click="deleteIngredient(i)"
         >
           mdi-close
-        </v-icon> -->
+        </v-icon>
+      </div>
     </div>
     <div v-if="currentScreen === 3">
       <p class="mb-6">Nutrients</p>

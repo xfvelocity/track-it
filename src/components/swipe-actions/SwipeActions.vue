@@ -7,7 +7,6 @@
       @mousedown="mouseDown"
     >
       <slot />
-      {{ testValue }}
     </div>
   </div>
 </template>
@@ -20,16 +19,8 @@
     setup(props, context) {
       let offsetX: number = 0
       const itemRef = ref<HTMLElement | null>(null)
-      const testValue = ref('')
 
       const mouseDown = (e: MouseEvent): void => {
-        testValue.value = 'mouse down triggered'
-        // if (
-        //   (e as TouchEvent).targetTouches &&
-        //   (e as TouchEvent).targetTouches.length > 0
-        // ) {
-
-        // }
         if (!itemRef.value) return
         offsetX = e.clientX - itemRef.value.offsetLeft
         window.addEventListener('mousemove', move, true)
@@ -55,7 +46,6 @@
       }
 
       return {
-        testValue,
         itemRef,
         mouseDown,
         mouseUp,
