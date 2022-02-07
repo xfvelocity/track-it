@@ -8,12 +8,12 @@
   },
   "dependencies": {
     "@mdi/font": "^6.5.95",
+    "@vuetify/nightly": "^3.0.0-next-20220204.0",
     "axios": "^0.24.0",
     "firebase": "^9.6.1",
     "roboto-fontface": "*",
     "vue": "^3.2.6",
     "vue-router": "^4.0.11",
-    "vuetify": "^3.0.0-alpha.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

@@ -1,12 +1,12 @@
 <template>
   <nav class="nav d-flex justify-space-between mt-4 mb-6">
     <span class="nav__title d-flex align-center" @click="$router.push('/')">
-      <img src="/src/assets/logo.svg" />
+      <img src="/img/icons/logo.svg" />
       <h1>Track IT</h1>
     </span>
     <span class="nav__user d-flex align-center">
       <p v-if="showUsername">{{ loggedInUser.name }}</p>
-      <img src="/src/assets/avatar.png" alt="" />
+      <img :src="loggedInUser.avatar" alt="" />
     </span>
   </nav>
 </template>
@@ -21,7 +21,7 @@
       const showUsername = ref<boolean>(false)
       const loggedInUser = ref<LoggedInUser>({
         name: 'Alex Long',
-        avatar: '',
+        avatar: '/img/icons/avatar.png',
       })
 
       return {
