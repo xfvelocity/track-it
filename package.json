@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@mdi/font": "^6.5.95",
-    "@vuetify/nightly": "^3.0.0-next-20220204.0",
+    "@vuetify/nightly": "^3.0.0-next-20220308.0",
     "axios": "^0.24.0",
     "firebase": "^9.6.1",
     "roboto-fontface": "*",
