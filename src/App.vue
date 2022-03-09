@@ -12,6 +12,7 @@
     <v-main>
       <router-view />
     </v-main>
+    <BottomNav />
     <Snackbar />
   </v-app>
 </template>
@@ -21,12 +22,14 @@
   import { Store, useStore } from 'vuex'
   import Nav from './components/nav/Nav.vue'
   import Snackbar from './components/snackbar/Snackbar.vue'
+  import BottomNav from './components/bottom-nav/BottomNav.vue'
 
   export default defineComponent({
     name: 'App',
     components: {
       Nav,
       Snackbar,
+      BottomNav,
     },
     setup() {
       const store: Store<any> = useStore()
