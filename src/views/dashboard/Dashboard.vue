@@ -1,8 +1,6 @@
 <template>
   <div class="dashboard">
-    <v-btn class="w-100" color="primary" @click="$router.push('/meal-prep')">
-      Meal Prep
-    </v-btn>
+    <h1>Dashboard</h1>
   </div>
 </template>
 
@@ -13,5 +11,3 @@
     name: 'MealPrep',
   })
 </script>
-
-<style lang="scss" scoped></style>

@@ -9,22 +9,22 @@
         class="workout"
         v-for="(exercise, exerciseIndex) in workout.exercises"
       >
-        <Select
+        <v-select
           class="workout-type"
           v-model="exercise.workoutTypeID"
           :label="exerciseIndex === 0 ? 'Workout' : ''"
           :options="workoutsList"
-          selectStyle="width: 100%"
+          style="width: 100%"
         />
         <div class="sets">
           <div v-for="(set, setIndex) in exercise.sets">
-            <Input
+            <v-text-field
               v-model="set.weight"
               inputType="number"
               class="wgt"
               :label="setIndex === 0 ? 'KG' : ''"
             />
-            <Input
+            <v-text-field
               v-model="set.reps"
               inputType="number"
               class="rps"
@@ -32,28 +32,40 @@
             />
           </div>
         </div>
-        <div class="add-set">
-          <Button class="w-100" text="Add Set" @click="addSet(exercise)" />
-        </div>
+
+        <v-btn class="w-100 mt-2" color="primary" @click="addSet(exercise)">
+          Add Set
+        </v-btn>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-  import { ref } from 'vue'
+<script lang="ts">
+  import { defineComponent, ref } from 'vue'
   import { emptyWorkoutData, mockWorkouts } from './data/mockWorkoutData'
   import { AddWorkoutData, AddWorkoutWorkout } from './types/addWorkout.types'
 
-  const workout = ref<AddWorkoutData>(emptyWorkoutData)
-  const workoutsList: any[] = mockWorkouts
+  export default defineComponent({
+    name: 'AddWorkout',
+    setup() {
+      const workout = ref<AddWorkoutData>(emptyWorkoutData)
+      const workoutsList: any[] = mockWorkouts
 
-  const addSet = (wrkOut: AddWorkoutWorkout) => {
-    wrkOut.sets.push({
-      weight: '',
-      reps: '',
-    })
-  }
+      const addSet = (wrkOut: AddWorkoutWorkout) => {
+        wrkOut.sets.push({
+          weight: '',
+          reps: '',
+        })
+      }
+
+      return {
+        workout,
+        workoutsList,
+        addSet,
+      }
+    },
+  })
 </script>
 
 <style lang="scss" scoped>
@@ -98,11 +110,6 @@
           .wgt {
             margin-right: 10px;
           }
-        }
-
-        .add-set {
-          width: 100%;
-          margin-top: 5px;
         }
       }
     }

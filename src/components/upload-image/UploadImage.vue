@@ -97,7 +97,7 @@
 
     &__img {
       text-align: center;
-      height: 410px;
+      height: 350px;
       width: 410px;
 
       img {
