@@ -1,23 +1,15 @@
 <template>
   <div class="bottom-nav">
     <div
-      class="bottom-nav__option bottom-nav__option-back"
-      @click="router.go(-1)"
-    >
-      <v-icon size="large">mdi-chevron-left</v-icon>
-    </div>
-    <v-spacer />
-    <div
       class="bottom-nav__option"
       :class="`bottom-nav__option-${option.text.toLowerCase()}`"
       v-for="(option, i) in options"
       :key="i"
-      @click="optionClicked(option.link)"
+      @click="router.push(option.link)"
     >
       <v-icon>{{ option.icon }}</v-icon>
       {{ option.text }}
     </div>
-    <v-spacer />
   </div>
 </template>
 
@@ -31,11 +23,6 @@
     setup() {
       const router: Router = useRouter()
       const options: BottomNavOption[] = [
-        // {
-        //   text: 'Back',
-        //   link: 'back',
-        //   icon: 'mdi-chevron-left',
-        // },
         {
           text: 'Home',
           link: '/',
@@ -53,17 +40,8 @@
         },
       ]
 
-      const optionClicked = (link: string): void => {
-        if (link === 'back') {
-          router.go(-1)
-        } else {
-          router.push(link)
-        }
-      }
-
       return {
         options,
-        optionClicked,
         router,
       }
     },
@@ -80,6 +58,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 10px;
 
     &__option {
       display: flex;
@@ -91,10 +70,6 @@
 
       &:hover {
         opacity: 0.8;
-      }
-
-      &-back {
-        padding-right: 0;
       }
     }
   }
