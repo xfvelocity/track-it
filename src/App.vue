@@ -84,20 +84,24 @@
     width: 100%;
   }
 
-  .v-application {
-    max-width: 450px !important;
-    margin: 0 auto;
+  #app {
+    height: 100vh;
 
-    &__wrap {
-      margin: 0;
-      height: 100%;
-      padding: 10px 20px;
-      background: rgb(9, 0, 66) !important;
-      background: linear-gradient(
-        144deg,
-        rgba(9, 0, 66, 1) 0%,
-        rgba(11, 0, 78, 1) 100%
-      ) !important;
+    .v-application {
+      max-width: 450px !important;
+      margin: 0 auto;
+
+      &__wrap {
+        margin: 0;
+        height: 100%;
+        padding: 10px 20px;
+        background: rgb(9, 0, 66) !important;
+        background: linear-gradient(
+          144deg,
+          rgba(9, 0, 66, 1) 0%,
+          rgba(11, 0, 78, 1) 100%
+        ) !important;
+      }
     }
   }
 </style>
