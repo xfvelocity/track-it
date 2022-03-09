@@ -92,12 +92,12 @@
 <style lang="scss" scoped>
   .upload-image {
     cursor: pointer;
-    height: 410px;
+    height: 300px;
     background: #ffffff0d;
 
     &__img {
       text-align: center;
-      height: 350px;
+      height: 410px;
       width: 410px;
 
       img {

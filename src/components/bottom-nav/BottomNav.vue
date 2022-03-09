@@ -50,7 +50,7 @@
 
 <style lang="scss" scoped>
   .bottom-nav {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     background: #0a090e;

@@ -6,6 +6,7 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
+
     <div class="d-flex flex-wrap justify-space-between">
       <v-card
         class="add-meal__card my-2 w-100"
@@ -14,19 +15,19 @@
       >
         <div class="d-flex align-center">
           <v-card-title class="text-ellipsis">{{ meal.name }}</v-card-title>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <div class="d-flex py-2 mr-2">
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn
               class="mr-2"
               size="small"
-              color="blue"
+              color="primary"
               @click="editMeal(meal)"
             >
-              <v-icon>mdi-pencil</v-icon>
+              <v-icon color="white">mdi-pencil</v-icon>
             </v-btn>
             <v-btn color="red" size="small" @click="deleteMeal(meal)">
-              <v-icon>mdi-delete</v-icon>
+              <v-icon color="white">mdi-delete</v-icon>
             </v-btn>
           </div>
         </div>

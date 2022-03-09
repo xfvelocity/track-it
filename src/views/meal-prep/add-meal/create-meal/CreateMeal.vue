@@ -2,12 +2,7 @@
   <div class="create-recipe">
     <v-progress-linear class="mb-6" color="green" v-model="progress" />
     <div v-if="currentScreen === 1">
-      <v-text-field
-        v-model="meal.name"
-        label="Name"
-        :rules="[(v) => !v || 'Name is required']"
-        required
-      />
+      <v-text-field v-model="meal.name" label="Name" />
       <UploadImage class="my-6" :img="''" @img-upload="setImage" />
     </div>
     <div v-if="currentScreen === 2" class="my-8">
@@ -29,7 +24,7 @@
           label="Amount"
           class="mr-2"
           v-model.number="ingredient.amount"
-          @focus="$event.target.select()"
+          @focus="onFocus($event.target)"
         ></v-text-field>
         <v-text-field
           style="width: 10%"
@@ -65,20 +60,16 @@
           type="number"
           :label="nutrientKey"
           inputmode="decimal"
-          @focus="$event.target.select()"
+          @focus="onFocus($event.target)"
         ></v-text-field>
       </div>
     </div>
     <div class="d-flex mt-16">
-      <v-btn
-        v-if="currentScreen > 1"
-        class="w-50 ma-2"
-        color="primary"
-        @click="backScreen"
-      >
+      <v-btn class="w-50 ma-2" color="primary" @click="backScreen">
         <v-icon class="mr-1">mdi-arrow-left</v-icon>
-        Back
+        {{ currentScreen > 1 ? 'Back' : 'Return' }}
       </v-btn>
+
       <v-spacer></v-spacer>
       <v-btn class="ma-2" color="primary" @click="nextScreen">
         {{ currentScreen === 3 ? 'Add Meal' : 'Next' }}
@@ -133,6 +124,10 @@
 
       const setImage = (img: string): void => {
         meal.value.img = img
+      }
+
+      const onFocus = (event: any): void => {
+        event.target.select()
       }
 
       const addIngredient = (): void => {
@@ -195,7 +190,8 @@
       }
 
       const backScreen = (): void => {
-        --currentScreen.value
+        if (currentScreen.value === 1) router.push('/meal-prep/add-meal')
+        else --currentScreen.value
       }
 
       const nextScreen = (): void => {
@@ -212,6 +208,7 @@
         backScreen,
         nextScreen,
         setImage,
+        onFocus,
       }
     },
   })
