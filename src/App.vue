@@ -57,6 +57,7 @@
 
 <style lang="scss">
   @import 'assets/styles/main.scss';
+
   * {
     box-sizing: border-box;
   }

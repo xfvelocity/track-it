@@ -5,72 +5,66 @@
       <v-text-field v-model="meal.name" label="Name" />
       <UploadImage class="my-6" :img="''" @img-upload="setImage" />
     </div>
-    <div v-if="currentScreen === 2" class="my-8">
-      <div class="d-flex align-center mb-2">
+    <div v-if="currentScreen === 2" class="mt-4 mb-8">
+      <div class="d-flex align-center mb-4">
         <p>Ingredients</p>
-        <v-spacer></v-spacer>
-        <v-icon class="px-6 py-4 cursor-pointer" @click="addIngredient">
+        <v-spacer />
+        <v-icon class="py-4 cursor-pointer" @click="addIngredient">
           mdi-plus
         </v-icon>
       </div>
-      <div
-        class="d-flex align-center mb-4"
-        v-for="(ingredient, i) in meal.ingredients"
-        :key="i"
-        @delete="deleteIngredient(i)"
-      >
-        <v-text-field
-          style="width: 15%"
-          label="Amount"
-          class="mr-2"
-          v-model.number="ingredient.amount"
-          @focus="onFocus($event.target)"
-        ></v-text-field>
-        <v-text-field
-          style="width: 10%"
-          class="mr-2"
-          label="Unit"
-          v-model="ingredient.unit"
-        ></v-text-field>
-        <v-text-field
-          style="width: 50%"
-          class="mr-1"
-          v-model="ingredient.name"
-          label="Ingredient"
-        ></v-text-field>
-        <v-icon
-          color="red"
-          class="pl-4 pr-6 py-4 cursor-pointer"
+
+      <div class="mb-4" v-for="(ingredient, i) in meal.ingredients" :key="i">
+        <div class="d-flex mb-2">
+          <v-text-field
+            class="mr-2"
+            label="Amount"
+            v-model.number="ingredient.amount"
+            @focus="onFocus($event.target)"
+          />
+          <v-select
+            style="width: 20%"
+            label="Unit"
+            background-color="blue"
+            v-model="ingredient.unit"
+            :items="unitOptions"
+          />
+        </div>
+        <v-text-field v-model="ingredient.name" label="Ingredient" />
+        <v-btn
+          color="error"
+          text-color="white"
+          size="small"
+          class="mt-2 cursor-pointer w-100"
           @click="deleteIngredient(i)"
         >
-          mdi-close
-        </v-icon>
+          Remove
+        </v-btn>
       </div>
     </div>
     <div v-if="currentScreen === 3">
       <p class="mb-6">Nutrients</p>
       <div
         class="d-flex align-center mb-4"
-        v-for="(nutrientKey, i) in Object.keys(meal.nutrients)"
+        v-for="(key, i) in nutrientKeys"
         :key="i"
       >
         <v-text-field
           class="text-capitalize"
-          v-model.number="meal.nutrients[nutrientKey]"
+          v-model.number="meal.nutrients[key]"
           type="number"
-          :label="nutrientKey"
+          :label="key"
           inputmode="decimal"
           @focus="onFocus($event.target)"
-        ></v-text-field>
+        />
       </div>
     </div>
     <div class="d-flex mt-16">
       <v-btn class="w-50 ma-2" color="primary" @click="backScreen">
-        <v-icon class="mr-1">mdi-arrow-left</v-icon>
+        <v-icon v-if="currentScreen > 1" class="mr-1">mdi-arrow-left</v-icon>
         {{ currentScreen > 1 ? 'Back' : 'Return' }}
       </v-btn>
-
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn class="ma-2" color="primary" @click="nextScreen">
         {{ currentScreen === 3 ? 'Add Meal' : 'Next' }}
         <v-icon v-if="currentScreen !== 3" class="ml-1">mdi-arrow-right</v-icon>
@@ -84,7 +78,7 @@
   import { onMounted, ref, defineComponent, computed } from 'vue'
   import SwipeActions from '../../../../components/swipe-actions/SwipeActions.vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
-  import { Meal } from './types/CreateMeal.types'
+  import { Meal, MealNutrients } from './types/CreateMeal.types'
   import router from '@/router'
 
   export default defineComponent({
@@ -96,6 +90,7 @@
     setup() {
       const currentScreen = ref<number>(1)
       const store: Store<any> = useStore()
+
       const meal = ref<Meal>({
         name: '',
         img: '',
@@ -114,6 +109,11 @@
           fat: 0,
         },
       })
+
+      const nutrientKeys: (keyof MealNutrients)[] = Object.keys(
+        meal.value.nutrients
+      ) as (keyof MealNutrients)[]
+      const unitOptions: string[] = ['g', 'ml']
 
       const progress = computed<number>(() => currentScreen.value * 33)
 
@@ -138,8 +138,16 @@
         })
       }
 
-      const deleteIngredient = (ingredientIndex: number): void => {
-        meal.value.ingredients.splice(ingredientIndex, 1)
+      const deleteIngredient = (index: number): void => {
+        if ((meal.value.ingredients.length = 1)) {
+          meal.value.ingredients[index] = {
+            amount: 0,
+            unit: 'g',
+            name: '',
+          }
+        } else {
+          meal.value.ingredients.splice(index, 1)
+        }
       }
 
       const addMeal = async (): Promise<void> => {
@@ -203,6 +211,8 @@
         meal,
         progress,
         currentScreen,
+        nutrientKeys,
+        unitOptions,
         deleteIngredient,
         addIngredient,
         backScreen,
