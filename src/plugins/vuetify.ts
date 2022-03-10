@@ -13,7 +13,7 @@ export default createVuetify({
         colors: {
           primary: '#008EF5',
           background: '#35495e',
-          error: '#d63031',
+          error: '#a32223',
           info: '#0984e3',
           secondary: '#fdcb6e',
           success: '#00a62c',
@@ -28,7 +28,7 @@ export default createVuetify({
         colors: {
           primary: '#008EF5',
           background: '#35495e',
-          error: '#d63031',
+          error: '#a32223',
           info: '#0984e3',
           secondary: '#fdcb6e',
           success: '#00a62c',
