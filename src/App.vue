@@ -76,7 +76,12 @@
   }
 
   body {
-    background: rgb(119, 119, 119) !important;
+    background: rgb(9, 0, 66) !important;
+    background: linear-gradient(
+      144deg,
+      rgba(9, 0, 66, 1) 0%,
+      rgba(11, 0, 78, 1) 100%
+    ) !important;
   }
 
   .loading-bar {

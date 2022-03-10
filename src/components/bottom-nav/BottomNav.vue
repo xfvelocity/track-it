@@ -53,7 +53,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    background: #0a090e;
+    background: #060124;
     width: 100%;
     display: flex;
     justify-content: center;
