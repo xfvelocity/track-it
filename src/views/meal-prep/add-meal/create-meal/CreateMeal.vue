@@ -81,11 +81,18 @@
 
 <script lang="ts">
   import { Store, useStore } from 'vuex'
-  import { onMounted, ref, defineComponent, computed } from 'vue'
+  import {
+    onMounted,
+    ref,
+    defineComponent,
+    computed,
+    watch,
+    watchEffect,
+  } from 'vue'
   import SwipeActions from '../../../../components/swipe-actions/SwipeActions.vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
   import { Meal, MealNutrients } from './types/CreateMeal.types'
-  import router from '@/router'
+  import { useRoute, useRouter } from 'vue-router'
 
   export default defineComponent({
     name: 'CreateMeal',
@@ -94,6 +101,8 @@
       SwipeActions,
     },
     setup() {
+      const router = useRouter()
+      const route = useRoute()
       const currentScreen = ref<number>(1)
       const store: Store<any> = useStore()
 
@@ -212,6 +221,16 @@
         if (currentScreen.value === 3) addMeal()
         else ++currentScreen.value
       }
+
+      onMounted(() => {
+        if (route.query.currentScreen) {
+          currentScreen.value = parseInt(route.query.currentScreen as string)
+        }
+      })
+
+      watchEffect(() => {
+        router.push({ query: { currentScreen: currentScreen.value } })
+      })
 
       return {
         meal,
