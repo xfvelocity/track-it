@@ -1,7 +1,7 @@
 <template>
   <v-card
     v-if="snackbar && snackbar.isVisible"
-    class="snackbar py-2 text-center font-weight-medium"
+    class="snackbar py-2 text-center text-white font-weight-medium"
     :color="snackbar.color"
   >
     {{ snackbar.text }}

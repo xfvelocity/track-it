@@ -37,7 +37,7 @@
         <v-btn
           color="error"
           text-color="white"
-          size="small"
+          size="x-small"
           class="mt-2 cursor-pointer w-100"
           @click="deleteIngredient(i)"
         >
@@ -67,13 +67,19 @@
   </div>
 
   <div class="d-flex mt-8">
-    <v-btn class="w-50 ma-2" color="primary" @click="backScreen">
+    <v-btn class="w-50 ma-2" color="primary" size="small" @click="backScreen">
       <v-icon v-if="currentScreen > 1" class="mr-1">mdi-arrow-left</v-icon>
       {{ currentScreen > 1 ? 'Back' : 'Return' }}
     </v-btn>
     <v-spacer />
-    <v-btn class="ma-2" color="success" text-color="white" @click="nextScreen">
-      {{ currentScreen === 3 ? 'Add Meal' : 'Next' }}
+    <v-btn
+      class="ma-2"
+      color="success"
+      text-color="white"
+      size="small"
+      @click="nextScreen"
+    >
+      {{ currentScreen === 3 ? (isEditing ? 'Update' : 'Add Meal') : 'Next' }}
       <v-icon v-if="currentScreen !== 3" class="ml-1">mdi-arrow-right</v-icon>
     </v-btn>
   </div>
@@ -82,10 +88,12 @@
 <script lang="ts">
   import { Store, useStore } from 'vuex'
   import { onMounted, ref, defineComponent, computed, watch } from 'vue'
-  import SwipeActions from '../../../../components/swipe-actions/SwipeActions.vue'
-  import UploadImage from '@/components/upload-image/UploadImage.vue'
   import { Meal, MealNutrients } from './types/CreateMeal.types'
-  import { useRoute, useRouter } from 'vue-router'
+  import { Router, useRouter } from 'vue-router'
+
+  import SwipeActions from '@/components/swipe-actions/SwipeActions.vue'
+  import UploadImage from '@/components/upload-image/UploadImage.vue'
+  import { EditingMeal } from '@/store/types/recipe.types'
 
   export default defineComponent({
     name: 'CreateMeal',
@@ -94,10 +102,12 @@
       SwipeActions,
     },
     setup() {
-      const router = useRouter()
-      const route = useRoute()
-      const currentScreen = ref<number>(1)
+      const router: Router = useRouter()
       const store: Store<any> = useStore()
+      const unitOptions: string[] = ['g', 'ml']
+
+      const currentScreen = ref<number>(1)
+      const isEditing = ref<boolean>(false)
 
       const meal = ref<Meal>({
         name: '',
@@ -121,15 +131,21 @@
       const nutrientKeys: (keyof MealNutrients)[] = Object.keys(
         meal.value.nutrients
       ) as (keyof MealNutrients)[]
-      const unitOptions: string[] = ['g', 'ml']
 
       const progress = computed<number>(() => currentScreen.value * 33)
 
       onMounted((): void => {
-        const editingMeal: Meal | null = store.state.recipe.editingMeal.meal
-        currentScreen.value = store.state.recipe.editingMeal.currentScreen
+        if (store.state.recipe.editingMeal) {
+          const editingMealStore: EditingMeal = store.state.recipe.editingMeal
+          const editingMeal: Meal | null = editingMealStore.meal
 
-        if (editingMeal) meal.value = editingMeal
+          isEditing.value = editingMealStore.editing
+          currentScreen.value = editingMealStore.currentScreen
+
+          if (editingMeal) {
+            meal.value = editingMeal
+          }
+        }
       })
 
       const setImage = (img: string): void => {
@@ -229,6 +245,7 @@
 
       return {
         meal,
+        isEditing,
         progress,
         currentScreen,
         nutrientKeys,

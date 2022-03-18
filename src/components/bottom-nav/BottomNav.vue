@@ -33,11 +33,11 @@
           link: '/meal-prep',
           icon: 'mdi-food',
         },
-        {
-          text: 'Workout',
-          link: '/add-workout',
-          icon: 'mdi-dumbbell',
-        },
+        // {
+        //   text: 'Workout',
+        //   link: '/add-workout',
+        //   icon: 'mdi-dumbbell',
+        // },
       ]
 
       return {
