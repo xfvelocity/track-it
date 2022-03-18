@@ -2,7 +2,11 @@
   <div class="add-meal">
     <div class="d-flex justify-space-between mb-4">
       <h2>Meals</h2>
-      <v-btn color="primary" @click="$router.push('/meal-prep/create-meal')">
+      <v-btn
+        color="primary"
+        size="small"
+        @click="$router.push('/meal-prep/create-meal')"
+      >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
@@ -33,6 +37,8 @@
         </div>
       </v-card>
     </div>
+
+    <Modal v-model="deleteConfirmModal" />
   </div>
 </template>
 
@@ -40,14 +46,19 @@
   import router from '@/router'
   import { defineComponent, onBeforeMount, ref } from 'vue'
   import { Store, useStore } from 'vuex'
-  import { Meal } from './create-meal/types/CreateMeal.types'
+  import { Meal } from '../create-meal/types/CreateMeal.types'
+
+  import Modal from '@/components/modal/Modal.vue'
 
   export default defineComponent({
     name: 'AddMeal',
+    components: { Modal },
     setup() {
-      const isOptionsShowing = ref<boolean>(false)
-      const mealList = ref<Meal[]>([])
       const store: Store<any> = useStore()
+
+      const isOptionsShowing = ref<boolean>(false)
+      const deleteConfirmModal = ref<boolean>(false)
+      const mealList = ref<Meal[]>([])
 
       const getMeals = async (): Promise<void> => {
         mealList.value = await store.dispatch('getRecipes')
@@ -70,6 +81,7 @@
 
       return {
         isOptionsShowing,
+        deleteConfirmModal,
         editMeal,
         deleteMeal,
         mealList,

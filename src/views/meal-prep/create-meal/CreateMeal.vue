@@ -94,6 +94,7 @@
   import SwipeActions from '@/components/swipe-actions/SwipeActions.vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
   import { EditingMeal } from '@/store/types/recipe.types'
+  import { mealBase } from './data/createMeal.data'
 
   export default defineComponent({
     name: 'CreateMeal',
@@ -108,25 +109,7 @@
 
       const currentScreen = ref<number>(1)
       const isEditing = ref<boolean>(false)
-
-      const meal = ref<Meal>({
-        name: '',
-        img: '',
-        ingredients: [
-          {
-            amount: null,
-            unit: 'g',
-            name: '',
-          },
-        ],
-        instructions: [],
-        nutrients: {
-          calories: null,
-          protein: null,
-          carbs: null,
-          fat: null,
-        },
-      })
+      const meal = ref<Meal>(mealBase)
 
       const nutrientKeys: (keyof MealNutrients)[] = Object.keys(
         meal.value.nutrients
@@ -177,57 +160,29 @@
       }
 
       const addMeal = async (): Promise<void> => {
-        let res: any
-
-        if (store.state.recipe.editingMeal) {
-          res = await store.dispatch('editRecipe', meal.value)
-
-          if (res) {
-            store.commit('setSnackbar', {
-              color: 'green',
-              text: `${meal.value.name} was updated`,
-              isVisible: true,
-            })
-          }
-        } else {
-          res = await store.dispatch('addRecipe', meal.value)
-
-          if (res) {
-            store.commit('setSnackbar', {
-              color: 'green',
-              text: `${meal.value.name} was added`,
-              isVisible: true,
-            })
-
-            meal.value = {
-              name: '',
-              img: '',
-              ingredients: [
-                {
-                  amount: 0,
-                  unit: 'g',
-                  name: '',
-                },
-              ],
-              instructions: [],
-              nutrients: {
-                calories: 0,
-                protein: 0,
-                carbs: 0,
-                fat: 0,
-              },
-            }
-          }
-        }
+        const res = await store.dispatch(
+          isEditing.value ? 'editRecipe' : 'addRecipe',
+          meal.value
+        )
 
         if (res) {
+          store.commit('setSnackbar', {
+            color: 'green',
+            text: `${meal.value.name} was ${
+              isEditing.value ? 'updated' : 'added'
+            }`,
+            isVisible: true,
+          })
+
+          meal.value = mealBase
+
           store.commit('setEditingMeal', null)
-          router.push('/meal-prep/add-meal')
+          router.push('/meal-prep')
         }
       }
 
       const backScreen = (): void => {
-        if (currentScreen.value === 1) router.push('/meal-prep/add-meal')
+        if (currentScreen.value === 1) router.push('/meal-prep')
         else --currentScreen.value
       }
 
