@@ -4,6 +4,7 @@ import AddWorkout from '../views/add-workout/AddWorkout.vue'
 import MealPrep from '../views/meal-prep/MealPrep.vue'
 import CreateMeal from '../views/meal-prep/add-meal/create-meal/CreateMeal.vue'
 import AddMeal from '../views/meal-prep/add-meal/AddMeal.vue'
+import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -40,6 +41,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   document.title = `Track IT - ${String(to.name)}`
+  store.commit('setLoading', null)
+
   next()
 })
 

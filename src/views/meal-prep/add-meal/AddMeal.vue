@@ -54,7 +54,11 @@
       }
 
       const editMeal = (meal: Meal): void => {
-        store.commit('setEditingMeal', meal)
+        store.commit('setEditingMeal', {
+          meal,
+          currentScreen: 1,
+          editing: true,
+        })
         router.push('/meal-prep/create-meal')
       }
 

@@ -81,14 +81,7 @@
 
 <script lang="ts">
   import { Store, useStore } from 'vuex'
-  import {
-    onMounted,
-    ref,
-    defineComponent,
-    computed,
-    watch,
-    watchEffect,
-  } from 'vue'
+  import { onMounted, ref, defineComponent, computed, watch } from 'vue'
   import SwipeActions from '../../../../components/swipe-actions/SwipeActions.vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
   import { Meal, MealNutrients } from './types/CreateMeal.types'
@@ -133,7 +126,9 @@
       const progress = computed<number>(() => currentScreen.value * 33)
 
       onMounted((): void => {
-        const editingMeal: Meal | null = store.state.recipe.editingMeal
+        const editingMeal: Meal | null = store.state.recipe.editingMeal.meal
+        currentScreen.value = store.state.recipe.editingMeal.currentScreen
+
         if (editingMeal) meal.value = editingMeal
       })
 
@@ -209,7 +204,10 @@
           }
         }
 
-        if (res) router.push('/meal-prep/add-meal')
+        if (res) {
+          store.commit('setEditingMeal', null)
+          router.push('/meal-prep/add-meal')
+        }
       }
 
       const backScreen = (): void => {
@@ -222,14 +220,11 @@
         else ++currentScreen.value
       }
 
-      onMounted(() => {
-        if (route.query.currentScreen) {
-          currentScreen.value = parseInt(route.query.currentScreen as string)
-        }
-      })
-
-      watchEffect(() => {
-        router.push({ query: { currentScreen: currentScreen.value } })
+      watch([meal.value, currentScreen], () => {
+        store.commit('setEditingMeal', {
+          currentScreen,
+          meal,
+        })
       })
 
       return {
