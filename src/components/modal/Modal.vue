@@ -1,12 +1,17 @@
 <template>
-  <v-dialog v-model="modelValue" @click:outside="closeModal">
-    <v-card class="pa-4">
+  <v-dialog v-model="modelValue" @click:outside="persistent ? closeModal : ''">
+    <v-card color="white" class="pa-4">
       <slot />
 
-      <div class="d-flex" v-if="actionButtons">
-        <v-btn>Close</v-btn>
+      <div class="d-flex mt-4" v-if="actionButtons">
         <v-spacer />
-        <v-btn>Submit</v-btn>
+        <v-btn size="small" color="red" variant="text" @click="closeModal">
+          {{ closeText }}
+        </v-btn>
+
+        <v-btn size="small" color="primary" variant="text" @click="confirm">
+          {{ confirmText }}
+        </v-btn>
       </div>
     </v-card>
   </v-dialog>
@@ -30,16 +35,28 @@
         type: Boolean,
         default: false,
       },
+      closeText: {
+        type: String,
+        default: 'Close',
+      },
+      confirmText: {
+        type: String,
+        default: 'Confirm',
+      },
     },
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'confirmed'],
     setup(props, context) {
       const closeModal = (): void => {
-        if (!props.persistent) {
-          context.emit('update:modelValue')
-        }
+        context.emit('update:modelValue')
+      }
+
+      const confirm = (): void => {
+        context.emit('confirmed')
+        closeModal()
       }
 
       return {
+        confirm,
         closeModal,
       }
     },

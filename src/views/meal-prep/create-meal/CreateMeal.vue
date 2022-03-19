@@ -136,7 +136,7 @@
       }
 
       const onFocus = (event: any): void => {
-        event.target.select()
+        event?.target?.select()
       }
 
       const addIngredient = (): void => {
