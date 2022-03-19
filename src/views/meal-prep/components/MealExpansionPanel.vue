@@ -99,16 +99,16 @@
       background: #2b2066;
     }
 
-    .v-expansion-panel {
+    :deep(.v-expansion-panel) {
       border-radius: 5px !important;
     }
 
-    .v-expansion-panel-title {
+    :deep(.v-expansion-panel-title) {
       padding: 0 20px !important;
       min-height: none;
     }
 
-    .v-expansion-panel-text__wrapper {
+    :deep(.v-expansion-panel-text__wrapper) {
       padding: 0 !important;
     }
   }
