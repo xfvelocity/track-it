@@ -1,19 +1,15 @@
 import { Meal } from '@/views/meal-prep/add-meal/create-meal/types/CreateMeal.types'
 import api from '../../api/api'
-import { EditingMeal, RecipeState } from '../types/recipe.types'
+import { RecipeState } from '../types/recipe.types'
 
 export default {
   state: {
     recipes: [],
-    editingMeal: null,
   },
   mutations: {
     setRecipe(state: RecipeState, payload: Meal | Meal[]): void {
       if (Array.isArray(payload) && payload.length > 0) state.recipes = payload
       else state.recipes.push(payload as Meal)
-    },
-    setEditingMeal(state: RecipeState, payload: EditingMeal): void {
-      state.editingMeal = payload
     },
     editRecipe(state: RecipeState, payload: Meal): void {
       // const matchingRecipe: number = state.recipes.findIndex(x => x._id === payload._id)
@@ -24,6 +20,27 @@ export default {
     },
   },
   actions: {
+    async addMeal(
+      context: any,
+      payload: { date: string; time: string; meal: Meal }
+    ): Promise<boolean> {
+      const res: any = await api('POST', 'meals', {
+        [payload.time]: { date: payload.date, ...payload.meal },
+      })
+
+      if (!res || res.error) {
+        context.commit('setSnackbar', {
+          color: 'red',
+          text: `An error occured adding meal, please try again.`,
+          isVisible: true,
+        })
+
+        return false
+      }
+
+      // context.commit('setRecipe', payload)
+      return true
+    },
     async addRecipe(context: any, payload: Meal): Promise<boolean> {
       const res: any = await api('POST', 'recipes', payload)
 

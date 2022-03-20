@@ -5,6 +5,7 @@
       v-for="(meal, i) in mealList"
       :key="i"
       :title="meal.name"
+      @click="addMeal(meal)"
     >
       <v-expansion-panel-text>
         <div class="px-5 pt-2">
@@ -56,7 +57,7 @@
 
 <script lang="ts">
   import { defineComponent, PropType, ref } from 'vue'
-  import { Meal } from '../create-meal/types/CreateMeal.types'
+  import { Meal } from '../add-meal/create-meal/types/CreateMeal.types'
   import Modal from '@/components/modal/Modal.vue'
 
   export default defineComponent({
@@ -74,17 +75,22 @@
         default: true,
       },
     },
-    emits: ['edit', 'delete'],
-    setup() {
+    emits: ['edit', 'delete', 'meal-added'],
+    setup(props, context) {
       const deleteConfirmModal = ref<boolean>(false)
       const selectedMeal = ref<Meal>()
 
       const toggleDeleteModal = (meal: Meal): void => {
-        deleteConfirmModal.value = true
         selectedMeal.value = meal
+        deleteConfirmModal.value = true
+      }
+
+      const addMeal = (meal: Meal): void => {
+        context.emit('meal-added', meal)
       }
 
       return {
+        addMeal,
         deleteConfirmModal,
         selectedMeal,
         toggleDeleteModal,

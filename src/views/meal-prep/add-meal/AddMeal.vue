@@ -5,7 +5,12 @@
         mdi-chevron-left
       </v-icon>
 
-      <CreateMeal v-if="createMeal" @return="createMeal = false" />
+      <CreateMeal
+        v-if="createMeal"
+        :editing="isEditing"
+        :editing-meal="selectedMeal"
+        @return="createMeal = false"
+      />
 
       <div class="pa-4" v-else>
         <div class="d-flex justify-space-between align-center mb-4">
@@ -19,6 +24,7 @@
         <div class="d-flex flex-wrap justify-space-between">
           <MealExpansionPanel
             :meal-list="mealList"
+            @meal-added="($event) => $emit('meal-added', $event)"
             @edit="editMeal"
             @delete="deleteMeal"
           />
@@ -29,7 +35,6 @@
 </template>
 
 <script lang="ts">
-  import router from '@/router'
   import { defineComponent, onBeforeMount, ref } from 'vue'
   import { Store, useStore } from 'vuex'
   import { Meal } from './create-meal/types/CreateMeal.types'
@@ -46,24 +51,22 @@
         default: false,
       },
     },
-    emits: ['close'],
+    emits: ['close', 'meal-added'],
     setup(props, context) {
       const store: Store<any> = useStore()
 
       const mealList = ref<Meal[]>([])
       const createMeal = ref<boolean>(false)
+      const selectedMeal = ref<Meal>()
+      const isEditing = ref<boolean>(false)
 
       const getMeals = async (): Promise<void> => {
         mealList.value = await store.dispatch('getRecipes')
       }
 
       const editMeal = (meal: Meal): void => {
-        store.commit('setEditingMeal', {
-          meal,
-          currentScreen: 1,
-          editing: true,
-        })
-
+        selectedMeal.value = meal
+        isEditing.value = true
         createMeal.value = true
       }
 
@@ -83,6 +86,8 @@
 
       return {
         mealList,
+        selectedMeal,
+        isEditing,
         createMeal,
         backToggled,
         editMeal,
