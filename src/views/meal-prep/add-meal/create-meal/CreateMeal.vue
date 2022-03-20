@@ -1,5 +1,5 @@
 <template>
-  <div class="create-recipe">
+  <div class="create-recipe pa-4">
     <v-progress-linear class="mb-6" color="green" v-model="progress" />
 
     <div v-if="currentScreen === 1">
@@ -64,24 +64,24 @@
         />
       </div>
     </div>
-  </div>
 
-  <div class="d-flex mt-8">
-    <v-btn class="w-50 ma-2" color="primary" size="small" @click="backScreen">
-      <v-icon v-if="currentScreen > 1" class="mr-1">mdi-arrow-left</v-icon>
-      {{ currentScreen > 1 ? 'Back' : 'Return' }}
-    </v-btn>
-    <v-spacer />
-    <v-btn
-      class="ma-2"
-      color="success"
-      text-color="white"
-      size="small"
-      @click="nextScreen"
-    >
-      {{ currentScreen === 3 ? (isEditing ? 'Update' : 'Add Meal') : 'Next' }}
-      <v-icon v-if="currentScreen !== 3" class="ml-1">mdi-arrow-right</v-icon>
-    </v-btn>
+    <div class="d-flex mt-8">
+      <v-btn class="w-50 ma-2" color="primary" size="small" @click="backScreen">
+        <v-icon v-if="currentScreen > 1" class="mr-1">mdi-arrow-left</v-icon>
+        {{ currentScreen > 1 ? 'Back' : 'Return' }}
+      </v-btn>
+      <v-spacer />
+      <v-btn
+        class="ma-2"
+        color="success"
+        text-color="white"
+        size="small"
+        @click="nextScreen"
+      >
+        {{ currentScreen === 3 ? (isEditing ? 'Update' : 'Add Meal') : 'Next' }}
+        <v-icon v-if="currentScreen !== 3" class="ml-1">mdi-arrow-right</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -89,7 +89,6 @@
   import { Store, useStore } from 'vuex'
   import { onMounted, ref, defineComponent, computed, watch } from 'vue'
   import { Meal, MealNutrients } from './types/CreateMeal.types'
-  import { Router, useRouter } from 'vue-router'
 
   import SwipeActions from '@/components/swipe-actions/SwipeActions.vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
@@ -102,8 +101,8 @@
       UploadImage,
       SwipeActions,
     },
-    setup() {
-      const router: Router = useRouter()
+    emits: ['return'],
+    setup(props, context) {
       const store: Store<any> = useStore()
       const unitOptions: string[] = ['g', 'ml']
 
@@ -177,12 +176,12 @@
           meal.value = mealBase
 
           store.commit('setEditingMeal', null)
-          router.push('/meal-prep')
+          context.emit('return')
         }
       }
 
       const backScreen = (): void => {
-        if (currentScreen.value === 1) router.push('/meal-prep')
+        if (currentScreen.value === 1) context.emit('return')
         else --currentScreen.value
       }
 

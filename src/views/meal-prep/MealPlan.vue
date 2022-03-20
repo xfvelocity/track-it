@@ -1,13 +1,9 @@
 <template>
   <div>
     <div class="d-flex align-center">
-      <p class="my-0 text-body-2">23rd June 2021</p>
+      <p class="my-0 text-body-2">{{ date }}</p>
       <v-spacer />
-      <v-btn
-        variant="text"
-        size="small"
-        @click="$router.push('/meal-prep/add-meal')"
-      >
+      <v-btn variant="text" size="small" @click="isAddMealOpen = true">
         Add Meal
         <v-icon class="ml-1" color="white">mdi-plus</v-icon>
       </v-btn>
@@ -23,16 +19,19 @@
         <MealExpansionPanel :meal-list="mockPlan[plan]" :show-edit="false" />
       </div>
     </div>
+
+    <AddMeal v-model="isAddMealOpen" @close="isAddMealOpen = false" />
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue'
-  import MealExpansionPanel from '../components/MealExpansionPanel.vue'
+  import { defineComponent, onMounted, ref } from 'vue'
+  import MealExpansionPanel from './components/MealExpansionPanel.vue'
+  import AddMeal from './add-meal/AddMeal.vue'
 
   export default defineComponent({
     name: 'MealPlan',
-    components: { MealExpansionPanel },
+    components: { MealExpansionPanel, AddMeal },
     setup() {
       const mockPlan = {
         breakfast: [
@@ -48,7 +47,19 @@
         lunch: [],
         dinner: [],
       }
+
+      const date = ref<string>('')
+      const isAddMealOpen = ref<boolean>(false)
+
+      onMounted(() => {
+        const today = new Date()
+
+        date.value = `${today.getDate()}-${today.getMonth()}-${today.getFullYear()}`
+      })
+
       return {
+        isAddMealOpen,
+        date,
         mockPlan,
       }
     },
