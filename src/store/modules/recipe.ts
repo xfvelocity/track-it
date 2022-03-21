@@ -81,6 +81,33 @@ export default {
 
       return res[0]
     },
+    async delMeal(
+      context: any,
+      payload: {
+        meal: Meal
+        mealPlan: MealPlan
+        time: 'breakfast' | 'lunch' | 'dinner'
+      }
+    ): Promise<boolean> {
+      const matchingIndex: number = payload.mealPlan[payload.time].indexOf(
+        payload.meal
+      )
+      payload.mealPlan[payload.time].splice(matchingIndex, 1)
+
+      const res: any = await api('PUT', 'meals', payload.mealPlan)
+
+      if (!res || res.error) {
+        context.commit('setSnackbar', {
+          color: 'red',
+          text: `An error occured deleting meal, please try again.`,
+          isVisible: true,
+        })
+
+        return false
+      }
+
+      return true
+    },
     async addRecipe(context: any, payload: Meal): Promise<boolean> {
       const res: any = await api('POST', 'recipes', payload)
 

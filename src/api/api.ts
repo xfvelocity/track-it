@@ -15,6 +15,7 @@ import {
   query,
   Query,
   WhereFilterOp,
+  onSnapshot,
 } from 'firebase/firestore'
 
 export async function queryApi(
@@ -34,6 +35,12 @@ export async function queryApi(
     colref,
     where(queryData.where, queryData.operator, queryData.value)
   )
+
+  // onSnapshot(matchingQuery, (doc) => {
+  //   doc.forEach((x) => {
+  //     console.log(x.data())
+  //   })
+  // })
 
   const res = await getDocs(matchingQuery)
     .then((snapshot) =>

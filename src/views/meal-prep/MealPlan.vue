@@ -24,7 +24,20 @@
           v-if="mealPlan"
           :meal-list="mealPlan[key]"
           :show-edit="false"
+          @delete="deleteMeal($event, key)"
         />
+      </div>
+
+      <div class="d-flex pt-6">
+        <p
+          class="text-capitalize mr-3"
+          style="font-size: 14px"
+          v-for="(nutrient, name, i) in nutrients"
+          :key="i"
+        >
+          <span class="font-weight-medium">{{ name }}:</span>
+          {{ nutrient }}
+        </p>
       </div>
     </div>
 
@@ -37,12 +50,12 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onBeforeMount, ref } from 'vue'
+  import { defineComponent, onBeforeMount, ref, watch, Ref } from 'vue'
   import MealExpansionPanel from './components/MealExpansionPanel.vue'
   import AddMeal from './add-meal/AddMeal.vue'
   import { Store, useStore } from 'vuex'
-  import { Meal, MealPlan } from './types/mealPlan.types'
-  import { mealPlanBase } from './data/mealPlan.data'
+  import { Meal, MealPlan, MealNutrients } from './types/mealPlan.types'
+  import { mealPlanBase, nutrientsBase } from './data/mealPlan.data'
 
   export default defineComponent({
     name: 'MealPlan',
@@ -55,6 +68,7 @@
       const isAddMealOpen = ref<boolean>(false)
       const selectedMealTime = ref<string>('')
       const keys: (keyof MealPlan)[] = ['breakfast', 'lunch', 'dinner']
+      const nutrients = ref<MealNutrients>(nutrientsBase)
 
       onBeforeMount(async () => {
         const today: Date = new Date()
@@ -68,6 +82,24 @@
         isAddMealOpen.value = true
       }
 
+      const calculateNutrients = (): void => {
+        keys.forEach((key) => {
+          mealPlan.value[key].forEach((meal: Meal) => {
+            Object.keys(nutrients.value).forEach((nutrientKey) => {
+              nutrients.value[nutrientKey] += meal.nutrients[nutrientKey] || 0
+            })
+          })
+        })
+      }
+
+      const deleteMeal = async (meal: Meal, time: string): Promise<void> => {
+        await store.dispatch('delMeal', {
+          meal,
+          mealPlan: mealPlan.value,
+          time,
+        })
+      }
+
       const addMeal = async (meal: Meal): Promise<void> => {
         await store.dispatch('addMeal', {
           meal,
@@ -79,10 +111,20 @@
         isAddMealOpen.value = false
       }
 
+      watch(
+        mealPlan,
+        () => {
+          calculateNutrients()
+        },
+        { immediate: true }
+      )
+
       return {
         isAddMealOpen,
+        nutrients,
         keys,
         toggleAddMealModal,
+        deleteMeal,
         date,
         mealPlan,
         selectedMealTime,
