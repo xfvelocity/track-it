@@ -55,7 +55,7 @@
   import AddMeal from './add-meal/AddMeal.vue'
   import { Store, useStore } from 'vuex'
   import { Meal, MealPlan, MealNutrients } from './types/mealPlan.types'
-  import { nutrientsBase } from './data/mealPlan.data'
+  import { mealPlanBase, nutrientsBase } from './data/mealPlan.data'
 
   export default defineComponent({
     name: 'MealPlan',
@@ -69,6 +69,7 @@
       const nutrients = ref<MealNutrients>(nutrientsBase)
 
       onBeforeMount(async () => {
+        store.commit('setCurrentMealPlan', mealPlanBase)
         await store.dispatch('getMeals', mealPlan.value.date)
       })
 

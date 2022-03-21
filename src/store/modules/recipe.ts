@@ -36,17 +36,14 @@ export default {
       let res: any
       let formattedPayload: MealPlan
 
-      if (payload.mealPlan) {
-        payload.mealPlan[payload.time].push(payload.meal)
-        formattedPayload = payload.mealPlan
+      payload.mealPlan[payload.time].push(payload.meal)
+      formattedPayload = payload.mealPlan
 
-        res = await api('PUT', 'meals', formattedPayload)
-      } else {
-        formattedPayload = mealPlanBase
-        formattedPayload[payload.time].push(payload.meal)
-
-        res = await api('POST', 'meals', formattedPayload)
-      }
+      res = await api(
+        payload.mealPlan.id ? 'PUT' : 'POST',
+        'meals',
+        formattedPayload
+      )
 
       if (!res || res.error) {
         context.commit('setSnackbar', {
@@ -61,11 +58,15 @@ export default {
       return true
     },
     async getMeals(context: any, date: string): Promise<MealPlan | boolean> {
-      const res: any = await queryApi('meals', {
-        where: 'date',
-        operator: '==',
-        value: date,
-      })
+      const res: any = await queryApi(
+        'meals',
+        {
+          where: 'date',
+          operator: '==',
+          value: date,
+        },
+        'setCurrentMealPlan'
+      )
 
       if (!res || res.error) {
         context.commit('setSnackbar', {
