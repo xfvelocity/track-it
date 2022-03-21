@@ -45,7 +45,7 @@ export default {
         formattedPayload
       )
 
-      if (!res || res.error) {
+      if (!res || res?.error) {
         context.commit('setSnackbar', {
           color: 'red',
           text: `An error occured adding meal, please try again.`,
@@ -68,7 +68,7 @@ export default {
         'setCurrentMealPlan'
       )
 
-      if (!res || res.error) {
+      if (!res || res?.error) {
         context.commit('setSnackbar', {
           color: 'red',
           text: `An error occured getting meals, please try again.`,
