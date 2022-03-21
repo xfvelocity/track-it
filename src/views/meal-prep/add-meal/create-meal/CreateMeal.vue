@@ -88,11 +88,11 @@
 <script lang="ts">
   import { Store, useStore } from 'vuex'
   import { onMounted, ref, defineComponent, computed, PropType } from 'vue'
-  import { Meal, MealNutrients } from './types/CreateMeal.types'
+  import { Meal, MealNutrients } from '../../types/mealPlan.types'
 
   import SwipeActions from '@/components/swipe-actions/SwipeActions.vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
-  import { mealBase } from './data/createMeal.data'
+  import { mealBase } from '../../data/mealPlan.data'
 
   export default defineComponent({
     name: 'CreateMeal',
@@ -125,7 +125,7 @@
       const progress = computed<number>(() => currentScreen.value * 33)
 
       onMounted((): void => {
-        if (props.editingMeal) {
+        if (props.editing && Object.keys(props.editingMeal).length > 0) {
           meal.value = props.editingMeal
         }
       })
@@ -140,7 +140,7 @@
 
       const addIngredient = (): void => {
         meal.value.ingredients.push({
-          amount: 0,
+          amount: null,
           unit: 'g',
           name: '',
         })
@@ -149,7 +149,7 @@
       const deleteIngredient = (index: number): void => {
         if ((meal.value.ingredients.length = 1)) {
           meal.value.ingredients[index] = {
-            amount: 0,
+            amount: null,
             unit: 'g',
             name: '',
           }

@@ -1,4 +1,4 @@
-import { Meal } from '../types/CreateMeal.types'
+import { Meal } from '../types/mealPlan.types'
 
 export const mealBase: Meal = {
   name: '',

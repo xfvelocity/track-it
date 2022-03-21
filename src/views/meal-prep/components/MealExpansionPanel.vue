@@ -1,7 +1,7 @@
 <template>
   <v-expansion-panels class="meal-expansion-panel">
     <v-expansion-panel
-      class="meal-expansion-panel__panel my-2 w-100"
+      class="meal-expansion-panel__panel my-1 w-100"
       v-for="(meal, i) in mealList"
       :key="i"
       :title="meal.name"
@@ -57,7 +57,7 @@
 
 <script lang="ts">
   import { defineComponent, PropType, ref } from 'vue'
-  import { Meal } from '../add-meal/create-meal/types/CreateMeal.types'
+  import { Meal } from '../types/mealPlan.types'
   import Modal from '@/components/modal/Modal.vue'
 
   export default defineComponent({

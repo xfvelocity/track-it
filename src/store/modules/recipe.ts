@@ -1,4 +1,4 @@
-import { Meal } from '@/views/meal-prep/add-meal/create-meal/types/CreateMeal.types'
+import { Meal, MealPlan } from '@/views/meal-prep/types/mealPlan.types'
 import api, { queryApi } from '../../api/api'
 import { RecipeState } from '../types/recipe.types'
 
@@ -22,18 +22,30 @@ export default {
   actions: {
     async addMeal(
       context: any,
-      payload: { date: string; time: string; meal: Meal }
+      payload: {
+        date: string
+        time: 'breakfast' | 'lunch' | 'dinner'
+        meal: Meal
+        mealPlan: MealPlan
+      }
     ): Promise<boolean> {
-      const test: any = {
-        breakfast: [],
-        lunch: [],
-        dinner: [],
-        date: payload.date,
+      let formattedPayload: MealPlan
+
+      if (payload.mealPlan) {
+        payload.mealPlan[payload.time].push(payload.meal)
+        formattedPayload = payload.mealPlan
+      } else {
+        formattedPayload = {
+          breakfast: [],
+          lunch: [],
+          dinner: [],
+          date: payload.date,
+        }
+
+        formattedPayload[payload.time].push(payload.meal)
       }
 
-      test[payload.time].push(payload.meal)
-
-      const res: any = await api('POST', 'meals', test)
+      const res: any = await api('POST', 'meals', formattedPayload)
 
       if (!res || res.error) {
         context.commit('setSnackbar', {
@@ -45,10 +57,9 @@ export default {
         return false
       }
 
-      // context.commit('setRecipe', payload)
       return true
     },
-    async getMeals(context: any, date: string): Promise<any[] | boolean> {
+    async getMeals(context: any, date: string): Promise<MealPlan | boolean> {
       const res: any = await queryApi('meals', {
         where: 'date',
         operator: '==',
@@ -65,8 +76,7 @@ export default {
         return false
       }
 
-      // context.commit('setRecipe', res)
-      return res
+      return res[0]
     },
     async addRecipe(context: any, payload: Meal): Promise<boolean> {
       const res: any = await api('POST', 'recipes', payload)

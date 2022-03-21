@@ -11,7 +11,7 @@
           <h4>{{ key }}</h4>
           <v-spacer />
           <v-icon
-            class="ml-1"
+            class="ml-1 cursor-pointer"
             color="white"
             size="small"
             @click="toggleAddMealModal(key)"
@@ -41,16 +41,15 @@
   import MealExpansionPanel from './components/MealExpansionPanel.vue'
   import AddMeal from './add-meal/AddMeal.vue'
   import { Store, useStore } from 'vuex'
-  import { Meal } from './add-meal/create-meal/types/CreateMeal.types'
+  import { Meal, MealPlan } from './types/mealPlan.types'
 
   export default defineComponent({
     name: 'MealPlan',
     components: { MealExpansionPanel, AddMeal },
     setup() {
-      const mealPlan = ref()
-
       const store: Store<any> = useStore()
 
+      const mealPlan = ref<MealPlan>()
       const date = ref<string>('')
       const isAddMealOpen = ref<boolean>(false)
       const selectedMealTime = ref<string>('')
@@ -60,8 +59,7 @@
         const today = new Date()
         date.value = `${today.getDate()}-${today.getMonth()}-${today.getFullYear()}`
 
-        const meals = await store.dispatch('getMeals', date.value)
-        mealPlan.value = meals[0]
+        mealPlan.value = await store.dispatch('getMeals', date.value)
       })
 
       const toggleAddMealModal = (mealTime: string): void => {
@@ -74,6 +72,7 @@
           meal,
           time: selectedMealTime.value,
           date: date.value,
+          mealPlan: mealPlan.value,
         })
 
         isAddMealOpen.value = false

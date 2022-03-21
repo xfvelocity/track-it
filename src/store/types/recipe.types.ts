@@ -1,4 +1,4 @@
-import { Meal } from '@/views/meal-prep/add-meal/create-meal/types/CreateMeal.types'
+import { Meal } from '@/views/meal-prep/types/mealPlan.types'
 
 export type RecipeState = {
   recipes: Meal[]

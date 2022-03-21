@@ -37,7 +37,7 @@
 <script lang="ts">
   import { defineComponent, onBeforeMount, ref } from 'vue'
   import { Store, useStore } from 'vuex'
-  import { Meal } from './create-meal/types/CreateMeal.types'
+  import { Meal } from '../types/mealPlan.types'
 
   import MealExpansionPanel from '../components/MealExpansionPanel.vue'
   import CreateMeal from './create-meal/CreateMeal.vue'

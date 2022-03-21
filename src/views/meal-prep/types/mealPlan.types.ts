@@ -19,3 +19,10 @@ export type MealNutrients = {
   carbs: number | null
   fat: number | null
 }
+
+export type MealPlan = {
+  breakfast: Meal[]
+  lunch: Meal[]
+  dinner: Meal[]
+  date: string
+}
