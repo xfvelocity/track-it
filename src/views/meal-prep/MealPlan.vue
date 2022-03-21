@@ -6,25 +6,25 @@
     </div>
 
     <div class="mt-4">
-      <div
-        v-for="(plan, i) in Object.keys(mockPlan)"
-        :key="i"
-        class="text-capitalize mb-6"
-      >
+      <div v-for="(key, i) in keys" :key="i" class="text-capitalize mb-6">
         <div class="d-flex align-center">
-          <h4>{{ plan }}</h4>
+          <h4>{{ key }}</h4>
           <v-spacer />
           <v-icon
             class="ml-1"
             color="white"
             size="small"
-            @click="toggleAddMealModal(plan)"
+            @click="toggleAddMealModal(key)"
           >
             mdi-plus
           </v-icon>
         </div>
 
-        <MealExpansionPanel :meal-list="mockPlan[plan]" :show-edit="false" />
+        <MealExpansionPanel
+          v-if="mealPlan"
+          :meal-list="mealPlan[key]"
+          :show-edit="false"
+        />
       </div>
     </div>
 
@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { defineComponent, onBeforeMount, ref } from 'vue'
   import MealExpansionPanel from './components/MealExpansionPanel.vue'
   import AddMeal from './add-meal/AddMeal.vue'
   import { Store, useStore } from 'vuex'
@@ -47,31 +47,21 @@
     name: 'MealPlan',
     components: { MealExpansionPanel, AddMeal },
     setup() {
-      const mockPlan = {
-        breakfast: [
-          {
-            id: 'cE7lg7RKWXih5BsG74L2',
-            img: '',
-            ingredients: [{ unit: 'g', name: 'Protein Powder', amount: 20 }],
-            instructions: [],
-            name: 'Protein Shake',
-            nutrients: { protein: 20, carbs: 30, fat: 0, calories: 98 },
-          },
-        ],
-        lunch: [],
-        dinner: [],
-      }
+      const mealPlan = ref()
 
       const store: Store<any> = useStore()
 
       const date = ref<string>('')
       const isAddMealOpen = ref<boolean>(false)
       const selectedMealTime = ref<string>('')
+      const keys: string[] = ['breakfast', 'lunch', 'dinner']
 
-      onMounted(() => {
+      onBeforeMount(async () => {
         const today = new Date()
-
         date.value = `${today.getDate()}-${today.getMonth()}-${today.getFullYear()}`
+
+        const meals = await store.dispatch('getMeals', date.value)
+        mealPlan.value = meals[0]
       })
 
       const toggleAddMealModal = (mealTime: string): void => {
@@ -91,9 +81,10 @@
 
       return {
         isAddMealOpen,
+        keys,
         toggleAddMealModal,
         date,
-        mockPlan,
+        mealPlan,
         selectedMealTime,
         addMeal,
       }

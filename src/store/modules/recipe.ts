@@ -1,5 +1,5 @@
 import { Meal } from '@/views/meal-prep/add-meal/create-meal/types/CreateMeal.types'
-import api from '../../api/api'
+import api, { queryApi } from '../../api/api'
 import { RecipeState } from '../types/recipe.types'
 
 export default {
@@ -24,9 +24,16 @@ export default {
       context: any,
       payload: { date: string; time: string; meal: Meal }
     ): Promise<boolean> {
-      const res: any = await api('POST', 'meals', {
-        [payload.time]: { date: payload.date, ...payload.meal },
-      })
+      const test: any = {
+        breakfast: [],
+        lunch: [],
+        dinner: [],
+        date: payload.date,
+      }
+
+      test[payload.time].push(payload.meal)
+
+      const res: any = await api('POST', 'meals', test)
 
       if (!res || res.error) {
         context.commit('setSnackbar', {
@@ -40,6 +47,26 @@ export default {
 
       // context.commit('setRecipe', payload)
       return true
+    },
+    async getMeals(context: any, date: string): Promise<any[] | boolean> {
+      const res: any = await queryApi('meals', {
+        where: 'date',
+        operator: '==',
+        value: date,
+      })
+
+      if (!res || res.error) {
+        context.commit('setSnackbar', {
+          color: 'red',
+          text: `An error occured getting meals, please try again.`,
+          isVisible: true,
+        })
+
+        return false
+      }
+
+      // context.commit('setRecipe', res)
+      return res
     },
     async addRecipe(context: any, payload: Meal): Promise<boolean> {
       const res: any = await api('POST', 'recipes', payload)
