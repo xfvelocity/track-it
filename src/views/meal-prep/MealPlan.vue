@@ -42,6 +42,7 @@
   import AddMeal from './add-meal/AddMeal.vue'
   import { Store, useStore } from 'vuex'
   import { Meal, MealPlan } from './types/mealPlan.types'
+  import { mealPlanBase } from './data/mealPlan.data'
 
   export default defineComponent({
     name: 'MealPlan',
@@ -49,14 +50,14 @@
     setup() {
       const store: Store<any> = useStore()
 
-      const mealPlan = ref<MealPlan>()
+      const mealPlan = ref<MealPlan>(mealPlanBase)
       const date = ref<string>('')
       const isAddMealOpen = ref<boolean>(false)
       const selectedMealTime = ref<string>('')
-      const keys: string[] = ['breakfast', 'lunch', 'dinner']
+      const keys: (keyof MealPlan)[] = ['breakfast', 'lunch', 'dinner']
 
       onBeforeMount(async () => {
-        const today = new Date()
+        const today: Date = new Date()
         date.value = `${today.getDate()}-${today.getMonth()}-${today.getFullYear()}`
 
         mealPlan.value = await store.dispatch('getMeals', date.value)

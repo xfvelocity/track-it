@@ -29,11 +29,14 @@ export default {
         mealPlan: MealPlan
       }
     ): Promise<boolean> {
+      let res: any
       let formattedPayload: MealPlan
 
       if (payload.mealPlan) {
         payload.mealPlan[payload.time].push(payload.meal)
         formattedPayload = payload.mealPlan
+
+        res = await api('PUT', 'meals', formattedPayload)
       } else {
         formattedPayload = {
           breakfast: [],
@@ -43,9 +46,9 @@ export default {
         }
 
         formattedPayload[payload.time].push(payload.meal)
-      }
 
-      const res: any = await api('POST', 'meals', formattedPayload)
+        res = await api('POST', 'meals', formattedPayload)
+      }
 
       if (!res || res.error) {
         context.commit('setSnackbar', {

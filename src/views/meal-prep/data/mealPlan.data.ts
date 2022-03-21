@@ -1,4 +1,4 @@
-import { Meal } from '../types/mealPlan.types'
+import { Meal, MealPlan } from '../types/mealPlan.types'
 
 export const mealBase: Meal = {
   name: '',
@@ -17,4 +17,11 @@ export const mealBase: Meal = {
     carbs: null,
     fat: null,
   },
+}
+
+export const mealPlanBase: MealPlan = {
+  breakfast: [],
+  lunch: [],
+  dinner: [],
+  date: '',
 }
