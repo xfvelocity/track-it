@@ -29,15 +29,10 @@
           icon: 'mdi-home',
         },
         {
-          text: 'Meal Prep',
-          link: '/meal-prep',
+          text: 'Meal Plan',
+          link: '/meal-plan',
           icon: 'mdi-food',
         },
-        // {
-        //   text: 'Workout',
-        //   link: '/add-workout',
-        //   icon: 'mdi-dumbbell',
-        // },
       ]
 
       return {
@@ -59,6 +54,7 @@
     justify-content: center;
     align-items: center;
     padding-bottom: 10px;
+    z-index: 100;
 
     &__option {
       display: flex;

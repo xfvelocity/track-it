@@ -25,4 +25,5 @@ export type MealPlan = {
   lunch: Meal[]
   dinner: Meal[]
   date: string
+  id?: string
 }

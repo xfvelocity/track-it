@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex align-center">
-      <p class="my-0 text-body-2">{{ date }}</p>
+      <p class="my-0 text-body-2">{{ mealPlan.date }}</p>
       <v-spacer />
     </div>
 
@@ -50,12 +50,12 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onBeforeMount, ref, watch, Ref } from 'vue'
+  import { defineComponent, onBeforeMount, ref, computed, watch } from 'vue'
   import MealExpansionPanel from './components/MealExpansionPanel.vue'
   import AddMeal from './add-meal/AddMeal.vue'
   import { Store, useStore } from 'vuex'
   import { Meal, MealPlan, MealNutrients } from './types/mealPlan.types'
-  import { mealPlanBase, nutrientsBase } from './data/mealPlan.data'
+  import { nutrientsBase } from './data/mealPlan.data'
 
   export default defineComponent({
     name: 'MealPlan',
@@ -63,19 +63,16 @@
     setup() {
       const store: Store<any> = useStore()
 
-      const mealPlan = ref<MealPlan>(mealPlanBase)
-      const date = ref<string>('')
       const isAddMealOpen = ref<boolean>(false)
       const selectedMealTime = ref<string>('')
       const keys: (keyof MealPlan)[] = ['breakfast', 'lunch', 'dinner']
       const nutrients = ref<MealNutrients>(nutrientsBase)
 
       onBeforeMount(async () => {
-        const today: Date = new Date()
-        date.value = `${today.getDate()}-${today.getMonth()}-${today.getFullYear()}`
-
-        mealPlan.value = await store.dispatch('getMeals', date.value)
+        await store.dispatch('getMeals', mealPlan.value.date)
       })
+
+      const mealPlan = computed<MealPlan>(() => store.state.recipe.mealPlan)
 
       const toggleAddMealModal = (mealTime: string): void => {
         selectedMealTime.value = mealTime
@@ -83,6 +80,8 @@
       }
 
       const calculateNutrients = (): void => {
+        nutrients.value = { ...nutrientsBase }
+
         keys.forEach((key) => {
           mealPlan.value[key].forEach((meal: Meal) => {
             Object.keys(nutrients.value).forEach((nutrientKey) => {
@@ -104,20 +103,13 @@
         await store.dispatch('addMeal', {
           meal,
           time: selectedMealTime.value,
-          date: date.value,
           mealPlan: mealPlan.value,
         })
 
         isAddMealOpen.value = false
       }
 
-      watch(
-        mealPlan,
-        () => {
-          calculateNutrients()
-        },
-        { immediate: true }
-      )
+      watch(mealPlan, calculateNutrients)
 
       return {
         isAddMealOpen,
@@ -125,7 +117,6 @@
         keys,
         toggleAddMealModal,
         deleteMeal,
-        date,
         mealPlan,
         selectedMealTime,
         addMeal,

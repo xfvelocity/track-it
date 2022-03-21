@@ -19,11 +19,16 @@ export const mealBase: Meal = {
   },
 }
 
+const getTodaysDate = (): string => {
+  const today: Date = new Date()
+  return `${today.getDate()}-${today.getMonth()}-${today.getFullYear()}`
+}
+
 export const mealPlanBase: MealPlan = {
   breakfast: [],
   lunch: [],
   dinner: [],
-  date: '',
+  date: getTodaysDate(),
 }
 
 export const nutrientsBase: MealNutrients = {

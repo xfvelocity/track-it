@@ -3,7 +3,7 @@ import store from '@/store'
 
 import Dashboard from '@/views/dashboard/Dashboard.vue'
 
-import MealPlan from '@/views/meal-prep/MealPlan.vue'
+import MealPlan from '@/views/meal-plan/MealPlan.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,9 +12,9 @@ const routes: Array<RouteRecordRaw> = [
     component: Dashboard,
   },
   {
-    path: '/meal-prep',
+    path: '/meal-plan',
     component: MealPlan,
-    name: 'Meal Prep',
+    name: 'Meal Plan',
   },
 ]
 

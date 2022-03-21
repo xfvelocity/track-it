@@ -1,10 +1,12 @@
-import { Meal, MealPlan } from '@/views/meal-prep/types/mealPlan.types'
+import { mealPlanBase } from '@/views/meal-plan/data/mealPlan.data'
+import { Meal, MealPlan } from '@/views/meal-plan/types/mealPlan.types'
 import api, { queryApi } from '../../api/api'
 import { RecipeState } from '../types/recipe.types'
 
 export default {
   state: {
     recipes: [],
+    mealPlan: mealPlanBase,
   },
   mutations: {
     setRecipe(state: RecipeState, payload: Meal | Meal[]): void {
@@ -18,12 +20,14 @@ export default {
     removeSelectedRecipe(state: RecipeState, payload: number): void {
       state.recipes.splice(payload, 1)
     },
+    setCurrentMealPlan(state: RecipeState, payload: MealPlan): void {
+      state.mealPlan = payload
+    },
   },
   actions: {
     async addMeal(
       context: any,
       payload: {
-        date: string
         time: 'breakfast' | 'lunch' | 'dinner'
         meal: Meal
         mealPlan: MealPlan
@@ -38,13 +42,7 @@ export default {
 
         res = await api('PUT', 'meals', formattedPayload)
       } else {
-        formattedPayload = {
-          breakfast: [],
-          lunch: [],
-          dinner: [],
-          date: payload.date,
-        }
-
+        formattedPayload = mealPlanBase
         formattedPayload[payload.time].push(payload.meal)
 
         res = await api('POST', 'meals', formattedPayload)

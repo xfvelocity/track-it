@@ -36,21 +36,17 @@ export async function queryApi(
     where(queryData.where, queryData.operator, queryData.value)
   )
 
-  // onSnapshot(matchingQuery, (doc) => {
-  //   doc.forEach((x) => {
-  //     console.log(x.data())
-  //   })
-  // })
-
-  const res = await getDocs(matchingQuery)
-    .then((snapshot) =>
-      snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-    )
-    .catch((err) => ({ error: err }))
+  onSnapshot(matchingQuery, (snapshot) => {
+    if (snapshot && snapshot?.docs) {
+      snapshot.docs.forEach((doc) => {
+        store.commit('setCurrentMealPlan', doc.data())
+      })
+    }
+  })
 
   store.commit('setLoading', false)
 
-  return res
+  return true
 }
 
 export default async function api(type: string, col: string, data?: any) {
