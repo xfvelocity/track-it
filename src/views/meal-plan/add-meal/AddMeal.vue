@@ -1,7 +1,11 @@
 <template>
   <v-dialog class="add-meal" v-model="modelValue" fullscreen>
     <v-card>
-      <v-icon class="ml-2 mt-2" size="large" @click="backToggled">
+      <v-icon
+        class="ml-2 mt-2 cursor-pointer"
+        size="large"
+        @click="backToggled"
+      >
         mdi-chevron-left
       </v-icon>
 

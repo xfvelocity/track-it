@@ -6,23 +6,24 @@
         color="green"
         height="8"
         indeterminate
-      ></v-progress-linear>
+      />
     </div>
-    <Nav />
+    <Nav v-if="!hideNav" />
     <v-main>
       <router-view />
     </v-main>
-    <BottomNav />
+    <BottomNav v-if="!hideNav" />
     <Snackbar />
   </v-app>
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch, onMounted } from 'vue'
+  import { defineComponent, ref, watch, onMounted, computed } from 'vue'
   import { Store, useStore } from 'vuex'
   import Nav from './components/nav/Nav.vue'
   import Snackbar from './components/snackbar/Snackbar.vue'
   import BottomNav from './components/bottom-nav/BottomNav.vue'
+  import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 
   export default defineComponent({
     name: 'App',
@@ -33,11 +34,16 @@
     },
     setup() {
       const store: Store<any> = useStore()
+      const route: RouteLocationNormalizedLoaded = useRoute()
       const isLoading = ref<boolean>(false)
 
       const setStoreInStorage = (): void => {
         store.commit('initialiseStore')
       }
+
+      const hideNav = computed<boolean>(
+        () => route.name === 'Login' || route.name === 'Sign up'
+      )
 
       onMounted(setStoreInStorage)
 
@@ -50,6 +56,7 @@
 
       return {
         isLoading,
+        hideNav,
       }
     },
   })

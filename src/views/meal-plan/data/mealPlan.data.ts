@@ -21,7 +21,13 @@ export const mealBase: Meal = {
 
 const getTodaysDate = (): string => {
   const today: Date = new Date()
-  return `${today.getDate()}-${today.getMonth()}-${today.getFullYear()}`
+  let month: string = (today.getMonth() + 1).toString()
+
+  if (month.length < 10) {
+    month = `0${month}`
+  }
+
+  return `${today.getDate()}-${month}-${today.getFullYear()}`
 }
 
 export const mealPlanBase: MealPlan = {

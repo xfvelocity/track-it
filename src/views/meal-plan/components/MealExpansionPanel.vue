@@ -5,7 +5,7 @@
       v-for="(meal, i) in mealList"
       :key="i"
       :title="meal.name"
-      @click="addMeal(meal)"
+      @click="addMeal($event, meal)"
     >
       <v-expansion-panel-text>
         <div class="px-5 pt-2">
@@ -85,7 +85,13 @@
         deleteConfirmModal.value = true
       }
 
-      const addMeal = (meal: Meal): void => {
+      const addMeal = (event: any, meal: Meal): void => {
+        if (
+          event.srcElement.classList.contains('mdi-chevron-up') ||
+          event.srcElement.classList.contains('mdi-chevron-down')
+        )
+          return
+
         context.emit('meal-added', meal)
       }
 
