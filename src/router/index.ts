@@ -63,8 +63,6 @@ router.beforeEach((to, from, next) => {
       next('/account/login')
     }
   }
-
-  next()
 })
 
 export default router

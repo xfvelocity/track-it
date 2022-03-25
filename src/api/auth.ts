@@ -27,10 +27,7 @@ export const signIn = (type: string): void => {
       break
   }
 
-  store.commit('setLoading', {
-    type: 'fullpage',
-    value: true,
-  })
+  store.commit('setLoading', true)
 
   if (provider) {
     signInWithPopup(auth, provider)
@@ -56,7 +53,7 @@ export const signIn = (type: string): void => {
         store.commit('setError', error)
       })
       .finally(() => {
-        store.commit('setLoadingValue', false)
+        store.commit('setLoading', false)
       })
   }
 }
@@ -64,10 +61,7 @@ export const signIn = (type: string): void => {
 export const createEmailAccount = (email: string, password: string) => {
   const auth: Auth = getAuth()
 
-  store.commit('setLoading', {
-    type: 'fullpage',
-    value: true,
-  })
+  store.commit('setLoading', true)
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(() => {
@@ -77,17 +71,14 @@ export const createEmailAccount = (email: string, password: string) => {
       store.commit('setError', error)
     })
     .finally(() => {
-      store.commit('setLoadingValue', false)
+      store.commit('setLoading', false)
     })
 }
 
 export const signInEmailAccount = (email: string, password: string) => {
   const auth: Auth = getAuth()
 
-  store.commit('setLoadingValue', {
-    type: 'fullpage',
-    value: true,
-  })
+  store.commit('setLoading', true)
 
   signInWithEmailAndPassword(auth, email, password)
     .then((result: UserCredential) => {
@@ -100,17 +91,14 @@ export const signInEmailAccount = (email: string, password: string) => {
       store.commit('setError', error)
     })
     .finally(() => {
-      store.commit('setLoadingValue', false)
+      store.commit('setLoading', false)
     })
 }
 
 export const signUserOut = (): void => {
   const auth: Auth = getAuth()
 
-  store.commit('setLoading', {
-    type: 'fullpage',
-    value: true,
-  })
+  store.commit('setLoading', true)
 
   signOut(auth)
     .then(() => {
@@ -121,6 +109,6 @@ export const signUserOut = (): void => {
       store.commit('setError', error)
     })
     .finally(() => {
-      store.commit('setLoadingValue', false)
+      store.commit('setLoading', false)
     })
 }
