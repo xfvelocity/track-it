@@ -2,11 +2,10 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import store from '@/store'
 
 import Dashboard from '@/views/dashboard/Dashboard.vue'
-
 import Account from '@/views/account/Account.vue'
 import SignInContainer from '@/views/account/components/SignInContainer.vue'
-
 import MealPlan from '@/views/meal-plan/MealPlan.vue'
+import Profile from '@/views/profile/Profile.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -35,6 +34,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/meal-plan',
     component: MealPlan,
     name: 'Meal Plan',
+  },
+  {
+    path: '/profile',
+    component: Profile,
+    name: 'Profile',
   },
 ]
 

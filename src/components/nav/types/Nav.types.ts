@@ -1,4 +1,5 @@
-export type LoggedInUser = {
-    name: string,
-    avatar: string,
+export type MenuItem = {
+  text: string
+  route?: string
+  event?: Function
 }

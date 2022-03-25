@@ -4,29 +4,71 @@
       <img src="/img/icons/logo.svg" />
       <h1>Track IT</h1>
     </span>
-    <span class="nav__user d-flex align-center">
-      <p v-if="showUsername">{{ loggedInUser.name }}</p>
-      <img :src="loggedInUser.avatar" alt="" />
-    </span>
+    <v-menu anchor="bottom">
+      <template v-slot:activator="{ props }">
+        <span class="nav__user d-flex align-center" v-bind="props">
+          <p v-if="showUsername">{{ loggedInUser.displayName }}</p>
+          <img :src="loggedInUser.photoURL || ''" alt="" />
+        </span>
+      </template>
+
+      <v-card color="white">
+        <v-list color="white">
+          <v-list-item
+            v-for="(option, i) in menuOptions"
+            selectable
+            :key="i"
+            @click="handleMenuClick(option)"
+          >
+            {{ option.text }}
+          </v-list-item>
+        </v-list>
+      </v-card>
+    </v-menu>
   </nav>
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
-  import { LoggedInUser } from './types/Nav.types'
+  import { signUserOut } from '@/api/auth'
+  import { User } from 'firebase/auth'
+  import { defineComponent, ref, computed } from 'vue'
+  import { Router, useRouter } from 'vue-router'
+  import { Store, useStore } from 'vuex'
+  import { MenuItem } from './types/Nav.types'
 
   export default defineComponent({
     name: 'Nav',
     setup() {
+      const store: Store<any> = useStore()
+      const router: Router = useRouter()
+
       const showUsername = ref<boolean>(false)
-      const loggedInUser = ref<LoggedInUser>({
-        name: 'Alex Long',
-        avatar: '/img/icons/avatar.png',
-      })
+      const loggedInUser = computed<User>(() => store.state.config.currentUser)
+
+      const menuOptions: MenuItem[] = [
+        {
+          text: 'My Profile',
+          route: '/profile',
+        },
+        {
+          text: 'Sign Out',
+          event: signUserOut,
+        },
+      ]
+
+      const handleMenuClick = (option: MenuItem): void => {
+        if (option.route) {
+          router.push(option.route)
+        } else if (option.event) {
+          option.event()
+        }
+      }
 
       return {
         showUsername,
         loggedInUser,
+        menuOptions,
+        handleMenuClick,
       }
     },
   })
