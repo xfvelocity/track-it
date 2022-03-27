@@ -11,6 +11,7 @@
         type="email"
         label="Email"
         :error-messages="errors"
+        @keydown.enter="signUp(validate)"
       />
     </Field>
 
@@ -27,6 +28,7 @@
         :error-messages="errors"
         :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append-inner="showPassword = !showPassword"
+        @keydown.enter="signUp(validate)"
       />
     </Field>
 
@@ -37,9 +39,11 @@
       label="Confirm Password"
       class="mb-4"
       :error-messages="matchingPasswordError"
+      :disabled="!signUpdetails.password"
       :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
       @click:append-inner="showPassword = !showPassword"
       @input="validateMatchingPassword"
+      @keydown.enter="signUp(validate)"
     />
 
     <v-btn
@@ -80,7 +84,11 @@
         const valid: ValidationResult = await validateFn()
         const isPasswordMatching: [] | string = validateMatchingPassword()
 
-        if (valid.valid && isPasswordMatching === []) {
+        if (
+          valid.valid &&
+          Array.isArray(isPasswordMatching) &&
+          isPasswordMatching.length === 0
+        ) {
           const { email, password } = signUpdetails.value
 
           createEmailAccount(email, password)

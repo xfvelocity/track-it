@@ -7,6 +7,7 @@
         label="Email"
         type="email"
         :error-messages="errors"
+        @keydown.enter="logIn(validate)"
       />
     </Field>
 
@@ -23,6 +24,7 @@
         :error-messages="errors"
         :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append-inner="showPassword = !showPassword"
+        @keydown.enter="logIn(validate)"
       />
     </Field>
 

@@ -9,7 +9,7 @@
         </h1>
       </div>
 
-      <div class="pa-2">
+      <div>
         <SignUp v-if="isSignUp" />
         <LogIn v-else />
       </div>
@@ -53,7 +53,7 @@
     height: 100%;
 
     &-wrapper {
-      width: 80%;
+      width: 90%;
     }
 
     &-logo {

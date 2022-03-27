@@ -1,6 +1,6 @@
 <template>
   <div class="other-options">
-    <Divider class="mt-8 mb-12 mx-auto" style="width: 80%" title="or" />
+    <Divider class="mt-8 mb-12 mx-auto" style="width: 90%" title="or" />
 
     <div class="d-flex justify-center align-center mb-8">
       <div

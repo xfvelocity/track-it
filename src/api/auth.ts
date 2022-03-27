@@ -65,7 +65,7 @@ export const createEmailAccount = (email: string, password: string) => {
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(() => {
-      router.push('/account/log-in')
+      router.push('/account/login')
     })
     .catch((error) => {
       store.commit('setError', error)
