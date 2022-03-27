@@ -4,9 +4,23 @@
       class="meal-expansion-panel__panel my-1 w-100"
       v-for="(meal, i) in mealList"
       :key="i"
-      :title="meal.name"
-      @click="addMeal($event, meal)"
     >
+      <v-expansion-panel-title class="d-flex">
+        {{ meal.name }}
+
+        <v-spacer />
+
+        <v-icon
+          v-if="addIcon"
+          color="white"
+          size="small"
+          class="mr-2"
+          @click="addMeal($event, meal)"
+        >
+          mdi-plus
+        </v-icon>
+      </v-expansion-panel-title>
+
       <v-expansion-panel-text>
         <div class="px-5 pt-2">
           <p
@@ -73,6 +87,10 @@
       showEdit: {
         type: Boolean,
         default: true,
+      },
+      addIcon: {
+        type: Boolean,
+        default: false,
       },
     },
     emits: ['edit', 'delete', 'meal-added'],

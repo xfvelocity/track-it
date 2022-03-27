@@ -4,15 +4,19 @@
       <img src="/img/icons/logo.svg" />
       <h1>Track IT</h1>
     </span>
+
     <v-menu anchor="bottom">
       <template v-slot:activator="{ props }">
         <span class="nav__user d-flex align-center" v-bind="props">
-          <p v-if="showUsername">{{ loggedInUser.displayName }}</p>
-          <img :src="loggedInUser.photoURL || ''" alt="" />
+          <img
+            v-if="loggedInUser.photoURL"
+            :src="loggedInUser.photoURL"
+            alt=""
+          />
         </span>
       </template>
 
-      <v-card color="white">
+      <v-card class="mt-4" color="white">
         <v-list color="white">
           <v-list-item
             v-for="(option, i) in menuOptions"
@@ -42,7 +46,6 @@
       const store: Store<any> = useStore()
       const router: Router = useRouter()
 
-      const showUsername = ref<boolean>(false)
       const loggedInUser = computed<User>(() => store.state.config.currentUser)
 
       const menuOptions: MenuItem[] = [
@@ -65,7 +68,6 @@
       }
 
       return {
-        showUsername,
         loggedInUser,
         menuOptions,
         handleMenuClick,
@@ -91,14 +93,20 @@
     }
 
     &__user {
+      margin-top: 12px;
       cursor: pointer;
+      height: 35px;
+      width: 35px;
+      border-radius: 100%;
+      background: white;
 
       p {
         margin-right: 10px;
       }
 
       img {
-        max-width: 40px;
+        width: 100%;
+        height: 100%;
         border-radius: 50%;
       }
     }

@@ -25,9 +25,12 @@
           </v-btn>
         </div>
 
+        <v-text-field class="mb-4" label="Search" v-model="search" dense />
+
         <div class="d-flex flex-wrap justify-space-between">
           <MealExpansionPanel
-            :meal-list="mealList"
+            :meal-list="filteredMeals"
+            add-icon
             @meal-added="($event) => $emit('meal-added', $event)"
             @edit="editMeal"
             @delete="deleteMeal"
@@ -39,7 +42,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onBeforeMount, ref } from 'vue'
+  import { defineComponent, onBeforeMount, ref, computed } from 'vue'
   import { Store, useStore } from 'vuex'
   import { Meal } from '../types/mealPlan.types'
 
@@ -63,6 +66,7 @@
       const createMeal = ref<boolean>(false)
       const selectedMeal = ref<Meal>()
       const isEditing = ref<boolean>(false)
+      const search = ref<string>('')
 
       const getMeals = async (): Promise<void> => {
         mealList.value = await store.dispatch('getRecipes')
@@ -73,6 +77,12 @@
         isEditing.value = true
         createMeal.value = true
       }
+
+      const filteredMeals = computed<Meal[]>(() =>
+        mealList.value.filter((x) =>
+          x.name.toLowerCase().includes(search.value.toLowerCase())
+        )
+      )
 
       const deleteMeal = (meal: Meal): void => {
         store.dispatch('delRecipe', meal)
@@ -89,10 +99,12 @@
       onBeforeMount(getMeals)
 
       return {
+        search,
         mealList,
         selectedMeal,
         isEditing,
         createMeal,
+        filteredMeals,
         backToggled,
         editMeal,
         deleteMeal,

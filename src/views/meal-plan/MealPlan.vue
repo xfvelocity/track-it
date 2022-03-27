@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div class="d-flex align-center">
-      <p class="my-0 text-body-2">{{ mealPlan.date }}</p>
-      <v-spacer />
-    </div>
+    <p class="my-0 text-body-2">{{ mealPlan.date }}</p>
 
     <div class="mt-4">
       <div v-for="(key, i) in keys" :key="i" class="text-capitalize mb-6">
