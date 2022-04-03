@@ -33,6 +33,11 @@
           link: '/meal-plan',
           icon: 'mdi-food',
         },
+        {
+          text: 'Shopping',
+          link: '/shopping',
+          icon: 'mdi-format-list-checks',
+        },
       ]
 
       return {

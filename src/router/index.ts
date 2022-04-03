@@ -6,6 +6,7 @@ import Account from '@/views/account/Account.vue'
 import SignInContainer from '@/views/account/components/SignInContainer.vue'
 import MealPlan from '@/views/meal-plan/MealPlan.vue'
 import Profile from '@/views/profile/Profile.vue'
+import Shopping from '@/views/shopping/Shopping.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -39,6 +40,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profile',
     component: Profile,
     name: 'Profile',
+  },
+  {
+    path: '/shopping',
+    component: Shopping,
+    name: 'Shopping',
   },
 ]
 

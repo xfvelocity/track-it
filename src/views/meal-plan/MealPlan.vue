@@ -2,9 +2,10 @@
   <div>
     <v-menu>
       <template v-slot:activator="{ props }">
-        <p class="my-0 text-body-2 cursor-pointer" v-bind="props">
-          {{ mealPlan.date }}
-        </p>
+        <span class="date-box" v-bind="props">
+          <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
+          {{ formatDate(mealPlan.date) }}
+        </span>
       </template>
 
       <v-date-picker
@@ -80,7 +81,11 @@
 
       const isAddMealOpen = ref<boolean>(false)
       const selectedMealTime = ref<string>('')
-      const keys: (keyof MealPlan)[] = ['breakfast', 'lunch', 'dinner']
+      const keys: ['breakfast', 'lunch', 'dinner'] = [
+        'breakfast',
+        'lunch',
+        'dinner',
+      ]
       const nutrients = ref<MealNutrients>(nutrientsBase)
 
       onBeforeMount(async () => {
@@ -95,6 +100,11 @@
         isAddMealOpen.value = true
       }
 
+      const formatDate = (date: string): string => {
+        const [year, month, day] = date.split('-')
+        return `${day}/${month}`
+      }
+
       const onDateChange = async (date: any): Promise<void> => {
         mealPlan.value.date = date.id
         await store.dispatch('getMeals', mealPlan.value.date)
@@ -106,7 +116,8 @@
         keys.forEach((key) => {
           mealPlan.value[key].forEach((meal: Meal) => {
             Object.keys(nutrients.value).forEach((nutrientKey) => {
-              nutrients.value[nutrientKey] += meal.nutrients[nutrientKey] || 0
+              nutrients.value[nutrientKey as keyof MealNutrients]! +=
+                meal.nutrients[nutrientKey as keyof MealNutrients] || 0
             })
           })
         })
@@ -142,6 +153,7 @@
         mealPlan,
         selectedMealTime,
         addMeal,
+        formatDate,
       }
     },
   })
