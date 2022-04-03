@@ -3,11 +3,11 @@ export type Meal = {
   name: string
   img: string
   nutrients: MealNutrients
-  ingredients: MealIngredientss[]
+  ingredients: MealIngredients[]
   instructions: string[]
 }
 
-export type MealIngredientss = {
+export type MealIngredients = {
   amount: number | null
   unit: string
   name: string

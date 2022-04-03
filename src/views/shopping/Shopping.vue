@@ -6,7 +6,7 @@
           <div class="cursor-pointer" v-bind="props">
             <span class="date-box">
               <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
-              {{ formatDate(date.start) }}
+              {{ formatDate(date?.start) }}
             </span>
 
             <v-icon class="mx-2" size="small" color="white">
@@ -15,7 +15,7 @@
 
             <span class="date-box">
               <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
-              {{ formatDate(date.end) }}
+              {{ formatDate(date?.end) }}
             </span>
           </div>
         </template>
@@ -38,8 +38,10 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
+  import { defineComponent, ref, onBeforeMount } from 'vue'
   import { DatePicker } from 'v-calendar'
+  import { useStore } from 'vuex'
+  import { ShoppingDateRange, ShoppingItem } from '@/store/types/shopping.types'
 
   export default defineComponent({
     name: 'Shopping',
@@ -47,26 +49,25 @@
       DatePicker,
     },
     setup() {
-      const date = ref<any>({
-        start: '2022-04-01',
-        end: '2022-04-07',
-      })
-      const shoppingList = ref<any[]>([
-        {
-          unit: 'g',
-          amount: 20,
-          name: 'Protein powder',
-          selected: false,
-        },
-      ])
+      const store = useStore()
 
-      const formatDate = (date: string): string => {
+      const date = ref<ShoppingDateRange>()
+      const shoppingList = ref<ShoppingItem[]>([])
+
+      onBeforeMount(() => {
+        shoppingList.value = store.getters.getShopping
+        date.value = store.getters.getRange
+      })
+
+      const formatDate = (date: string | undefined): string => {
+        if (!date) return ''
+
         const [year, month, day] = date.split('-')
         return `${day}/${month}`
       }
 
-      const onDateChange = (date: any): void => {
-        console.log(date)
+      const onDateChange = (): void => {
+        store.commit('setRange', date.value)
       }
 
       return {

@@ -1,11 +1,13 @@
 import { createStore } from 'vuex'
 import recipe from './modules/recipe'
 import config from './modules/config'
+import shopping from './modules/shopping.'
 
 const store = createStore({
   modules: {
     recipe,
     config,
+    shopping,
   },
   mutations: {
     initialiseStore(state: any): void {
