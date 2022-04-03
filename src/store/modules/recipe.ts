@@ -21,7 +21,7 @@ export default {
       state.recipes.splice(payload, 1)
     },
     setCurrentMealPlan(state: RecipeState, payload: MealPlan): void {
-      state.mealPlan = payload
+      state.mealPlan = payload ? payload : mealPlanBase
     },
   },
   actions: {

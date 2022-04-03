@@ -38,13 +38,15 @@ export async function queryApi(
   )
 
   onSnapshot(matchingQuery, (snapshot) => {
-    if (snapshot && snapshot?.docs) {
+    if (snapshot && snapshot?.docs.length > 0) {
       snapshot.docs.forEach((doc) => {
         store.commit(
           storeLocation,
           'id' in doc.data() ? doc.data() : { id: doc.id, ...doc.data() }
         )
       })
+    } else {
+      store.commit(storeLocation, null)
     }
   })
 

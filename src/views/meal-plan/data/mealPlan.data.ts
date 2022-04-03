@@ -22,12 +22,12 @@ export const mealBase: Meal = {
 const getTodaysDate = (): string => {
   const today: Date = new Date()
   let month: string = (today.getMonth() + 1).toString()
+  let day: number | string = today.getDate()
 
-  if (month.length < 10) {
-    month = `0${month}`
-  }
+  month = month.length < 10 ? `0${month}` : month
+  day = day < 10 ? `0${day}` : day
 
-  return `${today.getDate()}-${month}-${today.getFullYear()}`
+  return `${today.getFullYear()}-${month}-${day}`
 }
 
 export const mealPlanBase: MealPlan = {

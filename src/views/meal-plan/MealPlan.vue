@@ -1,6 +1,18 @@
 <template>
   <div>
-    <p class="my-0 text-body-2">{{ mealPlan.date }}</p>
+    <v-menu>
+      <template v-slot:activator="{ props }">
+        <p class="my-0 text-body-2 cursor-pointer" v-bind="props">
+          {{ mealPlan.date }}
+        </p>
+      </template>
+
+      <v-date-picker
+        :model-value="mealPlan.date"
+        class="mt-2"
+        @dayclick="onDateChange"
+      />
+    </v-menu>
 
     <div class="mt-4">
       <div v-for="(key, i) in keys" :key="i" class="text-capitalize mb-6">
@@ -48,15 +60,21 @@
 
 <script lang="ts">
   import { defineComponent, onBeforeMount, ref, computed, watch } from 'vue'
-  import MealExpansionPanel from './components/MealExpansionPanel.vue'
-  import AddMeal from './add-meal/AddMeal.vue'
   import { Store, useStore } from 'vuex'
   import { Meal, MealPlan, MealNutrients } from './types/mealPlan.types'
   import { mealPlanBase, nutrientsBase } from './data/mealPlan.data'
+  import { DatePicker } from 'v-calendar'
+
+  import MealExpansionPanel from './components/MealExpansionPanel.vue'
+  import AddMeal from './add-meal/AddMeal.vue'
 
   export default defineComponent({
     name: 'MealPlan',
-    components: { MealExpansionPanel, AddMeal },
+    components: {
+      MealExpansionPanel,
+      AddMeal,
+      DatePicker,
+    },
     setup() {
       const store: Store<any> = useStore()
 
@@ -75,6 +93,11 @@
       const toggleAddMealModal = (mealTime: string): void => {
         selectedMealTime.value = mealTime
         isAddMealOpen.value = true
+      }
+
+      const onDateChange = async (date: any): Promise<void> => {
+        mealPlan.value.date = date.id
+        await store.dispatch('getMeals', mealPlan.value.date)
       }
 
       const calculateNutrients = (): void => {
@@ -111,6 +134,7 @@
 
       return {
         isAddMealOpen,
+        onDateChange,
         nutrients,
         keys,
         toggleAddMealModal,
