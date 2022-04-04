@@ -3,20 +3,28 @@
     <div class="mb-4">
       <v-menu>
         <template v-slot:activator="{ props }">
-          <div class="cursor-pointer" v-bind="props">
-            <span class="date-box">
-              <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
-              {{ date?.start }}
-            </span>
+          <div class="d-flex">
+            <div class="cursor-pointer" v-bind="props">
+              <span class="date-box">
+                <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
+                {{ date?.start }}
+              </span>
 
-            <v-icon class="mx-2" size="small" color="white">
-              mdi-arrow-right
+              <v-icon class="mx-2" size="small" color="white">
+                mdi-arrow-right
+              </v-icon>
+
+              <span class="date-box">
+                <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
+                {{ date?.end }}
+              </span>
+            </div>
+
+            <v-spacer />
+
+            <v-icon class="cursor-pointer" @click="onDateChange">
+              mdi-refresh
             </v-icon>
-
-            <span class="date-box">
-              <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
-              {{ date?.end }}
-            </span>
           </div>
         </template>
 
@@ -42,7 +50,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, onBeforeMount } from 'vue'
+  import { defineComponent, ref } from 'vue'
   import { DatePicker } from 'v-calendar'
   import { useStore } from 'vuex'
   import { ShoppingDateRange, ShoppingItem } from '@/store/types/shopping.types'
@@ -56,13 +64,8 @@
     setup() {
       const store = useStore()
 
-      const date = ref<ShoppingDateRange>()
-      const shoppingList = ref<ShoppingItem[]>([])
-
-      onBeforeMount(() => {
-        date.value = store.getters.getRange
-        onDateChange()
-      })
+      const date = ref<ShoppingDateRange>(store.getters.getRange)
+      const shoppingList = ref<ShoppingItem[]>(store.getters.getShopping)
 
       const onDateChange = (): void => {
         if (!date.value) return
