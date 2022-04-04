@@ -78,7 +78,7 @@ export default {
         return false
       }
 
-      return res[0]
+      return res
     },
     async delMeal(
       context: any,

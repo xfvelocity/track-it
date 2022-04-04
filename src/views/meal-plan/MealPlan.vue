@@ -2,7 +2,7 @@
   <div>
     <v-menu>
       <template v-slot:activator="{ props }">
-        <span class="date-box" v-bind="props">
+        <span class="date-box cursor-pointer" v-bind="props">
           <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
           {{ formatDate(mealPlan.date) }}
         </span>

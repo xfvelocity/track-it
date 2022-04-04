@@ -6,7 +6,7 @@
           <div class="cursor-pointer" v-bind="props">
             <span class="date-box">
               <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
-              {{ formatDate(date?.start) }}
+              {{ date?.start }}
             </span>
 
             <v-icon class="mx-2" size="small" color="white">
@@ -15,13 +15,13 @@
 
             <span class="date-box">
               <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
-              {{ formatDate(date?.end) }}
+              {{ date?.end }}
             </span>
           </div>
         </template>
 
         <v-date-picker
-          :model-value="date"
+          v-model="date"
           is-range
           class="mt-2"
           @dayclick="onDateChange"
@@ -31,7 +31,11 @@
 
     <div>
       <span v-for="(item, i) in shoppingList" :key="i">
-        <v-checkbox v-model="item.selected" :label="item.name" hide-details />
+        <v-checkbox
+          v-model="item.selected"
+          :label="`${item.amount}${item.unit} ${item.name}`"
+          hide-details
+        />
       </span>
     </div>
   </div>
@@ -42,6 +46,7 @@
   import { DatePicker } from 'v-calendar'
   import { useStore } from 'vuex'
   import { ShoppingDateRange, ShoppingItem } from '@/store/types/shopping.types'
+  import moment from 'moment'
 
   export default defineComponent({
     name: 'Shopping',
@@ -55,25 +60,46 @@
       const shoppingList = ref<ShoppingItem[]>([])
 
       onBeforeMount(() => {
-        shoppingList.value = store.getters.getShopping
         date.value = store.getters.getRange
+        onDateChange()
       })
 
-      const formatDate = (date: string | undefined): string => {
-        if (!date) return ''
+      const onDateChange = (): void => {
+        if (!date.value) return
 
-        const [year, month, day] = date.split('-')
-        return `${day}/${month}`
+        date.value = {
+          start: moment(date.value.start).format('YYYY-MM-DD'),
+          end: moment(date.value.end).format('YYYY-MM-DD'),
+        }
+
+        store.commit('setRange', date.value)
+        store.commit('setShopping', [])
+
+        getMealIngredients()
       }
 
-      const onDateChange = (): void => {
-        store.commit('setRange', date.value)
+      const getMealIngredients = async (): Promise<void> => {
+        if (!date.value) return
+
+        const { start, end } = date.value
+
+        let currentDate = moment(start)
+        const stopDate = moment(end)
+
+        while (currentDate <= stopDate) {
+          await store.dispatch(
+            'getShoppingRecipes',
+            moment(currentDate).format('YYYY-MM-DD')
+          )
+          currentDate = moment(currentDate).add(1, 'days')
+        }
+
+        shoppingList.value = store.getters.getShopping
       }
 
       return {
         date,
         shoppingList,
-        formatDate,
         onDateChange,
       }
     },

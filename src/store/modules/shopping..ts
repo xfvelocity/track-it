@@ -1,3 +1,4 @@
+import { queryApi } from '@/api/api'
 import {
   ShoppingDateRange,
   ShoppingItem,
@@ -6,14 +7,7 @@ import {
 
 export default {
   state: {
-    shopping: [
-      {
-        unit: 'g',
-        amount: 20,
-        name: 'Protein powder',
-        selected: false,
-      },
-    ],
+    shopping: [],
     range: {
       start: '2022-04-01',
       end: '2022-04-07',
@@ -29,12 +23,65 @@ export default {
   },
   mutations: {
     setShopping(state: ShoppingState, payload: ShoppingItem[]): void {
-      state.shopping = payload
+      if (!payload) return
+
+      if (Array.isArray(payload) && payload.length === 0) {
+        state.shopping = []
+      } else {
+        const keys: ['breakfast', 'lunch', 'dinner'] = [
+          'breakfast',
+          'lunch',
+          'dinner',
+        ]
+
+        keys.forEach((key) =>
+          payload[key].forEach((item) =>
+            item.ingredients.forEach((ingredient) => {
+              const matchingIngredient = state.shopping.find(
+                (x) => x.name === ingredient.name
+              )
+
+              if (matchingIngredient) {
+                matchingIngredient.amount += ingredient.amount
+
+                const index = state.shopping.indexOf(matchingIngredient)
+                state.shopping[index] = matchingIngredient
+              } else {
+                state.shopping.push(ingredient)
+              }
+            })
+          )
+        )
+      }
     },
     setRange(state: ShoppingState, payload: ShoppingDateRange): void {
       state.range = payload
     },
   },
-  actions: {},
+  actions: {
+    async getShoppingRecipes(context: any, date: string): Promise<any> {
+      const res: any = await queryApi(
+        'meals',
+        {
+          where: 'date',
+          operator: '==',
+          value: date,
+        },
+        'setShopping'
+      )
+
+      if (!res || res?.error) {
+        context.commit('setSnackbar', {
+          color: 'red',
+          text: `An error occured getting shopping ingredients, please try again.`,
+          isVisible: true,
+        })
+
+        return false
+      }
+
+      return res
+    },
+  },
   modules: {},
 }
