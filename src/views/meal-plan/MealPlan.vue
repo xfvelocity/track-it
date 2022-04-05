@@ -49,6 +49,18 @@
           {{ nutrient }}
         </p>
       </div>
+
+      <div class="d-flex pt-2">
+        <p
+          class="text-capitalize mr-3"
+          style="font-size: 14px"
+          v-for="(nutrient, name, i) in nutrientGoals"
+          :key="i"
+        >
+          <span class="font-weight-medium">{{ name }}:</span>
+          {{ nutrient }}
+        </p>
+      </div>
     </div>
 
     <AddMeal
@@ -63,7 +75,7 @@
   import { defineComponent, onBeforeMount, ref, computed, watch } from 'vue'
   import { Store, useStore } from 'vuex'
   import { Meal, MealPlan, MealNutrients } from './types/mealPlan.types'
-  import { mealPlanBase, nutrientsBase } from './data/mealPlan.data'
+  import { nutrientsBase } from './data/mealPlan.data'
   import { DatePicker } from 'v-calendar'
 
   import MealExpansionPanel from './components/MealExpansionPanel.vue'
@@ -87,9 +99,11 @@
         'dinner',
       ]
       const nutrients = ref<MealNutrients>(nutrientsBase)
+      const nutrientGoals = ref<MealNutrients>(
+        store.getters.getUserData.nutrientGoals
+      )
 
       onBeforeMount(async () => {
-        store.commit('setCurrentMealPlan', mealPlanBase)
         await store.dispatch('getMeals', mealPlan.value.date)
       })
 
@@ -145,6 +159,7 @@
 
       return {
         isAddMealOpen,
+        nutrientGoals,
         onDateChange,
         nutrients,
         keys,

@@ -1,10 +1,18 @@
 import { Snackbar } from '@/components/snackbar/types/Snackbar.types'
 import { User } from 'firebase/auth'
-import { ConfigState } from '../types/config.types'
+import { ConfigState, UserData } from '../types/config.types'
 
 export default {
   state: {
     currentUser: {},
+    userData: {
+      nutrientGoals: {
+        calories: 2500,
+        protein: 156,
+        carbs: 281,
+        fat: 83,
+      },
+    },
     loading: false,
     snackbar: {
       color: '',
@@ -18,6 +26,9 @@ export default {
     },
     getUserUID(state: ConfigState): string {
       return state.currentUser.uid
+    },
+    getUserData(state: ConfigState): UserData {
+      return state.userData
     },
   },
   mutations: {
