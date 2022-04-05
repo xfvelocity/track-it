@@ -28,7 +28,7 @@
         <v-text-field class="mb-4" label="Search" v-model="search" dense />
 
         <div class="d-flex flex-wrap justify-space-between">
-          <MealExpansionPanel
+          <RecipeCard
             :meal-list="filteredMeals"
             add-icon
             @meal-added="($event) => $emit('meal-added', $event)"
@@ -46,12 +46,12 @@
   import { Store, useStore } from 'vuex'
   import { Meal } from '../types/mealPlan.types'
 
-  import MealExpansionPanel from '../components/MealExpansionPanel.vue'
+  import RecipeCard from '../components/RecipeCard.vue'
   import CreateMeal from './create-meal/CreateMeal.vue'
 
   export default defineComponent({
     name: 'AddMeal',
-    components: { MealExpansionPanel, CreateMeal },
+    components: { RecipeCard, CreateMeal },
     props: {
       modelValue: {
         type: Boolean,

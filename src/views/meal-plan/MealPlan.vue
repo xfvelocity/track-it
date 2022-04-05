@@ -30,7 +30,7 @@
           </v-icon>
         </div>
 
-        <MealExpansionPanel
+        <RecipeCard
           v-if="mealPlan"
           :meal-list="mealPlan[key]"
           :show-edit="false"
@@ -78,13 +78,13 @@
   import { nutrientsBase } from './data/mealPlan.data'
   import { DatePicker } from 'v-calendar'
 
-  import MealExpansionPanel from './components/MealExpansionPanel.vue'
+  import RecipeCard from './components/RecipeCard.vue'
   import AddMeal from './add-meal/AddMeal.vue'
 
   export default defineComponent({
     name: 'MealPlan',
     components: {
-      MealExpansionPanel,
+      RecipeCard,
       AddMeal,
       DatePicker,
     },
