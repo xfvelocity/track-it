@@ -61,12 +61,7 @@
         <v-icon color="primary" class="ml-1"> mdi-pencil </v-icon>
       </v-btn>
 
-      <v-btn
-        color="red"
-        variant="text"
-        size="small"
-        @click="$emit('delete', selectedMeal)"
-      >
+      <v-btn color="red" variant="text" size="small" @click="onDelete">
         Delete
         <v-icon color="red" class="ml-1"> mdi-delete </v-icon>
       </v-btn>
@@ -112,9 +107,15 @@
         infoModal.value = true
       }
 
+      const onDelete = (): void => {
+        context.emit('delete', selectedMeal.value)
+        infoModal.value = false
+      }
+
       return {
         selectedMeal,
         infoModal,
+        onDelete,
         openInfoModal,
         addMeal,
       }

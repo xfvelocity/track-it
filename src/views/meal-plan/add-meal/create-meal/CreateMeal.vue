@@ -113,7 +113,7 @@
     emits: ['return'],
     setup(props, context) {
       const store: Store<any> = useStore()
-      const unitOptions: string[] = ['g', 'ml']
+      const unitOptions: string[] = ['g', 'ml', 'units']
 
       const currentScreen = ref<number>(1)
       const meal = ref<Meal>(mealBase)
