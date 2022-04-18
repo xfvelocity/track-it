@@ -11,9 +11,6 @@
       <div class="d-flex align-center mb-4">
         <p>Ingredients</p>
         <v-spacer />
-        <v-icon class="py-4 cursor-pointer" @click="addIngredient">
-          mdi-plus
-        </v-icon>
       </div>
 
       <div class="mb-4" v-for="(ingredient, i) in meal.ingredients" :key="i">
@@ -44,6 +41,16 @@
           Remove
         </v-btn>
       </div>
+
+      <v-btn
+        color="primary"
+        text-color="white"
+        size="x-small"
+        class="cursor-pointer w-100"
+        @click="addIngredient"
+      >
+        Add
+      </v-btn>
     </div>
 
     <div v-if="currentScreen === 3">
