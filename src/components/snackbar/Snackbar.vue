@@ -1,11 +1,12 @@
 <template>
-  <v-card
-    v-if="snackbar && snackbar.isVisible"
-    class="snackbar py-2 text-center text-white font-weight-medium"
+  <v-snackbar
+    content-class="text-center font-weight-medium"
+    :model-value="true"
     :color="snackbar.color"
+    text-color="white"
   >
     {{ snackbar.text }}
-  </v-card>
+  </v-snackbar>
 </template>
 
 <script lang="ts">
@@ -17,7 +18,7 @@
     name: 'Snackbar',
     setup() {
       const store: Store<any> = useStore()
-      const snackbar = ref<Snackbar | null>(null)
+      const snackbar = ref<Snackbar>(store.state.config.snackbar)
 
       watch(
         () => store.state.config.snackbar.isVisible,
@@ -38,11 +39,3 @@
     },
   })
 </script>
-
-<style lang="scss" scoped>
-  .snackbar {
-    position: sticky;
-    bottom: 30px;
-    width: 100%;
-  }
-</style>

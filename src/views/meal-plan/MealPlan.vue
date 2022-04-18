@@ -152,7 +152,11 @@
           mealPlan: mealPlan.value,
         })
 
-        isAddMealOpen.value = false
+        store.commit('setSnackbar', {
+          color: '',
+          text: `${meal.name} was added`,
+          isVisible: true,
+        })
       }
 
       watch(mealPlan, calculateNutrients)

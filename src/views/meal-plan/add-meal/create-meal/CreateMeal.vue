@@ -173,9 +173,9 @@
 
         if (res) {
           store.commit('setSnackbar', {
-            color: 'green',
+            color: '',
             text: `${meal.value.name} was ${
-              props.editing ? 'updated' : 'added'
+              props.editing ? 'updated' : 'created'
             }`,
             isVisible: true,
           })
