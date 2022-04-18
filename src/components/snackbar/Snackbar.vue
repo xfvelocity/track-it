@@ -1,7 +1,7 @@
 <template>
   <v-snackbar
     content-class="text-center font-weight-medium"
-    :model-value="true"
+    :model-value="snackbar.isVisible"
     :color="snackbar.color"
     text-color="white"
   >
