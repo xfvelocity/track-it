@@ -1,44 +1,38 @@
 <template>
-  <v-dialog class="add-meal" v-model="modelValue" fullscreen>
-    <v-card>
-      <v-icon
-        class="ml-2 mt-2 cursor-pointer"
-        size="large"
-        @click="backToggled"
-      >
-        mdi-chevron-left
-      </v-icon>
+  <div class="add-meal">
+    <v-icon class="ml-2 mt-2 cursor-pointer" size="large" @click="backToggled">
+      mdi-chevron-left
+    </v-icon>
 
-      <CreateMeal
-        v-if="createMeal"
-        :editing="isEditing"
-        :editing-meal="selectedMeal"
-        @return="createMeal = false"
-      />
+    <CreateMeal
+      v-if="createMeal"
+      :editing="isEditing"
+      :editing-meal="selectedMeal"
+      @return="createMeal = false"
+    />
 
-      <div class="pa-4" v-else>
-        <div class="d-flex justify-space-between align-center mb-4">
-          <h2>Meals</h2>
-          <v-btn variant="text" size="small" @click="createMeal = true">
-            Create Meal
-            <v-icon class="ml-1">mdi-plus</v-icon>
-          </v-btn>
-        </div>
-
-        <v-text-field class="mb-4" label="Search" v-model="search" dense />
-
-        <div class="d-flex flex-wrap justify-space-between">
-          <RecipeCard
-            :meal-list="filteredMeals"
-            add-icon
-            @meal-added="($event) => $emit('meal-added', $event)"
-            @edit="editMeal"
-            @delete="deleteMeal"
-          />
-        </div>
+    <div class="pa-4" v-else>
+      <div class="d-flex justify-space-between align-center mb-4">
+        <h2>Meals</h2>
+        <v-btn variant="text" size="small" @click="createMeal = true">
+          Create Meal
+          <v-icon class="ml-1">mdi-plus</v-icon>
+        </v-btn>
       </div>
-    </v-card>
-  </v-dialog>
+
+      <v-text-field class="mb-4" label="Search" v-model="search" dense />
+
+      <div class="d-flex flex-wrap justify-space-between">
+        <RecipeCard
+          :meal-list="filteredMeals"
+          add-icon
+          @meal-added="($event) => addMeal($event)"
+          @edit="editMeal"
+          @delete="deleteMeal"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -48,19 +42,18 @@
 
   import RecipeCard from '../components/RecipeCard.vue'
   import CreateMeal from './create-meal/CreateMeal.vue'
+  import { useRoute } from 'vue-router'
+  import router from '@/router'
 
   export default defineComponent({
     name: 'AddMeal',
-    components: { RecipeCard, CreateMeal },
-    props: {
-      modelValue: {
-        type: Boolean,
-        default: false,
-      },
+    components: {
+      RecipeCard,
+      CreateMeal,
     },
-    emits: ['close', 'meal-added'],
     setup(props, context) {
       const store: Store<any> = useStore()
+      const route = useRoute()
 
       const mealList = ref<Meal[]>([])
       const createMeal = ref<boolean>(false)
@@ -78,6 +71,20 @@
         createMeal.value = true
       }
 
+      const addMeal = async (meal: Meal): Promise<void> => {
+        await store.dispatch('addMeal', {
+          meal,
+          time: route.query.time,
+          mealPlan: store.state.recipe.mealPlan,
+        })
+
+        store.commit('setSnackbar', {
+          color: '',
+          text: `${meal.name} was added`,
+          isVisible: true,
+        })
+      }
+
       const filteredMeals = computed<Meal[]>(() =>
         mealList.value.filter((x) =>
           x.name.toLowerCase().includes(search.value.toLowerCase())
@@ -92,7 +99,7 @@
         if (createMeal.value) {
           createMeal.value = false
         } else {
-          context.emit('close')
+          router.push('/meal-plan/meals')
         }
       }
 
@@ -105,6 +112,7 @@
         isEditing,
         createMeal,
         filteredMeals,
+        addMeal,
         backToggled,
         editMeal,
         deleteMeal,

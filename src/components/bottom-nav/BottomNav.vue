@@ -30,7 +30,7 @@
         },
         {
           text: 'Meal Plan',
-          link: '/meal-plan',
+          link: '/meal-plan/meals',
           icon: 'mdi-food',
         },
         {

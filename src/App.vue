@@ -41,9 +41,7 @@
         store.commit('initialiseStore')
       }
 
-      const hideNav = computed<boolean>(
-        () => route.name === 'Login' || route.name === 'Sign up'
-      )
+      const hideNav = computed<boolean>(() => !!route.meta?.hideNav)
 
       onMounted(setStoreInStorage)
 

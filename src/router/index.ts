@@ -7,6 +7,8 @@ import SignInContainer from '@/views/account/components/SignInContainer.vue'
 import MealPlan from '@/views/meal-plan/MealPlan.vue'
 import Profile from '@/views/profile/Profile.vue'
 import Shopping from '@/views/shopping/Shopping.vue'
+import AddMeal from '@/views/meal-plan/add-meal/AddMeal.vue'
+import Meals from '@/views/meal-plan/meals/Meals.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -23,11 +25,17 @@ const routes: Array<RouteRecordRaw> = [
         path: 'sign-up',
         name: 'Sign up',
         component: SignInContainer,
+        meta: {
+          hideNav: true,
+        },
       },
       {
         path: 'login',
         name: 'Login',
         component: SignInContainer,
+        meta: {
+          hideNav: true,
+        },
       },
     ],
   },
@@ -35,7 +43,23 @@ const routes: Array<RouteRecordRaw> = [
     path: '/meal-plan',
     component: MealPlan,
     name: 'Meal Plan',
+    children: [
+      {
+        path: 'meals',
+        name: 'Meal Plan - Meals',
+        component: Meals,
+      },
+      {
+        path: 'add-meal',
+        name: 'Meals - Add Meal',
+        component: AddMeal,
+        meta: {
+          hideNav: true,
+        },
+      },
+    ],
   },
+
   {
     path: '/profile',
     component: Profile,
