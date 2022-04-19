@@ -124,8 +124,7 @@
       }
 
       const onDateChange = async (date: any): Promise<void> => {
-        mealPlan.value.date = date.id
-        await store.dispatch('getMeals', mealPlan.value.date)
+        await store.dispatch('getMeals', date.id)
       }
 
       const calculateNutrients = (): void => {

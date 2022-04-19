@@ -68,6 +68,10 @@ export default {
         'setCurrentMealPlan'
       )
 
+      if (context.state.mealPlan.date !== date) {
+        context.state.mealPlan.date = date
+      }
+
       if (!res || res?.error) {
         context.commit('setSnackbar', {
           color: 'red',
