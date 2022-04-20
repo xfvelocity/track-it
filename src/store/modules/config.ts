@@ -7,10 +7,10 @@ export default {
     currentUser: {},
     userData: {
       nutrientGoals: {
-        calories: 2500,
-        protein: 156,
-        carbs: 281,
-        fat: 83,
+        calories: 2800,
+        protein: 190,
+        carbs: 300,
+        fat: 95,
       },
     },
     loading: false,
