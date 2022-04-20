@@ -154,7 +154,7 @@
       }
 
       const deleteIngredient = (index: number): void => {
-        if ((meal.value.ingredients.length = 1)) {
+        if (meal.value.ingredients.length === 1) {
           meal.value.ingredients[index] = {
             amount: null,
             unit: 'g',
