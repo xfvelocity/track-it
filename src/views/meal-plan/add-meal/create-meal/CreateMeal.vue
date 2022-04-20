@@ -180,7 +180,7 @@
             isVisible: true,
           })
 
-          meal.value = mealBase
+          meal.value = { ...mealBase }
           context.emit('return')
         }
       }

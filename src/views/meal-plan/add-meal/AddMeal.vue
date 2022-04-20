@@ -8,7 +8,7 @@
       v-if="createMeal"
       :editing="isEditing"
       :editing-meal="selectedMeal"
-      @return="createMeal = false"
+      @return="onMealChange"
     />
 
     <div class="pa-4" v-else>
@@ -71,6 +71,12 @@
         createMeal.value = true
       }
 
+      const onMealChange = (): void => {
+        createMeal.value = false
+        isEditing.value = false
+        selectedMeal.value = undefined
+      }
+
       const addMeal = async (meal: Meal): Promise<void> => {
         await store.dispatch('addMeal', {
           meal,
@@ -97,7 +103,7 @@
 
       const backToggled = (): void => {
         if (createMeal.value) {
-          createMeal.value = false
+          onMealChange()
         } else {
           router.push('/meal-plan/meals')
         }
@@ -112,6 +118,7 @@
         isEditing,
         createMeal,
         filteredMeals,
+        onMealChange,
         addMeal,
         backToggled,
         editMeal,
