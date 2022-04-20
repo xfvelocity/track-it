@@ -7,7 +7,7 @@
             <div class="cursor-pointer" v-bind="props">
               <span class="date-box">
                 <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
-                {{ date?.start }}
+                {{ formatDate(date?.start) }}
               </span>
 
               <v-icon class="mx-2" size="small" color="white">
@@ -16,7 +16,7 @@
 
               <span class="date-box">
                 <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
-                {{ date?.end }}
+                {{ formatDate(date?.end) }}
               </span>
             </div>
 
@@ -81,6 +81,11 @@
         getMealIngredients()
       }
 
+      const formatDate = (date: string): string => {
+        const [year, month, day] = date.split('-')
+        return `${day}/${month}`
+      }
+
       const getMealIngredients = async (): Promise<void> => {
         if (!date.value) return
 
@@ -103,6 +108,7 @@
       return {
         date,
         shoppingList,
+        formatDate,
         onDateChange,
       }
     },

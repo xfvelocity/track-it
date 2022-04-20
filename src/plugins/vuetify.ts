@@ -1,10 +1,10 @@
 import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/lib/styles/main.sass'
+import '@vuetify/nightly/lib/styles/main.sass'
 import 'v-calendar/dist/style.css'
 
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/lib/components/index'
-import * as directives from 'vuetify/lib/directives/index'
+import { createVuetify } from '@vuetify/nightly'
+import * as components from '@vuetify/nightly/lib/components/index'
+import * as directives from '@vuetify/nightly/lib/directives/index'
 
 export default createVuetify({
   components,
