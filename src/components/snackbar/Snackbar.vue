@@ -1,9 +1,8 @@
 <template>
   <v-snackbar
-    content-class="text-center font-weight-medium"
-    :model-value="snackbar.isVisible"
+    content-class="text-center font-weight-medium text-white"
+    v-model="snackbar.isVisible"
     :color="snackbar.color"
-    text-color="white"
   >
     {{ snackbar.text }}
   </v-snackbar>
@@ -25,10 +24,6 @@
         (isVisible) => {
           if (isVisible) {
             snackbar.value = store.state.config.snackbar
-
-            setTimeout(() => {
-              store.commit('setSnackbarVisibility', false)
-            }, 5000)
           }
         }
       )
