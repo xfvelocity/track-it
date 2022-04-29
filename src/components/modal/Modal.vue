@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="modelValue" @click:outside="closeModal(persistent)">
+  <v-dialog :model-value="modelValue" @click:outside="closeModal(persistent)">
     <v-card :color="colour" class="pa-4">
       <slot />
 
