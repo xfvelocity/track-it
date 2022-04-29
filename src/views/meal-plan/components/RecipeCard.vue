@@ -43,7 +43,8 @@
         style="font-size: 14px"
         :key="i"
       >
-        {{ ingredient.amount }}{{ ingredient.unit }} {{ ingredient.name }}
+        {{ ingredient.amount }}{{ formatUnit(ingredient.unit) }}
+        {{ ingredient.name }}
       </p>
     </div>
 
@@ -112,12 +113,17 @@
         infoModal.value = false
       }
 
+      const formatUnit = (unit: string): string => {
+        return unit === 'units' ? '' : unit
+      }
+
       return {
         selectedMeal,
         infoModal,
         onDelete,
         openInfoModal,
         addMeal,
+        formatUnit,
       }
     },
   })

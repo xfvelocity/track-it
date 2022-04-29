@@ -1,6 +1,6 @@
 <template>
   <v-dialog :model-value="modelValue" @click:outside="closeModal(persistent)">
-    <v-card :color="colour" class="pa-4">
+    <v-card :color="colour" class="pa-4" width="400">
       <slot />
 
       <div class="d-flex mt-4" v-if="actionButtons">

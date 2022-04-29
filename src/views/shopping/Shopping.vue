@@ -41,7 +41,7 @@
       <span v-for="(item, i) in shoppingList" :key="i">
         <v-checkbox
           v-model="item.selected"
-          :label="`${item.amount}${item.unit} ${item.name}`"
+          :label="`${item.amount}${formatUnit(item.unit)} ${item.name}`"
           hide-details
         />
       </span>
@@ -105,11 +105,16 @@
         shoppingList.value = store.getters.getShopping
       }
 
+      const formatUnit = (unit: string): string => {
+        return unit === 'units' ? '' : unit
+      }
+
       return {
         date,
         shoppingList,
         formatDate,
         onDateChange,
+        formatUnit,
       }
     },
   })
