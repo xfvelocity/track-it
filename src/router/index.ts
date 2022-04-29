@@ -15,6 +15,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'Dashboard',
     component: Dashboard,
+    redirect: () => '/meal-plan/meals',
   },
   {
     path: '/account',

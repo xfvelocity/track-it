@@ -23,11 +23,11 @@
     setup() {
       const router: Router = useRouter()
       const options: BottomNavOption[] = [
-        {
-          text: 'Home',
-          link: '/',
-          icon: 'mdi-home',
-        },
+        // {
+        //   text: 'Home',
+        //   link: '/',
+        //   icon: 'mdi-home',
+        // },
         {
           text: 'Meal Plan',
           link: '/meal-plan/meals',
