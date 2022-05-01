@@ -11,6 +11,7 @@ export type MealIngredients = {
   amount: number | null
   unit: string
   name: string
+  nutrients: MealNutrients
 }
 
 export type MealNutrients = {

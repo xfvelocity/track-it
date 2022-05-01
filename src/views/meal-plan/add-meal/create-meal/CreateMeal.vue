@@ -30,7 +30,22 @@
             :items="unitOptions"
           />
         </div>
+
         <v-text-field v-model="ingredient.name" label="Ingredient" />
+        <div class="d-flex flex-wrap align-center my-2">
+          <v-text-field
+            v-for="(key, i) in nutrientKeys"
+            :key="i"
+            style="width: 45%"
+            class="text-capitalize mb-1"
+            :class="{ 'mr-2': i % 2 === 0 }"
+            v-model.number="ingredient.nutrients[key]"
+            :label="key"
+            pattern="[0-9]*"
+            inputmode="decimal"
+            @focus="onFocus($event.target)"
+          />
+        </div>
         <v-btn
           color="error"
           text-color="white"
@@ -53,25 +68,6 @@
       </v-btn>
     </div>
 
-    <div v-if="currentScreen === 3">
-      <p class="mb-4">Nutrients</p>
-      <div
-        class="d-flex align-center mb-2"
-        v-for="(key, i) in nutrientKeys"
-        :key="i"
-      >
-        <v-text-field
-          class="text-capitalize"
-          v-model.number="meal.nutrients[key]"
-          type="number"
-          :label="key"
-          pattern="[0-9]*"
-          inputmode="decimal"
-          @focus="onFocus($event.target)"
-        />
-      </div>
-    </div>
-
     <div class="d-flex mt-8">
       <v-btn class="w-50 ma-2" color="primary" size="small" @click="backScreen">
         <v-icon v-if="currentScreen > 1" class="mr-1">mdi-arrow-left</v-icon>
@@ -85,8 +81,8 @@
         size="small"
         @click="nextScreen"
       >
-        {{ currentScreen === 3 ? (editing ? 'Update' : 'Add Meal') : 'Next' }}
-        <v-icon v-if="currentScreen !== 3" class="ml-1">mdi-arrow-right</v-icon>
+        {{ currentScreen === 2 ? (editing ? 'Update' : 'Add Meal') : 'Next' }}
+        <v-icon v-if="currentScreen !== 2" class="ml-1">mdi-arrow-right</v-icon>
       </v-btn>
     </div>
   </div>
@@ -129,7 +125,7 @@
         meal.value.nutrients
       ) as (keyof MealNutrients)[]
 
-      const progress = computed<number>(() => currentScreen.value * 33)
+      const progress = computed<number>(() => currentScreen.value * 50)
 
       onMounted((): void => {
         if (props.editing && Object.keys(props.editingMeal).length > 0) {
@@ -150,6 +146,12 @@
           amount: null,
           unit: 'g',
           name: '',
+          nutrients: {
+            calories: null,
+            protein: null,
+            carbs: null,
+            fat: null,
+          },
         })
       }
 
@@ -159,13 +161,32 @@
             amount: null,
             unit: 'g',
             name: '',
+            nutrients: {
+              calories: null,
+              protein: null,
+              carbs: null,
+              fat: null,
+            },
           }
         } else {
           meal.value.ingredients.splice(index, 1)
         }
       }
 
+      const setMealNutrients = (): void => {
+        meal.value.ingredients.forEach((ingredient) => {
+          nutrientKeys.forEach((key) => {
+            if (meal.value.nutrients[key] && ingredient.nutrients[key]) {
+              meal.value.nutrients[key]! += ingredient.nutrients[key]!
+            } else {
+              meal.value.nutrients[key] = ingredient.nutrients[key]
+            }
+          })
+        })
+      }
+
       const addMeal = async (): Promise<void> => {
+        setMealNutrients()
         const res = await store.dispatch(
           props.editing ? 'editRecipe' : 'addRecipe',
           meal.value
@@ -191,7 +212,7 @@
       }
 
       const nextScreen = (): void => {
-        if (currentScreen.value === 3) addMeal()
+        if (currentScreen.value === 2) addMeal()
         else ++currentScreen.value
       }
 
