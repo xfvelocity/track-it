@@ -1,19 +1,27 @@
 <template>
   <div>
-    <v-menu>
-      <template v-slot:activator="{ props }">
-        <span class="date-box cursor-pointer" v-bind="props">
-          <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
-          {{ formatDate(mealPlan.date) }}
-        </span>
-      </template>
+    <div class="d-flex justify-space-between">
+      <v-icon class="cursor-pointer" color="white" @click="changeDate(-1)">
+        mdi-chevron-left
+      </v-icon>
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <span class="cursor-pointer" v-bind="props">
+            <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
+            {{ formatDate(mealPlan.date) }}
+          </span>
+        </template>
 
-      <v-date-picker
-        :model-value="mealPlan.date"
-        class="mt-2"
-        @dayclick="onDateChange"
-      />
-    </v-menu>
+        <v-date-picker
+          :model-value="mealPlan.date"
+          class="mt-2"
+          @dayclick="onDateChange"
+        />
+      </v-menu>
+      <v-icon class="cursor-pointer" color="white" @click="changeDate(1)">
+        mdi-chevron-right
+      </v-icon>
+    </div>
 
     <div class="mt-4">
       <div v-for="(key, i) in keys" :key="i" class="text-capitalize mb-6">
@@ -127,6 +135,19 @@
         await store.dispatch('getMeals', date.id)
       }
 
+      const changeDate = (val: number): void => {
+        const date: Date = new Date(mealPlan.value.date)
+
+        if (val === -1) {
+          date.setDate(date.getDate() - 1)
+        } else {
+          date.setDate(date.getDate() + 1)
+        }
+
+        const [day, month, year] = date.toLocaleDateString().split('/')
+        onDateChange({ id: `${year}-${month}-${day}` })
+      }
+
       const calculateNutrients = (): void => {
         nutrients.value = { ...nutrientsBase }
 
@@ -154,6 +175,7 @@
         isAddMealOpen,
         nutrientGoals,
         onDateChange,
+        changeDate,
         nutrients,
         keys,
         toggleAddMealModal,
