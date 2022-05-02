@@ -198,6 +198,13 @@
       }
 
       const setMealNutrients = (): void => {
+        meal.value.nutrients = {
+          calories: null,
+          protein: null,
+          carbs: null,
+          fat: null,
+        }
+
         meal.value.ingredients.forEach((ingredient) => {
           nutrientKeys.forEach((key) => {
             if (meal.value.nutrients[key] && ingredient.nutrients[key]) {
