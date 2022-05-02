@@ -7,6 +7,7 @@ export default {
   state: {
     recipes: [],
     mealPlan: mealPlanBase,
+    ingredients: [],
   },
   mutations: {
     setRecipe(state: RecipeState, payload: Meal | Meal[]): void {
@@ -29,7 +30,6 @@ export default {
       state.mealPlan = payload
     },
     setIngredients(state: any, payload: any): void {
-      console.log(payload)
       state.ingredients = payload
     },
   },
@@ -139,9 +139,15 @@ export default {
     async addRecipe(context: any, payload: Meal): Promise<boolean> {
       const res: any = await api('POST', 'recipes', payload)
 
-      payload.ingredients.forEach((ingredient) =>
-        context.dispatch('addIngredients', ingredient)
-      )
+      payload.ingredients.forEach((ingredient) => {
+        const matchingIngredient = context.state.ingredients.find(
+          (i: any) => i.name === ingredient.name
+        )
+
+        if (!matchingIngredient) {
+          context.dispatch('addIngredients', ingredient)
+        }
+      })
 
       if (!res || res.error) {
         context.commit('setSnackbar', {
