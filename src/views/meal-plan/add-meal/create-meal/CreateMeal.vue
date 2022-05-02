@@ -14,7 +14,14 @@
       </div>
 
       <div class="mb-4" v-for="(ingredient, i) in meal.ingredients" :key="i">
-        <div class="d-flex mb-2">
+        <v-combobox
+          v-model="ingredient.name"
+          :items="ingredientsList"
+          filter-keys="name"
+          label="Ingredient"
+          @update:modelValue="onIngredientUpdate($event, i)"
+        />
+        <div class="d-flex mt-2">
           <v-text-field
             class="mr-2"
             label="Amount"
@@ -31,7 +38,6 @@
           />
         </div>
 
-        <v-text-field v-model="ingredient.name" label="Ingredient" />
         <div class="d-flex flex-wrap align-center my-2">
           <v-text-field
             v-for="(key, i) in nutrientKeys"
@@ -50,7 +56,7 @@
           color="error"
           text-color="white"
           size="x-small"
-          class="mt-2 cursor-pointer w-100"
+          class="cursor-pointer w-100"
           @click="deleteIngredient(i)"
         >
           Remove
@@ -68,14 +74,13 @@
       </v-btn>
     </div>
 
-    <div class="d-flex mt-8">
-      <v-btn class="w-50 ma-2" color="primary" size="small" @click="backScreen">
+    <div class="d-flex mt-10">
+      <v-btn color="primary" size="small" @click="backScreen">
         <v-icon v-if="currentScreen > 1" class="mr-1">mdi-arrow-left</v-icon>
         {{ currentScreen > 1 ? 'Back' : 'Return' }}
       </v-btn>
       <v-spacer />
       <v-btn
-        class="ma-2"
         color="success"
         text-color="white"
         size="small"
@@ -127,11 +132,30 @@
 
       const progress = computed<number>(() => currentScreen.value * 50)
 
-      onMounted((): void => {
+      const ingredientsList = computed<any[]>(() =>
+        store.state.recipe.ingredients.map((ingredient: any) => ({
+          title: ingredient.name,
+          value: ingredient,
+        }))
+      )
+
+      onMounted(async () => {
+        await store.dispatch('getIngredients')
+
         if (props.editing && Object.keys(props.editingMeal).length > 0) {
           meal.value = props.editingMeal
         }
       })
+
+      const onIngredientUpdate = (val: any, index: number): void => {
+        const matchingIngredient = ingredientsList.value.find(
+          (ingredient) => ingredient.title === val
+        )
+
+        if (matchingIngredient) {
+          meal.value.ingredients[index] = matchingIngredient.value
+        }
+      }
 
       const setImage = (img: string): void => {
         meal.value.img = img
@@ -222,6 +246,8 @@
         currentScreen,
         nutrientKeys,
         unitOptions,
+        ingredientsList,
+        onIngredientUpdate,
         deleteIngredient,
         addIngredient,
         backScreen,

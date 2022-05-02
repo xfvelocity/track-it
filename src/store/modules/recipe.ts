@@ -28,6 +28,10 @@ export default {
 
       state.mealPlan = payload
     },
+    setIngredients(state: any, payload: any): void {
+      console.log(payload)
+      state.ingredients = payload
+    },
   },
   actions: {
     async addMeal(
@@ -61,6 +65,22 @@ export default {
       }
 
       return true
+    },
+    async addIngredients(context: any, payload: any): Promise<void> {
+      await api('POST', 'ingredients', payload)
+    },
+    async getIngredients(context: any): Promise<void> {
+      const res = await api('GET', 'ingredients')
+
+      await context.commit('setIngredients', res)
+
+      if (!res || res?.error) {
+        context.commit('setSnackbar', {
+          color: 'red',
+          text: `An error occured getting ingredients, please try again.`,
+          isVisible: true,
+        })
+      }
     },
     async getMeals(context: any, date: string): Promise<MealPlan | boolean> {
       const res: any = await queryApi(
@@ -118,6 +138,10 @@ export default {
     },
     async addRecipe(context: any, payload: Meal): Promise<boolean> {
       const res: any = await api('POST', 'recipes', payload)
+
+      payload.ingredients.forEach((ingredient) =>
+        context.dispatch('addIngredients', ingredient)
+      )
 
       if (!res || res.error) {
         context.commit('setSnackbar', {
