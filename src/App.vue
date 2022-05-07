@@ -105,6 +105,7 @@
       &__wrap {
         margin: 0;
         height: 100%;
+        overflow-y: auto;
         padding: 10px 20px;
         background: rgb(9, 0, 66) !important;
         background: linear-gradient(
@@ -113,6 +114,10 @@
           rgba(11, 0, 78, 1) 100%
         ) !important;
       }
+    }
+
+    .v-main {
+      padding-bottom: 20px !important;
     }
   }
 </style>

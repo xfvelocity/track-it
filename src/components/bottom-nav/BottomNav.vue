@@ -23,11 +23,6 @@
     setup() {
       const router: Router = useRouter()
       const options: BottomNavOption[] = [
-        // {
-        //   text: 'Home',
-        //   link: '/',
-        //   icon: 'mdi-home',
-        // },
         {
           text: 'Meal Plan',
           link: '/meal-plan/meals',
@@ -50,7 +45,7 @@
 
 <style lang="scss" scoped>
   .bottom-nav {
-    position: fixed;
+    position: sticky;
     bottom: 0;
     left: 0;
     background: #060124;
@@ -58,16 +53,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom: 10px;
     z-index: 100;
 
     &__option {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 15px 10px;
+      padding: 10px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 12px;
 
       &:hover {
         opacity: 0.8;
