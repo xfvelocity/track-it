@@ -61,7 +61,7 @@
       align-items: center;
       padding: 10px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 14px;
 
       &:hover {
         opacity: 0.8;
