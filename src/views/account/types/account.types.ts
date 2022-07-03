@@ -1,6 +1,7 @@
 export type LoginMethod = {
   icon: string
   value: string
+  disabled: boolean
 }
 
 export type SignUpForm = {

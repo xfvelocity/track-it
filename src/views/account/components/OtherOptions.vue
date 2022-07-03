@@ -8,7 +8,8 @@
         :key="i"
         class="other-options-btn cursor-pointer"
         :class="i > 0 ? 'ml-4' : ''"
-        @click="logIn(method.value)"
+        :style="method.disabled ? 'opacity: 0.6; cursor: default;' : ''"
+        @click="logIn(method)"
       >
         <img :src="method.icon" alt="" />
       </div>
@@ -51,8 +52,10 @@
     setup() {
       const logInMethods: LoginMethod[] = loginMethods
 
-      const logIn = (type: string): void => {
-        signIn(type)
+      const logIn = (method: LoginMethod): void => {
+        if (!method.disabled) {
+          signIn(method.value)
+        }
       }
 
       return {
