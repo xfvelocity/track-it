@@ -47,7 +47,7 @@
     />
 
     <v-btn
-      class="w-100 py-6"
+      class="w-100"
       color="blue-darken-2"
       text-color="white"
       @click="signUp(validate)"
