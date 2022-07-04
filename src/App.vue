@@ -26,10 +26,10 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, computed } from 'vue'
-  import { Store, useStore } from 'vuex'
+  import { defineComponent, computed } from 'vue'
   import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
-  import { Loading } from './store/types/config.types'
+  import { Loading } from '@/stores/types/config.types'
+  import { useConfigStore } from '@/stores/config'
 
   import Nav from './components/nav/Nav.vue'
   import Snackbar from './components/snackbar/Snackbar.vue'
@@ -43,18 +43,12 @@
       BottomNav,
     },
     setup() {
-      const store: Store<any> = useStore()
+      const configStore = useConfigStore()
       const route: RouteLocationNormalizedLoaded = useRoute()
 
-      const loading = computed<Loading>(() => store.getters.getLoading)
-
-      const setStoreInStorage = (): void => {
-        store.commit('initialiseStore')
-      }
+      const loading = computed<Loading>(() => configStore.loading)
 
       const hideNav = computed<boolean>(() => !!route.meta?.hideNav)
-
-      onMounted(setStoreInStorage)
 
       return {
         loading,

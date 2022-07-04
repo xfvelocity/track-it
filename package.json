@@ -14,18 +14,17 @@
     "debounce": "^1.2.1",
     "firebase": "^9.6.1",
     "moment": "^2.29.2",
+    "pinia": "^2.0.14",
     "roboto-fontface": "*",
     "v-calendar": "^3.0.0-alpha.8",
     "vee-validate": "^4.5.10",
     "vue": "^3.2.6",
-    "vue-router": "^4.0.11",
-    "vuex": "^4.0.2"
+    "vue-router": "^4.0.11"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.6.0",
     "@vue/cli-plugin-router": "^4.5.13",
     "@vue/cli-plugin-typescript": "~4.5.15",
-    "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.5",
     "prettier": "^2.3.2",
     "sass": "^1.43.5",

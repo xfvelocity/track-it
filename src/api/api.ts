@@ -1,4 +1,3 @@
-import store from '@/store'
 import {
   getFirestore,
   collection,
@@ -30,8 +29,6 @@ export async function queryApi(
   const db: Firestore = getFirestore()
   const colref: CollectionReference<DocumentData> = collection(db, col)
 
-  store.commit('setLoadingValue', true)
-
   const matchingQuery: Query<DocumentData> = query(
     colref,
     where(queryData.where, queryData.operator, queryData.value)
@@ -40,17 +37,15 @@ export async function queryApi(
   onSnapshot(matchingQuery, (snapshot) => {
     if (snapshot && snapshot?.docs.length > 0) {
       snapshot.docs.forEach((doc) => {
-        store.commit(
-          storeLocation,
-          'id' in doc.data() ? doc.data() : { id: doc.id, ...doc.data() }
-        )
+        // store.commit(
+        //   storeLocation,
+        //   'id' in doc.data() ? doc.data() : { id: doc.id, ...doc.data() }
+        // )
       })
     } else {
-      store.commit(storeLocation, null)
+      // store.commit(storeLocation, null)
     }
   })
-
-  store.commit('setLoadingValue', false)
 
   return true
 }
@@ -59,8 +54,6 @@ export default async function api(type: string, col: string, data?: any) {
   let res: any
   const db: Firestore = getFirestore()
   const colref: CollectionReference<DocumentData> = collection(db, col)
-
-  store.commit('setLoadingValue', true)
 
   switch (type) {
     case 'GET':
@@ -91,8 +84,6 @@ export default async function api(type: string, col: string, data?: any) {
         .catch((err) => ({ error: err }))
       break
   }
-
-  store.commit('setLoadingValue', false)
 
   return res
 }

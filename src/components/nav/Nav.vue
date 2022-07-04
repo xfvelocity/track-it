@@ -34,19 +34,19 @@
 
 <script lang="ts">
   import { signUserOut } from '@/api/auth'
+  import { useUserStore } from '@/stores/user'
   import { User } from 'firebase/auth'
-  import { defineComponent, ref, computed } from 'vue'
+  import { defineComponent, computed } from 'vue'
   import { Router, useRouter } from 'vue-router'
-  import { Store, useStore } from 'vuex'
   import { MenuItem } from './types/Nav.types'
 
   export default defineComponent({
     name: 'Nav',
     setup() {
-      const store: Store<any> = useStore()
+      const userStore = useUserStore()
       const router: Router = useRouter()
 
-      const loggedInUser = computed<User>(() => store.state.config.currentUser)
+      const loggedInUser = computed<User>(() => userStore.user)
 
       const menuOptions: MenuItem[] = [
         {

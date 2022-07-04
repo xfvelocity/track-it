@@ -94,13 +94,14 @@
 </template>
 
 <script lang="ts">
-  import { Store, useStore } from 'vuex'
   import { onMounted, ref, defineComponent, computed, PropType } from 'vue'
   import { Meal, MealNutrients } from '../../types/mealPlan.types'
+  import { mealBase } from '../../data/mealPlan.data'
+  import { useMealStore } from '@/stores/meals'
+  import { useConfigStore } from '@/stores/config'
 
   import SwipeActions from '@/components/swipe-actions/SwipeActions.vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
-  import { mealBase } from '../../data/mealPlan.data'
 
   export default defineComponent({
     name: 'CreateMeal',
@@ -120,7 +121,8 @@
     },
     emits: ['return'],
     setup(props, context) {
-      const store: Store<any> = useStore()
+      const configStore = useConfigStore()
+      const mealStore = useMealStore()
       const unitOptions: string[] = ['g', 'ml', 'units']
 
       const currentScreen = ref<number>(1)
@@ -133,14 +135,14 @@
       const progress = computed<number>(() => currentScreen.value * 50)
 
       const ingredientsList = computed<any[]>(() =>
-        store.state.recipe.ingredients.map((ingredient: any) => ({
+        mealStore.ingredients.map((ingredient: any) => ({
           title: ingredient.name,
           value: ingredient,
         }))
       )
 
       onMounted(async () => {
-        await store.dispatch('getIngredients')
+        await mealStore.getIngredients()
 
         if (props.editing && Object.keys(props.editingMeal).length > 0) {
           meal.value = props.editingMeal
@@ -218,13 +220,10 @@
 
       const addMeal = async (): Promise<void> => {
         setMealNutrients()
-        const res = await store.dispatch(
-          props.editing ? 'editRecipe' : 'addRecipe',
-          meal.value
-        )
+        const res = await mealStore[props.editing ? 'editRecipe' : 'addRecipe']
 
         if (res) {
-          store.commit('setSnackbar', {
+          configStore.$patch({
             color: '',
             text: `${meal.value.name} was ${
               props.editing ? 'updated' : 'created'

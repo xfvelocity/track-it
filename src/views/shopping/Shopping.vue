@@ -27,19 +27,19 @@
 
 <script lang="ts">
   import { defineComponent, ref, onBeforeMount } from 'vue'
-  import { useStore } from 'vuex'
-  import { ShoppingItem } from '@/store/types/shopping.types'
+  import { ShoppingItem } from '@/stores/types/shopping.types'
   import moment from 'moment'
+  import { useShoppingStore } from '@/stores/shopping'
 
   export default defineComponent({
     name: 'Shopping',
     setup() {
-      const store = useStore()
+      const shoppingStore = useShoppingStore()
 
-      const shoppingList = ref<ShoppingItem[]>(store.getters.getShopping)
+      const shoppingList = ref<ShoppingItem[]>(shoppingStore.shopping)
 
       onBeforeMount(async () => {
-        if (moment().day(0) !== store.state.shopping.date) {
+        if (moment().day(0) !== shoppingStore.date) {
           await getMealIngredients()
         }
       })
@@ -47,20 +47,19 @@
       const getMealIngredients = async (): Promise<void> => {
         let thisSunday = moment().day(0)
 
-        store.commit('setShopping', [])
+        shoppingStore.shopping = []
 
         // Get this week by comparing this sunday by next sunday
         while (thisSunday <= moment().day(7)) {
-          await store.dispatch(
-            'getShoppingRecipes',
+          await shoppingStore.getShoppingRecipes(
             moment(thisSunday).format('YYYY-MM-DD')
           )
+
           thisSunday = moment(thisSunday).add(1, 'days')
         }
 
-        store.commit('setShoppingLastUpdated', moment().day(0))
-
-        shoppingList.value = store.getters.getShopping
+        shoppingStore.lastUpdated = moment().day(0)
+        shoppingList.value = shoppingStore.shopping
       }
 
       const formatUnit = (unit: string): string => {

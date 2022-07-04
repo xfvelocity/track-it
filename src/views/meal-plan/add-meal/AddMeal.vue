@@ -37,13 +37,14 @@
 
 <script lang="ts">
   import { defineComponent, onBeforeMount, ref, computed } from 'vue'
-  import { Store, useStore } from 'vuex'
   import { Meal } from '../types/mealPlan.types'
+  import { useRoute } from 'vue-router'
+  import { useMealStore } from '@/stores/meals'
+  import router from '@/router'
 
   import RecipeCard from '../components/RecipeCard.vue'
   import CreateMeal from './create-meal/CreateMeal.vue'
-  import { useRoute } from 'vue-router'
-  import router from '@/router'
+  import { useConfigStore } from '@/stores/config'
 
   export default defineComponent({
     name: 'AddMeal',
@@ -52,7 +53,8 @@
       CreateMeal,
     },
     setup(props, context) {
-      const store: Store<any> = useStore()
+      const configStore = useConfigStore()
+      const mealStore = useMealStore()
       const route = useRoute()
 
       const mealList = ref<Meal[]>([])
@@ -62,7 +64,7 @@
       const search = ref<string>('')
 
       const getMeals = async (): Promise<void> => {
-        mealList.value = await store.dispatch('getRecipes')
+        mealList.value = await mealStore.getRecipes()
       }
 
       const editMeal = (meal: Meal): void => {
@@ -78,13 +80,9 @@
       }
 
       const addMeal = async (meal: Meal): Promise<void> => {
-        await store.dispatch('addMeal', {
-          meal,
-          time: route.query.time,
-          mealPlan: store.state.recipe.mealPlan,
-        })
+        await mealStore.addMeal(meal, route.query.time, mealStore.mealPlan)
 
-        store.commit('setSnackbar', {
+        configStore.$patch({
           color: '',
           text: `${meal.name} was added`,
           isVisible: true,
@@ -98,7 +96,7 @@
       )
 
       const deleteMeal = (meal: Meal): void => {
-        store.dispatch('delRecipe', meal)
+        mealStore.delRecipe(meal)
       }
 
       const backToggled = (): void => {

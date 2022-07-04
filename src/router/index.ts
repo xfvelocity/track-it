@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import store from '@/store'
 
 import Dashboard from '@/views/dashboard/Dashboard.vue'
 import Account from '@/views/account/Account.vue'
@@ -9,6 +8,8 @@ import Profile from '@/views/profile/Profile.vue'
 import Shopping from '@/views/shopping/Shopping.vue'
 import AddMeal from '@/views/meal-plan/add-meal/AddMeal.vue'
 import Meals from '@/views/meal-plan/meals/Meals.vue'
+import { useConfigStore } from '@/stores/config'
+import { useUserStore } from '@/stores/user'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -79,10 +80,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  const userStore = useUserStore()
+  const configStore = useConfigStore()
   document.title = `Track IT - ${String(to.name)}`
-  store.commit('setLoadingValue', false)
 
-  const isLoggedin: boolean = store.getters.getUser?.uid
+  configStore.loading.value = true
+
+  const isLoggedin: boolean = userStore.user.uid
   const isLogInPage: boolean = to.name === 'Login' || to.name === 'Sign up'
 
   if (isLoggedin) {

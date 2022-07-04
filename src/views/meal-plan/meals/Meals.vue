@@ -69,13 +69,14 @@
 
 <script lang="ts">
   import { defineComponent, onBeforeMount, ref, computed, watch } from 'vue'
-  import { Store, useStore } from 'vuex'
   import { Meal, MealPlan, MealNutrients } from '../types/mealPlan.types'
   import { nutrientsBase } from '../data/mealPlan.data'
   import { DatePicker } from 'v-calendar'
   import { useRouter } from 'vue-router'
+  import { useMealStore } from '@/stores/meals'
 
   import RecipeCard from '../components/RecipeCard.vue'
+  import { useUserStore } from '@/stores/user'
 
   export default defineComponent({
     name: 'Meals',
@@ -84,7 +85,8 @@
       DatePicker,
     },
     setup() {
-      const store: Store<any> = useStore()
+      const userStore = useUserStore()
+      const mealStore = useMealStore()
       const router = useRouter()
 
       const isAddMealOpen = ref<boolean>(false)
@@ -95,24 +97,22 @@
         'dinner',
       ]
       const nutrients = ref<MealNutrients>(nutrientsBase)
-      const nutrientGoals = ref<MealNutrients>(
-        store.getters.getUserData.nutrientGoals
-      )
+      const nutrientGoals = ref<MealNutrients>(userStore.nutrientGoals)
 
       onBeforeMount(async () => {
         const today: Date = new Date()
 
         // If meals were last updated a day ago - update with todays date
-        if (store.state.recipe.lastUpdated < today) {
+        if (mealStore.lastUpdated < today) {
           const [day, month, year] = today.toLocaleDateString().split('/')
 
           mealPlan.value.date = `${year}-${month}-${day}`
         }
 
-        await store.dispatch('getMeals', mealPlan.value.date)
+        await mealStore.getMeals(mealPlan.value.date)
       })
 
-      const mealPlan = computed<MealPlan>(() => store.state.recipe.mealPlan)
+      const mealPlan = computed<MealPlan>(() => mealStore.mealPlan)
 
       const toggleAddMealModal = (mealTime: string): void => {
         router.push({
@@ -127,7 +127,7 @@
       }
 
       const onDateChange = async (date: any): Promise<void> => {
-        await store.dispatch('getMeals', date.id)
+        await mealStore.getMeals(date.id)
       }
 
       const changeDate = (val: number): void => {
@@ -157,7 +157,7 @@
       }
 
       const deleteMeal = async (meal: Meal, time: string): Promise<void> => {
-        await store.dispatch('delMeal', {
+        await mealStore.delMeal({
           meal,
           mealPlan: mealPlan.value,
           time,

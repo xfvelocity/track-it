@@ -1,5 +1,5 @@
 import router from '@/router'
-import store from '@/store'
+import { useUserStore } from '@/stores/user'
 import {
   getAuth,
   signInWithPopup,
@@ -14,13 +14,9 @@ import {
 } from 'firebase/auth'
 
 export const signIn = (type: string): void => {
-  store.commit('setLoading', {
-    type: 'fullpage',
-    value: true,
-  })
-
   let provider: GoogleAuthProvider | FacebookAuthProvider | null = null
   const auth: Auth = getAuth()
+  const userStore = useUserStore()
 
   switch (type) {
     case 'google':
@@ -46,16 +42,12 @@ export const signIn = (type: string): void => {
         }
 
         if (credential) {
-          store.commit('setUser', result.user)
-
+          userStore.user = result.user
           router.push('/')
         }
       })
       .catch((error) => {
-        store.commit('setError', error)
-      })
-      .finally(() => {
-        store.commit('setLoadingValue', false)
+        // store.commit('setError', error)
       })
   }
 }
@@ -63,63 +55,41 @@ export const signIn = (type: string): void => {
 export const createEmailAccount = (email: string, password: string) => {
   const auth: Auth = getAuth()
 
-  store.commit('setLoading', {
-    type: 'fullpage',
-    value: true,
-  })
-
   createUserWithEmailAndPassword(auth, email, password)
     .then(() => {
       router.push('/account/login')
     })
     .catch((error) => {
-      store.commit('setError', error)
-    })
-    .finally(() => {
-      store.commit('setLoadingValue', false)
+      // store.commit('setError', error)
     })
 }
 
 export const signInEmailAccount = (email: string, password: string) => {
   const auth: Auth = getAuth()
-
-  store.commit('setLoading', {
-    type: 'fullpage',
-    value: true,
-  })
+  const userStore = useUserStore()
 
   signInWithEmailAndPassword(auth, email, password)
     .then((result: UserCredential) => {
       if (result) {
-        store.commit('setUser', result.user)
+        userStore.user = result.user
         router.push('/')
       }
     })
     .catch((error) => {
-      store.commit('setError', error)
-    })
-    .finally(() => {
-      store.commit('setLoadingValue', false)
+      // store.commit('setError', error)
     })
 }
 
 export const signUserOut = (): void => {
   const auth: Auth = getAuth()
-
-  store.commit('setLoading', {
-    type: 'fullpage',
-    value: true,
-  })
+  const userStore = useUserStore()
 
   signOut(auth)
     .then(() => {
-      store.commit('setUser', {})
+      userStore.$reset()
       router.push('/login')
     })
     .catch((error) => {
-      store.commit('setError', error)
-    })
-    .finally(() => {
-      store.commit('setLoadingValue', false)
+      // store.commit('setError', error)
     })
 }

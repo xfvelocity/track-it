@@ -1,11 +1,13 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import router from './router'
-import store from './store/index'
 import { registerSW } from 'virtual:pwa-register'
 import { initializeApp } from 'firebase/app'
 import VCalendar from 'v-calendar'
+
+const pinia = createPinia()
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCkXVGOHGuqrYX4gmuTONArkIFwkIU-6dE',
@@ -21,4 +23,4 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 registerSW()
 
-createApp(App).use(store).use(router).use(VCalendar).use(vuetify).mount('#app')
+createApp(App).use(router).use(VCalendar).use(vuetify).use(pinia).mount('#app')

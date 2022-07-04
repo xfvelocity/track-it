@@ -9,21 +9,21 @@
 </template>
 
 <script lang="ts">
+  import { useConfigStore } from '@/stores/config'
   import { defineComponent, watch, ref } from 'vue'
   import { Snackbar } from './types/Snackbar.types'
-  import { Store, useStore } from 'vuex'
 
   export default defineComponent({
     name: 'Snackbar',
     setup() {
-      const store: Store<any> = useStore()
-      const snackbar = ref<Snackbar>(store.state.config.snackbar)
+      const configStore = useConfigStore()
+      const snackbar = ref<Snackbar>(configStore.snackbar)
 
       watch(
-        () => store.state.config.snackbar.isVisible,
+        () => configStore.snackbar.isVisible,
         (isVisible) => {
           if (isVisible) {
-            snackbar.value = store.state.config.snackbar
+            snackbar.value = configStore.snackbar
           }
         }
       )
