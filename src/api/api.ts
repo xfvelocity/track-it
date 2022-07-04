@@ -30,7 +30,7 @@ export async function queryApi(
   const db: Firestore = getFirestore()
   const colref: CollectionReference<DocumentData> = collection(db, col)
 
-  store.commit('setLoading', true)
+  store.commit('setLoadingValue', true)
 
   const matchingQuery: Query<DocumentData> = query(
     colref,
@@ -50,7 +50,7 @@ export async function queryApi(
     }
   })
 
-  store.commit('setLoading', false)
+  store.commit('setLoadingValue', false)
 
   return true
 }
@@ -60,7 +60,7 @@ export default async function api(type: string, col: string, data?: any) {
   const db: Firestore = getFirestore()
   const colref: CollectionReference<DocumentData> = collection(db, col)
 
-  store.commit('setLoading', true)
+  store.commit('setLoadingValue', true)
 
   switch (type) {
     case 'GET':
@@ -92,7 +92,7 @@ export default async function api(type: string, col: string, data?: any) {
       break
   }
 
-  store.commit('setLoading', false)
+  store.commit('setLoadingValue', false)
 
   return res
 }

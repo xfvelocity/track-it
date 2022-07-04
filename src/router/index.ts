@@ -80,7 +80,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   document.title = `Track IT - ${String(to.name)}`
-  store.commit('setLoading', null)
+  store.commit('setLoadingValue', false)
 
   const isLoggedin: boolean = store.getters.getUser?.uid
   const isLogInPage: boolean = to.name === 'Login' || to.name === 'Sign up'

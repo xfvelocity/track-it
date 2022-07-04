@@ -1,13 +1,21 @@
 <template>
   <v-app theme="dark" app>
-    <div class="loading-bar">
+    <template v-if="loading?.value">
+      <v-overlay
+        v-if="loading.type === 'fullpage'"
+        class="d-flex justify-center align-center"
+        v-model="loading.value"
+      >
+        <v-progress-circular color="white" indeterminate size="64" />
+      </v-overlay>
       <v-progress-linear
-        v-if="isLoading"
-        color="green"
-        height="8"
+        v-else
+        color="blue-darken-2"
+        height="10"
         indeterminate
       />
-    </div>
+    </template>
+
     <Nav v-if="!hideNav" />
     <v-main>
       <router-view />
@@ -18,12 +26,14 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch, onMounted, computed } from 'vue'
+  import { defineComponent, onMounted, computed } from 'vue'
   import { Store, useStore } from 'vuex'
+  import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
+  import { Loading } from './store/types/config.types'
+
   import Nav from './components/nav/Nav.vue'
   import Snackbar from './components/snackbar/Snackbar.vue'
   import BottomNav from './components/bottom-nav/BottomNav.vue'
-  import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 
   export default defineComponent({
     name: 'App',
@@ -35,7 +45,8 @@
     setup() {
       const store: Store<any> = useStore()
       const route: RouteLocationNormalizedLoaded = useRoute()
-      const isLoading = ref<boolean>(false)
+
+      const loading = computed<Loading>(() => store.getters.getLoading)
 
       const setStoreInStorage = (): void => {
         store.commit('initialiseStore')
@@ -45,15 +56,8 @@
 
       onMounted(setStoreInStorage)
 
-      watch(
-        () => store.state.config.loading,
-        (loading) => {
-          isLoading.value = loading
-        }
-      )
-
       return {
-        isLoading,
+        loading,
         hideNav,
       }
     },

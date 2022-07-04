@@ -11,10 +11,14 @@ import {
   FacebookAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  User,
 } from 'firebase/auth'
 
 export const signIn = (type: string): void => {
+  store.commit('setLoading', {
+    type: 'fullpage',
+    value: true,
+  })
+
   let provider: GoogleAuthProvider | FacebookAuthProvider | null = null
   const auth: Auth = getAuth()
 
@@ -26,8 +30,6 @@ export const signIn = (type: string): void => {
       provider = new FacebookAuthProvider()
       break
   }
-
-  store.commit('setLoading', true)
 
   if (provider) {
     signInWithPopup(auth, provider)
@@ -53,7 +55,7 @@ export const signIn = (type: string): void => {
         store.commit('setError', error)
       })
       .finally(() => {
-        store.commit('setLoading', false)
+        store.commit('setLoadingValue', false)
       })
   }
 }
@@ -61,7 +63,10 @@ export const signIn = (type: string): void => {
 export const createEmailAccount = (email: string, password: string) => {
   const auth: Auth = getAuth()
 
-  store.commit('setLoading', true)
+  store.commit('setLoading', {
+    type: 'fullpage',
+    value: true,
+  })
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(() => {
@@ -71,14 +76,17 @@ export const createEmailAccount = (email: string, password: string) => {
       store.commit('setError', error)
     })
     .finally(() => {
-      store.commit('setLoading', false)
+      store.commit('setLoadingValue', false)
     })
 }
 
 export const signInEmailAccount = (email: string, password: string) => {
   const auth: Auth = getAuth()
 
-  store.commit('setLoading', true)
+  store.commit('setLoading', {
+    type: 'fullpage',
+    value: true,
+  })
 
   signInWithEmailAndPassword(auth, email, password)
     .then((result: UserCredential) => {
@@ -91,14 +99,17 @@ export const signInEmailAccount = (email: string, password: string) => {
       store.commit('setError', error)
     })
     .finally(() => {
-      store.commit('setLoading', false)
+      store.commit('setLoadingValue', false)
     })
 }
 
 export const signUserOut = (): void => {
   const auth: Auth = getAuth()
 
-  store.commit('setLoading', true)
+  store.commit('setLoading', {
+    type: 'fullpage',
+    value: true,
+  })
 
   signOut(auth)
     .then(() => {
@@ -109,6 +120,6 @@ export const signUserOut = (): void => {
       store.commit('setError', error)
     })
     .finally(() => {
-      store.commit('setLoading', false)
+      store.commit('setLoadingValue', false)
     })
 }
