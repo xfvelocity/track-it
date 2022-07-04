@@ -8,20 +8,21 @@ import {
 export default {
   state: {
     shopping: [],
-    range: {
-      start: '2022-04-01',
-      end: '2022-04-07',
-    },
+    date: '',
+    lastUpdated: '',
   },
   getters: {
     getShopping(state: ShoppingState): ShoppingItem[] {
       return state.shopping
     },
-    getRange(state: ShoppingState): ShoppingDateRange {
-      return state.range
-    },
   },
   mutations: {
+    setDate(state: ShoppingState, payload: string): void {
+      state.date = payload
+    },
+    setShoppingLastUpdated(state: ShoppingState, payload: Date): void {
+      state.lastUpdated = payload
+    },
     setShopping(state: ShoppingState, payload: ShoppingItem[]): void {
       if (!payload) return
 
@@ -53,9 +54,6 @@ export default {
           )
         )
       }
-    },
-    setRange(state: ShoppingState, payload: ShoppingDateRange): void {
-      state.range = payload
     },
   },
   actions: {

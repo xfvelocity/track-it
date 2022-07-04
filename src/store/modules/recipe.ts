@@ -33,7 +33,7 @@ export default {
     setIngredients(state: RecipeState, payload: any): void {
       state.ingredients = payload
     },
-    setLastUpdated(state: RecipeState, payload: Date): void {
+    setRecipeLastUpdated(state: RecipeState, payload: Date): void {
       state.lastUpdated = payload
     },
   },
@@ -102,7 +102,7 @@ export default {
       }
 
       const todaysDate: Date = new Date()
-      context.commit('setLastUpdated', todaysDate)
+      context.commit('setRecipeLastUpdated', todaysDate)
 
       if (!res || res?.error) {
         context.commit('setSnackbar', {

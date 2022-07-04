@@ -2,7 +2,8 @@ import { MealIngredients } from '@/views/meal-plan/types/mealPlan.types'
 
 export type ShoppingState = {
   shopping: ShoppingItem[]
-  range: ShoppingDateRange
+  date: string
+  lastUpdated: Date
 }
 
 export type ShoppingDateRange = {
