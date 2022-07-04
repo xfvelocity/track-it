@@ -8,6 +8,7 @@ export default {
     recipes: [],
     mealPlan: mealPlanBase,
     ingredients: [],
+    lastUpdated: '',
   },
   mutations: {
     setRecipe(state: RecipeState, payload: Meal | Meal[]): void {
@@ -29,8 +30,11 @@ export default {
 
       state.mealPlan = payload
     },
-    setIngredients(state: any, payload: any): void {
+    setIngredients(state: RecipeState, payload: any): void {
       state.ingredients = payload
+    },
+    setLastUpdated(state: RecipeState, payload: Date): void {
+      state.lastUpdated = payload
     },
   },
   actions: {
@@ -96,6 +100,9 @@ export default {
       if (context.state.mealPlan.date !== date) {
         context.state.mealPlan.date = date
       }
+
+      const todaysDate: Date = new Date()
+      context.commit('setLastUpdated', todaysDate)
 
       if (!res || res?.error) {
         context.commit('setSnackbar', {

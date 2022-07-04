@@ -100,6 +100,15 @@
       )
 
       onBeforeMount(async () => {
+        const today: Date = new Date()
+
+        // If meals were last updated a day ago - update with todays date
+        if (store.state.recipe.lastUpdated < today) {
+          const [day, month, year] = today.toLocaleDateString().split('/')
+
+          mealPlan.value.date = `${year}-${month}-${day}`
+        }
+
         await store.dispatch('getMeals', mealPlan.value.date)
       })
 
