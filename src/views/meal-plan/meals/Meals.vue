@@ -24,18 +24,14 @@
     </div>
 
     <div class="mt-4">
-      <div v-for="(key, i) in keys" :key="i" class="text-capitalize mb-6">
-        <div class="d-flex align-center">
+      <div v-for="(key, i) in keys" :key="i" class="text-capitalize mb-8">
+        <div
+          class="d-flex align-center cursor-pointer"
+          @click="toggleAddMealModal(key)"
+        >
           <h4>{{ key }}</h4>
           <v-spacer />
-          <v-icon
-            class="ml-1 cursor-pointer"
-            color="white"
-            size="small"
-            @click="toggleAddMealModal(key)"
-          >
-            mdi-plus
-          </v-icon>
+          <v-icon class="ml-1" color="white" size="small"> mdi-plus </v-icon>
         </div>
 
         <RecipeCard
@@ -53,8 +49,7 @@
           v-for="(nutrient, name, i) in nutrients"
           :key="i"
         >
-          <span class="font-weight-medium">{{ name }}:</span>
-          {{ nutrient }}
+          {{ name }}: {{ nutrient }}
         </p>
       </div>
 
@@ -65,17 +60,10 @@
           v-for="(nutrient, name, i) in nutrientGoals"
           :key="i"
         >
-          <span class="font-weight-medium">{{ name }}:</span>
-          {{ nutrient }}
+          {{ name }}: {{ nutrient }}
         </p>
       </div>
     </div>
-
-    <!-- <AddMeal
-      v-model="isAddMealOpen"
-      @meal-added="addMeal"
-      @close="isAddMealOpen = false"
-    /> -->
   </div>
 </template>
 
@@ -85,16 +73,14 @@
   import { Meal, MealPlan, MealNutrients } from '../types/mealPlan.types'
   import { nutrientsBase } from '../data/mealPlan.data'
   import { DatePicker } from 'v-calendar'
+  import { useRouter } from 'vue-router'
 
   import RecipeCard from '../components/RecipeCard.vue'
-  import AddMeal from '../add-meal/AddMeal.vue'
-  import { useRouter } from 'vue-router'
 
   export default defineComponent({
     name: 'Meals',
     components: {
       RecipeCard,
-      AddMeal,
       DatePicker,
     },
     setup() {
