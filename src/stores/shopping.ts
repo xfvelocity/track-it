@@ -65,4 +65,5 @@ export const useShoppingStore = defineStore('shopping', {
       return res
     },
   },
+  persist: true,
 })

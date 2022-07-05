@@ -10,4 +10,5 @@ export const useUserStore = defineStore('user', {
       fat: 95,
     },
   }),
+  persist: true,
 })

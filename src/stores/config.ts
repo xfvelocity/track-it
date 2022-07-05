@@ -13,4 +13,5 @@ export const useConfigStore = defineStore('config', {
     },
     error: {},
   }),
+  persist: true,
 })

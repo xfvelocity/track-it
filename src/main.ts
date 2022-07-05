@@ -6,8 +6,10 @@ import router from './router'
 import { registerSW } from 'virtual:pwa-register'
 import { initializeApp } from 'firebase/app'
 import VCalendar from 'v-calendar'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCkXVGOHGuqrYX4gmuTONArkIFwkIU-6dE',

@@ -179,4 +179,5 @@ export const useMealStore = defineStore('meals', {
       return true
     },
   },
+  persist: true,
 })
