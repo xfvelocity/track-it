@@ -52,16 +52,6 @@ export const useShoppingStore = defineStore('shopping', {
         'setShopping'
       )
 
-      if (!res || res?.error) {
-        // context.commit('setSnackbar', {
-        //   color: 'red',
-        //   text: `An error occured getting shopping ingredients, please try again.`,
-        //   isVisible: true,
-        // })
-
-        return false
-      }
-
       return res
     },
   },
