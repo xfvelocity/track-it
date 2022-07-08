@@ -3,7 +3,7 @@
     content-class=" text-center font-weight-medium text-white text-ellipsis"
     v-model="snackbar.isVisible"
     :color="snackbar.color"
-    timeout="200000"
+    timeout="2000"
     class="snackbar"
   >
     {{ snackbar.text }}
