@@ -1,6 +1,7 @@
 import api, { queryApi } from '@/api/api'
 import { mealPlanBase } from '@/views/meal-plan/data/mealPlan.data'
 import { Meal, MealPlan } from '@/views/meal-plan/types/mealPlan.types'
+import moment from 'moment'
 import { defineStore } from 'pinia'
 
 export const useMealStore = defineStore('meals', {
@@ -54,8 +55,7 @@ export const useMealStore = defineStore('meals', {
         this.mealPlan.date = date
       }
 
-      const todaysDate: Date = new Date()
-      this.lastUpdated = todaysDate
+      this.lastUpdated = moment().format('YYYY-MM-DD')
     },
     async delMeal(
       meal: Meal,

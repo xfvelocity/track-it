@@ -77,6 +77,7 @@
 
   import RecipeCard from '../components/RecipeCard.vue'
   import { useUserStore } from '@/stores/user'
+  import moment from 'moment'
 
   export default defineComponent({
     name: 'Meals',
@@ -100,13 +101,15 @@
       const nutrientGoals = ref<MealNutrients>(userStore.nutrientGoals)
 
       onBeforeMount(async () => {
-        const today: Date = new Date()
+        const today: string = moment().format('YYYY-MM-DD')
+        const isBefore: boolean = moment(mealStore.lastUpdated).isBefore(
+          today,
+          'day'
+        )
 
         // If meals were last updated a day ago - update with todays date
-        if (mealStore.lastUpdated < today) {
-          const [day, month, year] = today.toLocaleDateString().split('/')
-
-          mealPlan.value.date = `${year}-${month}-${day}`
+        if (isBefore) {
+          mealPlan.value.date = today
         }
 
         await mealStore.getMeals(mealPlan.value.date)

@@ -7,10 +7,10 @@
       </div>
 
       <v-spacer />
-      <!-- 
+
       <v-icon class="cursor-pointer" @click="getMealIngredients">
         mdi-refresh
-      </v-icon> -->
+      </v-icon>
     </div>
 
     <div>
@@ -39,7 +39,7 @@
       const shoppingList = ref<ShoppingItem[]>(shoppingStore.shopping)
 
       onBeforeMount(async () => {
-        if (moment().day(0) !== shoppingStore.date) {
+        if (moment().day(0).format('YYYY-MM-DD') !== shoppingStore.date) {
           await getMealIngredients()
         }
       })

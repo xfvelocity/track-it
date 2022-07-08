@@ -59,7 +59,8 @@ export const useShoppingStore = defineStore('shopping', {
         }
       )
 
-      this.lastUpdated = new Date()
+      this.date = moment().day(0).format('YYYY-MM-DD')
+      this.lastUpdated = moment().format('YYYY-MM-DD')
 
       res.forEach((r) => this.setShopping(r))
     },
