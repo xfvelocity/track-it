@@ -33,6 +33,35 @@ export async function queryApi(
     colref,
     where(queryData.where, queryData.operator, queryData.value)
   )
+
+  const results: QuerySnapshot<DocumentData> = await getDocs(matchingQuery)
+
+  return results.docs.map((doc: any) =>
+    'id' in doc.data() ? doc.data() : { id: doc.id, ...doc.data() }
+  )
+}
+
+export async function queryRangeApi(
+  col: string,
+  queryOne: {
+    where: string
+    operator: WhereFilterOp
+    value: string
+  },
+  queryTwo: {
+    where: string
+    operator: WhereFilterOp
+    value: string
+  }
+) {
+  const db: Firestore = getFirestore()
+  const colref: CollectionReference<DocumentData> = collection(db, col)
+  const matchingQuery: Query<DocumentData> = query(
+    colref,
+    where(queryOne.where, queryOne.operator, queryOne.value),
+    where(queryTwo.where, queryTwo.operator, queryTwo.value)
+  )
+
   const results: QuerySnapshot<DocumentData> = await getDocs(matchingQuery)
 
   return results.docs.map((doc: any) =>

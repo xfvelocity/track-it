@@ -49,10 +49,10 @@
       const loggedInUser = computed<User>(() => userStore.user)
 
       const menuOptions: MenuItem[] = [
-        {
-          text: 'My Profile',
-          route: '/profile',
-        },
+        // {
+        //   text: 'My Profile',
+        //   route: '/profile',
+        // },
         {
           text: 'Sign Out',
           event: signUserOut,
@@ -110,5 +110,10 @@
         border-radius: 50%;
       }
     }
+  }
+
+  .v-list {
+    background: white !important;
+    color: black;
   }
 </style>

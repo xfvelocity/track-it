@@ -45,20 +45,7 @@
       })
 
       const getMealIngredients = async (): Promise<void> => {
-        let thisSunday = moment().day(0)
-
-        shoppingStore.shopping = []
-
-        // Get this week by comparing this sunday by next sunday
-        while (thisSunday <= moment().day(7)) {
-          await shoppingStore.getShoppingRecipes(
-            moment(thisSunday).format('YYYY-MM-DD')
-          )
-
-          thisSunday = moment(thisSunday).add(1, 'days')
-        }
-
-        shoppingStore.lastUpdated = moment().day(0)
+        await shoppingStore.getShoppingRecipes()
         shoppingList.value = shoppingStore.shopping
       }
 

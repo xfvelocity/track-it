@@ -1,4 +1,5 @@
-import { queryApi } from '@/api/api'
+import { queryRangeApi } from '@/api/api'
+import moment from 'moment'
 import { defineStore } from 'pinia'
 import { ShoppingItem } from './types/shopping.types'
 
@@ -41,16 +42,26 @@ export const useShoppingStore = defineStore('shopping', {
         )
       }
     },
-    async getShoppingRecipes(date: string): Promise<any> {
-      const res: any = await queryApi('meals', {
-        where: 'date',
-        operator: '==',
-        value: date,
-      })
+    async getShoppingRecipes(): Promise<void> {
+      this.shopping = []
 
-      this.setShopping(res[0])
+      const res: any[] = await queryRangeApi(
+        'meals',
+        {
+          where: 'date',
+          operator: '>=',
+          value: moment().day(0).format('YYYY-MM-DD'),
+        },
+        {
+          where: 'date',
+          operator: '<',
+          value: moment().day(7).format('YYYY-MM-DD'),
+        }
+      )
 
-      return res
+      this.lastUpdated = new Date()
+
+      res.forEach((r) => this.setShopping(r))
     },
   },
   persist: true,
