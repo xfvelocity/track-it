@@ -48,7 +48,7 @@ export const useShoppingStore = defineStore('shopping', {
         value: date,
       })
 
-      this.setShopping(res)
+      this.setShopping(res[0])
 
       return res
     },
