@@ -1,3 +1,4 @@
+import { useConfigStore } from '@/stores/config'
 import {
   getFirestore,
   collection,
@@ -14,7 +15,7 @@ import {
   query,
   Query,
   WhereFilterOp,
-  onSnapshot,
+  QuerySnapshot,
 } from 'firebase/firestore'
 
 export async function queryApi(
@@ -23,8 +24,7 @@ export async function queryApi(
     where: string
     operator: WhereFilterOp
     value: string
-  },
-  storeLocation: string
+  }
 ) {
   const db: Firestore = getFirestore()
   const colref: CollectionReference<DocumentData> = collection(db, col)
@@ -33,56 +33,64 @@ export async function queryApi(
     colref,
     where(queryData.where, queryData.operator, queryData.value)
   )
+  const results: QuerySnapshot<DocumentData> = await getDocs(matchingQuery)
 
-  onSnapshot(matchingQuery, (snapshot) => {
-    if (snapshot && snapshot?.docs.length > 0) {
-      snapshot.docs.forEach((doc) => {
-        // store.commit(
-        //   storeLocation,
-        //   'id' in doc.data() ? doc.data() : { id: doc.id, ...doc.data() }
-        // )
-      })
-    } else {
-      // store.commit(storeLocation, null)
-    }
-  })
-
-  return true
+  return results.docs.map((doc: any) =>
+    'id' in doc.data() ? doc.data() : { id: doc.id, ...doc.data() }
+  )
 }
 
 export default async function api(type: string, col: string, data?: any) {
-  let res: any
+  let res: any = null
+  let error: boolean = false
+  const configStore = useConfigStore()
   const db: Firestore = getFirestore()
   const colref: CollectionReference<DocumentData> = collection(db, col)
 
-  switch (type) {
+  switch (type.toUpperCase()) {
     case 'GET':
       res = await getDocs(colref)
         .then((snapshot) =>
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         )
-        .catch((err) => ({ error: err }))
+        .catch(() => {
+          error = true
+        })
       break
 
     case 'POST':
       res = await addDoc(colref, data)
-        .then(() => ({}))
-        .catch((err) => ({ error: err }))
+        .then(() => true)
+        .catch(() => {
+          error = true
+        })
       break
 
     case 'DEL':
       const delRef: DocumentReference<DocumentData> = doc(db, col, data)
       res = await deleteDoc(delRef)
-        .then(() => ({}))
-        .catch((err) => ({ error: err }))
+        .then(() => true)
+        .catch(() => {
+          error = true
+        })
       break
 
     case 'PUT':
       const updRef: DocumentReference<DocumentData> = doc(db, col, data.id)
       res = await updateDoc(updRef, data)
-        .then(() => ({}))
-        .catch((err) => ({ error: err }))
+        .then(() => true)
+        .catch(() => {
+          error = true
+        })
       break
+  }
+
+  if (error) {
+    configStore.snackbar = {
+      color: 'red',
+      text: `An error occured, please try again.`,
+      isVisible: true,
+    }
   }
 
   return res

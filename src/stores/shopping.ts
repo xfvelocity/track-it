@@ -42,15 +42,13 @@ export const useShoppingStore = defineStore('shopping', {
       }
     },
     async getShoppingRecipes(date: string): Promise<any> {
-      const res: any = await queryApi(
-        'meals',
-        {
-          where: 'date',
-          operator: '==',
-          value: date,
-        },
-        'setShopping'
-      )
+      const res: any = await queryApi('meals', {
+        where: 'date',
+        operator: '==',
+        value: date,
+      })
+
+      this.setShopping(res)
 
       return res
     },

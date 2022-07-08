@@ -1,6 +1,6 @@
 <template>
   <v-snackbar
-    content-class="text-center font-weight-medium text-white"
+    content-class="text-center font-weight-medium text-white text-ellipsis"
     v-model="snackbar.isVisible"
     :color="snackbar.color"
   >

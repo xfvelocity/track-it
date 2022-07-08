@@ -220,7 +220,9 @@
 
       const addMeal = async (): Promise<void> => {
         setMealNutrients()
-        const res = await mealStore[props.editing ? 'editRecipe' : 'addRecipe']
+        const res = await mealStore[props.editing ? 'editRecipe' : 'addRecipe'](
+          meal.value
+        )
 
         if (res) {
           configStore.$patch({

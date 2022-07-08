@@ -2,7 +2,7 @@
 
 This will be a new version of my previously developed "Gym Tracker". This is a dashboard to allow for users to easily see their progress at a glance with high levels of customisation
 
-Production: https://gymprogresstracker.com \
+Production: https://track-it-7f82b.web.app/ \
 Development: N/A \
 \
 Design: https://www.figma.com/file/KOV22iCoPwxCdkzgeDubL9/Track-IT?node-id=0%3A1 \

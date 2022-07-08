@@ -6,7 +6,7 @@ import { defineStore } from 'pinia'
 export const useMealStore = defineStore('meals', {
   state: (): any => ({
     recipes: [],
-    mealPlan: mealPlanBase,
+    mealPlan: { ...mealPlanBase },
     ingredients: [],
     lastUpdated: '',
   }),
@@ -34,16 +34,21 @@ export const useMealStore = defineStore('meals', {
 
       this.ingredients = res
     },
-    async getMeals(date: string): Promise<MealPlan | boolean> {
-      const res: any = await queryApi(
-        'meals',
-        {
-          where: 'date',
-          operator: '==',
-          value: date,
-        },
-        'setCurrentMealPlan'
-      )
+    async getMeals(date: string): Promise<void> {
+      let res: any = await queryApi('meals', {
+        where: 'date',
+        operator: '==',
+        value: date,
+      })
+
+      if (!res.length) {
+        res = JSON.parse(JSON.stringify(mealPlanBase))
+        res.date = this.mealPlan.date
+
+        this.mealPlan = res
+      } else {
+        this.mealPlan = res[0]
+      }
 
       if (this.mealPlan.date !== date) {
         this.mealPlan.date = date
@@ -51,12 +56,6 @@ export const useMealStore = defineStore('meals', {
 
       const todaysDate: Date = new Date()
       this.lastUpdated = todaysDate
-
-      if (!res || res?.error) {
-        return false
-      }
-
-      return res
     },
     async delMeal(
       meal: Meal,

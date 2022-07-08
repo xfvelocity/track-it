@@ -40,11 +40,11 @@
   import { Meal } from '../types/mealPlan.types'
   import { useRoute } from 'vue-router'
   import { useMealStore } from '@/stores/meals'
+  import { useConfigStore } from '@/stores/config'
   import router from '@/router'
 
   import RecipeCard from '../components/RecipeCard.vue'
   import CreateMeal from './create-meal/CreateMeal.vue'
-  import { useConfigStore } from '@/stores/config'
 
   export default defineComponent({
     name: 'AddMeal',
@@ -80,13 +80,13 @@
       }
 
       const addMeal = async (meal: Meal): Promise<void> => {
-        await mealStore.addMeal(meal, route.query.time, mealStore.mealPlan)
+        await mealStore.addMeal(route.query.time, meal, mealStore.mealPlan)
 
-        configStore.$patch({
-          color: '',
-          text: `${meal.name} was added`,
+        configStore.snackbar = {
+          color: 'green',
+          text: `${meal.name} added for ${route.query.time}`,
           isVisible: true,
-        })
+        }
       }
 
       const filteredMeals = computed<Meal[]>(() =>
