@@ -157,11 +157,7 @@
       }
 
       const deleteMeal = async (meal: Meal, time: string): Promise<void> => {
-        await mealStore.delMeal({
-          meal,
-          mealPlan: mealPlan.value,
-          time,
-        })
+        await mealStore.delMeal(meal, mealPlan.value, time)
       }
 
       watch(mealPlan, calculateNutrients)

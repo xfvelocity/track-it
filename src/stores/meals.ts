@@ -29,7 +29,7 @@ export const useMealStore = defineStore('meals', {
     async addIngredients(ingredient: any): Promise<void> {
       await api('POST', 'ingredients', ingredient)
     },
-    async getIngredients(context: any): Promise<void> {
+    async getIngredients(): Promise<void> {
       const res = await api('GET', 'ingredients')
 
       this.ingredients = res
@@ -61,13 +61,11 @@ export const useMealStore = defineStore('meals', {
       meal: Meal,
       mealPlan: MealPlan,
       time: 'breakfast' | 'lunch' | 'dinner'
-    ): Promise<boolean> {
+    ): Promise<void> {
       const matchingIndex: number = mealPlan[time].indexOf(meal)
       mealPlan[time].splice(matchingIndex, 1)
 
-      const res: any = await api('PUT', 'meals', mealPlan)
-
-      return true
+      await api('PUT', 'meals', mealPlan)
     },
     async addRecipe(meal: Meal): Promise<boolean> {
       const res: any = await api('POST', 'recipes', meal)

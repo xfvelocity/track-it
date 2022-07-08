@@ -7,10 +7,10 @@
       </div>
 
       <v-spacer />
-
+      <!-- 
       <v-icon class="cursor-pointer" @click="getMealIngredients">
         mdi-refresh
-      </v-icon>
+      </v-icon> -->
     </div>
 
     <div>
