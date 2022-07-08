@@ -1,8 +1,10 @@
 <template>
   <v-snackbar
-    content-class="text-center font-weight-medium text-white text-ellipsis"
+    content-class=" text-center font-weight-medium text-white text-ellipsis"
     v-model="snackbar.isVisible"
     :color="snackbar.color"
+    timeout="200000"
+    class="snackbar"
   >
     {{ snackbar.text }}
   </v-snackbar>
@@ -17,15 +19,12 @@
     name: 'Snackbar',
     setup() {
       const configStore = useConfigStore()
+
       const snackbar = ref<Snackbar>(configStore.snackbar)
 
       watch(
-        () => configStore.snackbar.isVisible,
-        (isVisible) => {
-          if (isVisible) {
-            snackbar.value = configStore.snackbar
-          }
-        }
+        () => configStore.snackbar,
+        (value) => (snackbar.value = value)
       )
 
       return {
@@ -34,3 +33,11 @@
     },
   })
 </script>
+
+<style lang="scss">
+  .snackbar {
+    .v-overlay__content {
+      bottom: 20px !important;
+    }
+  }
+</style>

@@ -20,7 +20,6 @@
     <v-main>
       <router-view />
     </v-main>
-    <BottomNav v-if="!hideNav" />
     <Snackbar />
   </v-app>
 </template>
@@ -33,14 +32,12 @@
 
   import Nav from './components/nav/Nav.vue'
   import Snackbar from './components/snackbar/Snackbar.vue'
-  import BottomNav from './components/bottom-nav/BottomNav.vue'
 
   export default defineComponent({
     name: 'App',
     components: {
       Nav,
       Snackbar,
-      BottomNav,
     },
     setup() {
       const configStore = useConfigStore()

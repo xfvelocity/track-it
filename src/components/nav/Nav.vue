@@ -1,42 +1,41 @@
 <template>
-  <nav class="nav d-flex justify-space-between mt-4 mb-6">
+  <nav class="nav d-flex align-center justify-space-between mt-4 mb-6">
     <span class="nav__title d-flex align-center" @click="$router.push('/')">
       <img src="/img/icons/logo.svg" />
       <h1>Track IT</h1>
     </span>
 
-    <v-menu anchor="bottom">
-      <template v-slot:activator="{ props }">
-        <span class="nav__user d-flex align-center" v-bind="props">
-          <img
-            v-if="loggedInUser.photoURL"
-            :src="loggedInUser.photoURL"
-            alt=""
-          />
-        </span>
-      </template>
-
-      <v-card class="mt-4" color="white">
-        <v-list color="white">
-          <v-list-item
-            v-for="(option, i) in menuOptions"
-            selectable
-            :key="i"
-            @click="handleMenuClick(option)"
-          >
-            {{ option.text }}
-          </v-list-item>
-        </v-list>
-      </v-card>
-    </v-menu>
+    <v-icon @click="isNavOpen = !isNavOpen">mdi-menu</v-icon>
   </nav>
+
+  <v-navigation-drawer v-model="isNavOpen" location="right" color="cardBlue">
+    <v-list class="mt-8" color="cardBlue">
+      <v-list-item
+        v-for="(option, i) in menuOptions"
+        selectable
+        :key="i"
+        @click="handleMenuClick(option)"
+      >
+        <v-icon class="mr-2"> {{ option.icon }}</v-icon>
+        {{ option.text }}
+      </v-list-item>
+    </v-list>
+
+    <template #append>
+      <v-list class="mb-8" color="cardBlue">
+        <v-list-item selectable @click="signUserOut">
+          <v-icon class="mr-2">mdi-logout</v-icon> Sign Out
+        </v-list-item>
+      </v-list>
+    </template>
+  </v-navigation-drawer>
 </template>
 
 <script lang="ts">
+  import { defineComponent, computed, ref } from 'vue'
   import { signUserOut } from '@/api/auth'
   import { useUserStore } from '@/stores/user'
   import { User } from 'firebase/auth'
-  import { defineComponent, computed } from 'vue'
   import { Router, useRouter } from 'vue-router'
   import { MenuItem } from './types/Nav.types'
 
@@ -46,16 +45,20 @@
       const userStore = useUserStore()
       const router: Router = useRouter()
 
+      const isNavOpen = ref<boolean>(false)
+
       const loggedInUser = computed<User>(() => userStore.user)
 
       const menuOptions: MenuItem[] = [
-        // {
-        //   text: 'My Profile',
-        //   route: '/profile',
-        // },
         {
-          text: 'Sign Out',
-          event: signUserOut,
+          text: 'Meal Plan',
+          route: '/meal-plan/meals',
+          icon: 'mdi-food',
+        },
+        {
+          text: 'Shopping',
+          route: '/shopping',
+          icon: 'mdi-format-list-checks',
         },
       ]
 
@@ -68,8 +71,10 @@
       }
 
       return {
+        isNavOpen,
         loggedInUser,
         menuOptions,
+        signUserOut,
         handleMenuClick,
       }
     },
@@ -113,7 +118,7 @@
   }
 
   .v-list {
-    background: white !important;
-    color: black;
+    background: #2b2066 !important;
+    color: white;
   }
 </style>
