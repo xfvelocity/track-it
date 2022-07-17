@@ -220,22 +220,18 @@
 
       const addMeal = async (): Promise<void> => {
         setMealNutrients()
-        const res = await mealStore[props.editing ? 'editRecipe' : 'addRecipe'](
-          meal.value
-        )
+        await mealStore[props.editing ? 'editRecipe' : 'addRecipe'](meal.value)
 
-        if (res) {
-          configStore.$patch({
-            color: '',
-            text: `${meal.value.name} was ${
-              props.editing ? 'updated' : 'created'
-            }`,
-            isVisible: true,
-          })
+        configStore.$patch({
+          color: '',
+          text: `${meal.value.name} was ${
+            props.editing ? 'updated' : 'created'
+          }`,
+          isVisible: true,
+        })
 
-          meal.value = { ...mealBase }
-          context.emit('return')
-        }
+        meal.value = { ...mealBase }
+        context.emit('return')
       }
 
       const backScreen = (): void => {

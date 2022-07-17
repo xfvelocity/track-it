@@ -16,24 +16,16 @@ export const useMealStore = defineStore('meals', {
       time: 'breakfast' | 'lunch' | 'dinner',
       meal: Meal,
       mealPlan: MealPlan
-    ): Promise<boolean> {
-      let res: any
-      let formattedPayload: MealPlan
-
+    ): Promise<void> {
       mealPlan[time].push(meal)
-      formattedPayload = mealPlan
 
-      res = await api(mealPlan.id ? 'PUT' : 'POST', 'meals', formattedPayload)
-
-      return true
+      await api(mealPlan.id ? 'PUT' : 'POST', 'meals', mealPlan)
     },
     async addIngredients(ingredient: any): Promise<void> {
       await api('POST', 'ingredients', ingredient)
     },
     async getIngredients(): Promise<void> {
-      const res = await api('GET', 'ingredients')
-
-      this.ingredients = res
+      this.ingredients = await api('GET', 'ingredients')
     },
     async getMeals(date: string): Promise<void> {
       let res: any = await queryApi('meals', {
@@ -67,8 +59,8 @@ export const useMealStore = defineStore('meals', {
 
       await api('PUT', 'meals', mealPlan)
     },
-    async addRecipe(meal: Meal): Promise<boolean> {
-      const res: any = await api('POST', 'recipes', meal)
+    async addRecipe(meal: Meal): Promise<void> {
+      await api('POST', 'recipes', meal)
 
       meal.ingredients.forEach((ingredient) => {
         const matchingIngredient = this.ingredients.find(
@@ -81,27 +73,21 @@ export const useMealStore = defineStore('meals', {
       })
 
       this.recipes.push(meal)
-
-      return true
     },
     async getRecipes(): Promise<Meal[] | boolean> {
       const res: any = await api('GET', 'recipes')
 
       this.recipes = res
+
       return res
     },
-    async editRecipe(meal: Meal): Promise<boolean> {
-      const res: any = await api('PUT', 'recipes', meal)
-
-      //   context.commit('editRecipe', meal)
-      return true
+    async editRecipe(meal: Meal): Promise<void> {
+      await api('PUT', 'recipes', meal)
     },
-    async delRecipe(recipe: Meal): Promise<boolean> {
-      const res: any = await api('DEL', 'recipes', recipe.id)
+    async delRecipe(recipe: Meal): Promise<void> {
+      await api('DEL', 'recipes', recipe.id)
 
       this.recipes.splice(this.recipes.indexOf(recipe), 1)
-
-      return true
     },
   },
   persist: true,

@@ -95,8 +95,8 @@
         )
       )
 
-      const deleteMeal = (meal: Meal): void => {
-        mealStore.delRecipe(meal)
+      const deleteMeal = async (meal: Meal): Promise<void> => {
+        await mealStore.delRecipe(meal)
       }
 
       const backToggled = (): void => {
