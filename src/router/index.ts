@@ -1,21 +1,17 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-
-import Dashboard from '@/views/dashboard/Dashboard.vue'
-import Account from '@/views/account/Account.vue'
-import SignInContainer from '@/views/account/components/SignInContainer.vue'
-import MealPlan from '@/views/meal-plan/MealPlan.vue'
-import Profile from '@/views/profile/Profile.vue'
-import Shopping from '@/views/shopping/Shopping.vue'
-import AddMeal from '@/views/meal-plan/add-meal/AddMeal.vue'
-import Meals from '@/views/meal-plan/meals/Meals.vue'
 import { useConfigStore } from '@/stores/config'
 import { useUserStore } from '@/stores/user'
 
-const routes: Array<RouteRecordRaw> = [
+import Account from '@/views/account/Account.vue'
+import SignInContainer from '@/views/account/components/SignInContainer.vue'
+import MealPlan from '@/views/meal-plan/MealPlan.vue'
+import Shopping from '@/views/shopping/Shopping.vue'
+import AddMeal from '@/views/meal-plan/add-meal/AddMeal.vue'
+import Meals from '@/views/meal-plan/meals/Meals.vue'
+
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'Dashboard',
-    component: Dashboard,
     redirect: () => '/meal-plan/meals',
   },
   {
@@ -60,12 +56,6 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
     ],
-  },
-
-  {
-    path: '/profile',
-    component: Profile,
-    name: 'Profile',
   },
   {
     path: '/shopping',
