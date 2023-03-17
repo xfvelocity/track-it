@@ -96,9 +96,11 @@
     },
     emits: ['edit', 'delete', 'meal-added'],
     setup(props, context) {
+      // ** Data **
       const infoModal = ref<boolean>(false)
       const selectedMeal = ref<Meal>()
 
+      // ** Methods **
       const addMeal = (meal: Meal): void => {
         context.emit('meal-added', meal)
       }

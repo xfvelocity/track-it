@@ -42,12 +42,11 @@
   export default defineComponent({
     name: 'Nav',
     setup() {
+      // ** Data **
       const userStore = useUserStore()
       const router: Router = useRouter()
 
       const isNavOpen = ref<boolean>(false)
-
-      const loggedInUser = computed<User>(() => userStore.user)
 
       const menuOptions: MenuItem[] = [
         {
@@ -62,6 +61,10 @@
         },
       ]
 
+      // ** Computed **
+      const loggedInUser = computed<User>(() => userStore.user)
+
+      // ** Methods **
       const handleMenuClick = (option: MenuItem): void => {
         if (option.route) {
           router.push(option.route)

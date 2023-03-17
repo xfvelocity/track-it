@@ -59,6 +59,7 @@
     },
     emits: ['update:modelValue', 'confirmed'],
     setup(props, context) {
+      // ** Methods **
       const closeModal = (clickOutsidePersistent: boolean): void => {
         if (clickOutsidePersistent) return
 

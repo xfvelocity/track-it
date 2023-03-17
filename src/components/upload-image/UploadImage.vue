@@ -45,9 +45,11 @@
       },
     },
     setup(props, context) {
+      // ** Data **
       const editingImage = ref<boolean>(false)
       const photo = ref<HTMLElement | null>(null)
 
+      // ** Methods **
       const initCamera = (): void => {
         return
         if (photo.value) photo.value.click()

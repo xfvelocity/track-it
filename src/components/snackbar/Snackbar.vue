@@ -18,10 +18,12 @@
   export default defineComponent({
     name: 'Snackbar',
     setup() {
+      // ** Data **
       const configStore = useConfigStore()
 
       const snackbar = ref<Snackbar>(configStore.snackbar)
 
+      // ** Watchers **
       watch(
         () => configStore.snackbar,
         (value) => (snackbar.value = value)

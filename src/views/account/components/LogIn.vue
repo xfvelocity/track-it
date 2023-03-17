@@ -54,12 +54,14 @@
       Form,
     },
     setup() {
+      // ** Data **
       const showPassword = ref<boolean>(false)
       const logInDetails = ref<LogInForm>({
         email: '',
         password: '',
       })
 
+      // ** Methods **
       const logIn = async (validateFn: Function): Promise<void> => {
         const valid: ValidationResult = await validateFn()
 

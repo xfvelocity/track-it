@@ -34,16 +34,12 @@
   export default defineComponent({
     name: 'Shopping',
     setup() {
+      // ** Data **
       const shoppingStore = useShoppingStore()
 
       const shoppingList = ref<ShoppingItem[]>(shoppingStore.shopping)
 
-      onBeforeMount(async () => {
-        if (moment().day(0).format('YYYY-MM-DD') !== shoppingStore.date) {
-          await getMealIngredients()
-        }
-      })
-
+      // ** Methods **
       const getMealIngredients = async (): Promise<void> => {
         await shoppingStore.getShoppingRecipes()
         shoppingList.value = shoppingStore.shopping
@@ -52,6 +48,13 @@
       const formatUnit = (unit: string): string => {
         return unit === 'units' ? '' : unit
       }
+
+      // ** Lifecycle **
+      onBeforeMount(async () => {
+        if (moment().day(0).format('YYYY-MM-DD') !== shoppingStore.date) {
+          await getMealIngredients()
+        }
+      })
 
       return {
         shoppingList,

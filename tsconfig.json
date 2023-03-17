@@ -9,7 +9,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
-    "types": ["@vuetify/nightly", "node"],
+    "types": ["vuetify", "node"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

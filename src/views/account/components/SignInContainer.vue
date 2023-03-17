@@ -35,7 +35,10 @@
       SignUp,
     },
     setup() {
+      // ** Data **
       const route: RouteLocationNormalized = useRoute()
+
+      // ** Computed **
       const isSignUp = computed<boolean>(() => route.name === 'Sign up')
 
       return {

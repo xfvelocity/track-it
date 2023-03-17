@@ -53,6 +53,7 @@
       CreateMeal,
     },
     setup(props, context) {
+      // ** Data **
       const configStore = useConfigStore()
       const mealStore = useMealStore()
       const route = useRoute()
@@ -63,6 +64,14 @@
       const isEditing = ref<boolean>(false)
       const search = ref<string>('')
 
+      // ** Computed **
+      const filteredMeals = computed<Meal[]>(() =>
+        mealList.value.filter((x) =>
+          x.name.toLowerCase().includes(search.value.toLowerCase())
+        )
+      )
+
+      // ** Methods **
       const getMeals = async (): Promise<void> => {
         mealList.value = await mealStore.getRecipes()
       }
@@ -89,12 +98,6 @@
         }
       }
 
-      const filteredMeals = computed<Meal[]>(() =>
-        mealList.value.filter((x) =>
-          x.name.toLowerCase().includes(search.value.toLowerCase())
-        )
-      )
-
       const deleteMeal = async (meal: Meal): Promise<void> => {
         await mealStore.delRecipe(meal)
       }
@@ -107,6 +110,7 @@
         }
       }
 
+      // ** Lifecycle **
       onBeforeMount(getMeals)
 
       return {

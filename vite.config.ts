@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 import { join } from 'path'
+
+import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   mode: 'development',

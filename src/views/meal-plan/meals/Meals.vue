@@ -74,9 +74,9 @@
   import { DatePicker } from 'v-calendar'
   import { useRouter } from 'vue-router'
   import { useMealStore } from '@/stores/meals'
+  import { useUserStore } from '@/stores/user'
 
   import RecipeCard from '../components/RecipeCard.vue'
-  import { useUserStore } from '@/stores/user'
   import moment from 'moment'
 
   export default defineComponent({
@@ -86,6 +86,7 @@
       DatePicker,
     },
     setup() {
+      // ** Data **
       const userStore = useUserStore()
       const mealStore = useMealStore()
       const router = useRouter()
@@ -100,23 +101,10 @@
       const nutrients = ref<MealNutrients>(nutrientsBase)
       const nutrientGoals = ref<MealNutrients>(userStore.nutrientGoals)
 
-      onBeforeMount(async () => {
-        const today: string = moment().format('YYYY-MM-DD')
-        const isBefore: boolean = moment(mealStore.lastUpdated).isBefore(
-          today,
-          'day'
-        )
-
-        // If meals were last updated a day ago - update with todays date
-        if (isBefore) {
-          mealPlan.value.date = today
-        }
-
-        await mealStore.getMeals(mealPlan.value.date)
-      })
-
+      // ** Computed **
       const mealPlan = computed<MealPlan>(() => mealStore.mealPlan)
 
+      // ** Methods **
       const toggleAddMealModal = (mealTime: string): void => {
         router.push({
           path: '/meal-plan/add-meal',
@@ -164,6 +152,23 @@
         await mealStore.delMeal(meal, mealPlan.value, time)
       }
 
+      // ** Lifecycle **
+      onBeforeMount(async () => {
+        const today: string = moment().format('YYYY-MM-DD')
+        const isBefore: boolean = moment(mealStore.lastUpdated).isBefore(
+          today,
+          'day'
+        )
+
+        // If meals were last updated a day ago - update with todays date
+        if (isBefore) {
+          mealPlan.value.date = today
+        }
+
+        await mealStore.getMeals(mealPlan.value.date)
+      })
+
+      // ** Watchers **
       watch(mealPlan, calculateNutrients)
 
       return {

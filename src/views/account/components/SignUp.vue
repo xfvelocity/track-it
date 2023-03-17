@@ -72,6 +72,7 @@
       Form,
     },
     setup() {
+      // ** Data **
       const confirmPassword = ref<string>('')
       const matchingPasswordError = ref<[] | string>([])
       const showPassword = ref<boolean>(false)
@@ -80,6 +81,7 @@
         password: '',
       })
 
+      // ** Methods **
       const signUp = async (validateFn: Function): Promise<void> => {
         const valid: ValidationResult = await validateFn()
         const isPasswordMatching: [] | string = validateMatchingPassword()

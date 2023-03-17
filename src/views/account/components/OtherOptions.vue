@@ -50,8 +50,10 @@
       },
     },
     setup() {
+      // ** Data **
       const logInMethods: LoginMethod[] = loginMethods
 
+      // ** Methods **
       const logIn = (method: LoginMethod): void => {
         if (!method.disabled) {
           signIn(method.value)

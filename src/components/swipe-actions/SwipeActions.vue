@@ -17,9 +17,11 @@
   export default defineComponent({
     name: 'SwipeActions',
     setup(props, context) {
+      // ** Data **
       let offsetX: number = 0
       const itemRef = ref<HTMLElement | null>(null)
 
+      // ** Methods **
       const mouseDown = (e: MouseEvent): void => {
         if (!itemRef.value) return
         offsetX = e.clientX - itemRef.value.offsetLeft

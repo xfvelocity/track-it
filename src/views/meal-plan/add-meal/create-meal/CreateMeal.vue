@@ -121,6 +121,7 @@
     },
     emits: ['return'],
     setup(props, context) {
+      // ** Data **
       const configStore = useConfigStore()
       const mealStore = useMealStore()
       const unitOptions: string[] = ['g', 'ml', 'units']
@@ -132,6 +133,7 @@
         meal.value.nutrients
       ) as (keyof MealNutrients)[]
 
+      // ** Computed **
       const progress = computed<number>(() => currentScreen.value * 50)
 
       const ingredientsList = computed<any[]>(() =>
@@ -141,14 +143,7 @@
         }))
       )
 
-      onMounted(async () => {
-        await mealStore.getIngredients()
-
-        if (props.editing && Object.keys(props.editingMeal).length > 0) {
-          meal.value = props.editingMeal
-        }
-      })
-
+      // ** Methods **
       const onIngredientUpdate = (val: any, index: number): void => {
         const matchingIngredient = ingredientsList.value.find(
           (ingredient) => ingredient.title === val
@@ -243,6 +238,15 @@
         if (currentScreen.value === 2) addMeal()
         else ++currentScreen.value
       }
+
+      // ** Lifecycle **
+      onMounted(async () => {
+        await mealStore.getIngredients()
+
+        if (props.editing && Object.keys(props.editingMeal).length > 0) {
+          meal.value = props.editingMeal
+        }
+      })
 
       return {
         meal,

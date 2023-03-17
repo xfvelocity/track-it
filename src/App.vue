@@ -17,9 +17,11 @@
     </template>
 
     <Nav v-if="!hideNav" />
+
     <v-main>
       <router-view />
     </v-main>
+
     <Snackbar />
   </v-app>
 </template>
@@ -40,9 +42,11 @@
       Snackbar,
     },
     setup() {
+      // ** Data **
       const configStore = useConfigStore()
       const route: RouteLocationNormalizedLoaded = useRoute()
 
+      // ** Computed **
       const loading = computed<Loading>(() => configStore.loading)
 
       const hideNav = computed<boolean>(() => !!route.meta?.hideNav)
@@ -57,62 +61,4 @@
 
 <style lang="scss">
   @import 'assets/styles/main.scss';
-
-  * {
-    box-sizing: border-box;
-  }
-
-  body,
-  input,
-  select,
-  button {
-    font-family: 'Poppins', sans-serif;
-  }
-
-  .v-input {
-    .v-input__details {
-      display: none;
-    }
-  }
-
-  body {
-    background: rgb(9, 0, 66) !important;
-    background: linear-gradient(
-      144deg,
-      rgba(9, 0, 66, 1) 0%,
-      rgba(11, 0, 78, 1) 100%
-    ) !important;
-  }
-
-  .loading-bar {
-    position: sticky;
-    top: 10px;
-    width: 100%;
-  }
-
-  #app {
-    height: 100vh;
-
-    .v-application {
-      max-width: 450px !important;
-      margin: 0 auto;
-
-      &__wrap {
-        margin: 0;
-        height: 100%;
-        overflow-y: auto;
-        padding: 10px 20px;
-        background: rgb(9, 0, 66) !important;
-        background: linear-gradient(
-          144deg,
-          rgba(9, 0, 66, 1) 0%,
-          rgba(11, 0, 78, 1) 100%
-        ) !important;
-      }
-    }
-
-    .v-main {
-      padding-bottom: 20px !important;
-    }
-  }
 </style>
