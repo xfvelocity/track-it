@@ -15,12 +15,13 @@
 
       <div class="mb-4" v-for="(ingredient, i) in meal.ingredients" :key="i">
         <v-combobox
-          v-model="ingredient.name"
+          :model-value="ingredient.name"
           :items="ingredientsList"
           filter-keys="name"
           label="Ingredient"
-          @update:modelValue="onIngredientUpdate($event, i)"
+          @update:modelValue="setSelectedIngredientNutrients($event, i)"
         />
+
         <div class="d-flex mt-2">
           <v-text-field
             class="mr-2"
@@ -137,16 +138,24 @@
       const progress = computed<number>(() => currentScreen.value * 50)
 
       const ingredientsList = computed<any[]>(() =>
-        mealStore.ingredients.map((ingredient: any) => ({
-          title: ingredient.name,
-          value: ingredient,
-        }))
+        mealStore.ingredients.map((ingredient: any) => {
+          const ingredientName: string = ingredient.name
+          delete ingredient.name
+
+          return {
+            title: ingredientName,
+            value: ingredient,
+          }
+        })
       )
 
       // ** Methods **
-      const onIngredientUpdate = (val: any, index: number): void => {
+      const setSelectedIngredientNutrients = (
+        val: any,
+        index: number
+      ): void => {
         const matchingIngredient = ingredientsList.value.find(
-          (ingredient) => ingredient.title === val
+          (ingredient) => ingredient.title === val.title
         )
 
         if (matchingIngredient) {
@@ -255,7 +264,7 @@
         nutrientKeys,
         unitOptions,
         ingredientsList,
-        onIngredientUpdate,
+        setSelectedIngredientNutrients,
         deleteIngredient,
         addIngredient,
         backScreen,

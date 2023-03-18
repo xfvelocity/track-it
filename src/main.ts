@@ -1,3 +1,4 @@
+// TODO: Update with VueFire
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
