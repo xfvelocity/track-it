@@ -20,3 +20,15 @@ export const validationSchema = {
     }
   },
 }
+
+export const debounce = (func: Function, delay: number): any => {
+  let timer: any
+
+  return (...args: any[]) => {
+    clearTimeout(timer)
+
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, delay)
+  }
+}

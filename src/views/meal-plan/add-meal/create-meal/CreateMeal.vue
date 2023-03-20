@@ -17,9 +17,9 @@
         <v-combobox
           :model-value="ingredient.name"
           :items="ingredientsList"
-          filter-keys="name"
+          filter-keys="title"
           label="Ingredient"
-          @update:modelValue="setSelectedIngredientNutrients($event, i)"
+          @update:model-value="setSelectedIngredientNutrients($event, i)"
         />
 
         <div class="d-flex mt-2">
@@ -100,6 +100,7 @@
   import { mealBase } from '../../data/mealPlan.data'
   import { useMealStore } from '@/stores/meals'
   import { useConfigStore } from '@/stores/config'
+  import { debounce } from '@/helpers/utility'
 
   import SwipeActions from '@/components/swipe-actions/SwipeActions.vue'
   import UploadImage from '@/components/upload-image/UploadImage.vue'
@@ -138,30 +139,25 @@
       const progress = computed<number>(() => currentScreen.value * 50)
 
       const ingredientsList = computed<any[]>(() =>
-        mealStore.ingredients.map((ingredient: any) => {
-          const ingredientName: string = ingredient.name
-          delete ingredient.name
-
-          return {
-            title: ingredientName,
-            value: ingredient,
-          }
-        })
+        mealStore.ingredients.map((ingredient: any) => ({
+          title: ingredient.name,
+          value: ingredient,
+        }))
       )
 
       // ** Methods **
-      const setSelectedIngredientNutrients = (
-        val: any,
-        index: number
-      ): void => {
-        const matchingIngredient = ingredientsList.value.find(
-          (ingredient) => ingredient.title === val.title
-        )
+      const setSelectedIngredientNutrients = debounce(
+        (val: any, index: number): void => {
+          const matchingIngredient = ingredientsList.value.find(
+            (ingredient) => ingredient.title === val.title
+          )
 
-        if (matchingIngredient) {
-          meal.value.ingredients[index] = matchingIngredient.value
-        }
-      }
+          if (matchingIngredient) {
+            meal.value.ingredients[index] = matchingIngredient.value
+          }
+        },
+        300
+      )
 
       const setImage = (img: string): void => {
         meal.value.img = img
@@ -264,6 +260,7 @@
         nutrientKeys,
         unitOptions,
         ingredientsList,
+        debounce,
         setSelectedIngredientNutrients,
         deleteIngredient,
         addIngredient,
