@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="xf-flex xf-mb-4">
-      <div class="xf-cursor-pointer xf-hover">
+      <div>
         <xf-icon
           class="xf-mr-1"
           src="icons/calendar.svg"
@@ -21,34 +21,34 @@
     </div>
 
     <div>
-      <v-checkbox
-        v-model="item.selected"
-        v-for="(item, i) in shoppingList"
+      <xf-checkbox
+        v-for="(item, i) in shopping"
         :key="i"
+        v-model="item.selected"
+        class="xf-mb-3"
         :label="`${item.amount}${formatUnit(item.unit)} ${item.name}`"
-        hide-details
       />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref, onBeforeMount } from 'vue'
-  import { ShoppingItem } from '@/stores/types/shopping.types'
+  import { onBeforeMount } from 'vue'
   import { useShoppingStore } from '@/stores/shopping'
+  import { storeToRefs } from 'pinia'
   import moment from 'moment'
 
-  import { XfIcon } from 'xf-cmpt-lib'
+  import { XfIcon, XfCheckbox } from 'xf-cmpt-lib'
 
   // ** Data **
   const shoppingStore = useShoppingStore()
 
-  const shoppingList = ref<ShoppingItem[]>(shoppingStore.shopping)
+  const { shopping, date } = storeToRefs(shoppingStore)
 
   // ** Methods **
   const getMealIngredients = async (): Promise<void> => {
     await shoppingStore.getShoppingRecipes()
-    shoppingList.value = shoppingStore.shopping
+    shopping.value = shoppingStore.shopping
   }
 
   const formatUnit = (unit: string): string => {
@@ -57,7 +57,7 @@
 
   // ** Lifecycle **
   onBeforeMount(async () => {
-    if (moment().day(0).format('YYYY-MM-DD') !== shoppingStore.date) {
+    if (moment().day(0).format('YYYY-MM-DD') !== date.value) {
       await getMealIngredients()
     }
   })

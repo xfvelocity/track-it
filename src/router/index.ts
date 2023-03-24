@@ -3,10 +3,9 @@ import { useConfigStore } from '@/stores/config'
 import { useUserStore } from '@/stores/user'
 
 import SignInContainer from '@/views/account/components/SignInContainer.vue'
-import MealPlan from '@/views/meal-plan/MealPlan.vue'
 import Shopping from '@/views/shopping/Shopping.vue'
-import AddMeal from '@/views/meal-plan/add-meal/AddMeal.vue'
-import Meals from '@/views/meal-plan/meals/Meals.vue'
+import AddMeal from '@/views/meal-plan/AddMeal.vue'
+import Meals from '@/views/meal-plan/Meals.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -37,7 +36,6 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/meal-plan',
-    component: MealPlan,
     name: 'Meal Plan',
     children: [
       {
