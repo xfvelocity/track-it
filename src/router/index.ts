@@ -2,7 +2,6 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { useConfigStore } from '@/stores/config'
 import { useUserStore } from '@/stores/user'
 
-import Account from '@/views/account/Account.vue'
 import SignInContainer from '@/views/account/components/SignInContainer.vue'
 import MealPlan from '@/views/meal-plan/MealPlan.vue'
 import Shopping from '@/views/shopping/Shopping.vue'
@@ -17,7 +16,6 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/account',
     name: 'Account',
-    component: Account,
     children: [
       {
         path: 'sign-up',

@@ -1,58 +1,41 @@
 <template>
-  <div class="login">
+  <div class="login xf-flex-center">
     <div class="login-wrapper">
       <div class="text-center mb-8">
         <img class="login-logo" src="/img/icons/logo.svg" alt="" />
-        <h1 class="login-title mt-2">
+        <h1 class="login-title xf-mt-2">
           Track <br />
           IT
         </h1>
       </div>
 
       <div>
-        <SignUp v-if="isSignUp" />
-        <LogIn v-else />
+        <sign-up v-if="isSignUp" />
+        <log-in v-else />
       </div>
 
-      <OtherOptions :sign-up="isSignUp" />
+      <other-options :sign-up="isSignUp" />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-  import { computed, defineComponent } from 'vue'
+<script lang="ts" setup>
+  import { computed } from 'vue'
   import { RouteLocationNormalized, useRoute } from 'vue-router'
 
-  import LogIn from './LogIn.vue'
+  import LogIn from '../LogIn.vue'
   import OtherOptions from './OtherOptions.vue'
-  import SignUp from './SignUp.vue'
+  import SignUp from '../SignUp.vue'
 
-  export default defineComponent({
-    name: 'SignInContainer',
-    components: {
-      LogIn,
-      OtherOptions,
-      SignUp,
-    },
-    setup() {
-      // ** Data **
-      const route: RouteLocationNormalized = useRoute()
+  // ** Data **
+  const route: RouteLocationNormalized = useRoute()
 
-      // ** Computed **
-      const isSignUp = computed<boolean>(() => route.name === 'Sign up')
-
-      return {
-        isSignUp,
-      }
-    },
-  })
+  // ** Computed **
+  const isSignUp = computed<boolean>(() => route.name === 'Sign up')
 </script>
 
 <style lang="scss" scoped>
   .login {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 100%;
 
     &-wrapper {

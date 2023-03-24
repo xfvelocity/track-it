@@ -1,66 +1,64 @@
 <template>
   <div>
-    <div class="d-flex mb-4">
-      <div>
-        <v-icon class="mr-1" size="small">mdi-calendar</v-icon>
-        This week
+    <div class="xf-flex xf-mb-4">
+      <div class="xf-cursor-pointer xf-hover">
+        <xf-icon
+          class="xf-mr-1"
+          src="icons/calendar.svg"
+          fill="white"
+          :size="16"
+        />
+        <span>This week</span>
       </div>
 
-      <v-spacer />
-
-      <v-icon class="cursor-pointer" @click="getMealIngredients">
-        mdi-refresh
-      </v-icon>
+      <xf-icon
+        class="xf-hover xf-ml-auto xf-cursor-pointer"
+        src="icons/rotate.svg"
+        fill="white"
+        :size="16"
+        @click="getMealIngredients"
+      />
     </div>
 
     <div>
-      <span v-for="(item, i) in shoppingList" :key="i">
-        <v-checkbox
-          v-model="item.selected"
-          :label="`${item.amount}${formatUnit(item.unit)} ${item.name}`"
-          hide-details
-        />
-      </span>
+      <v-checkbox
+        v-model="item.selected"
+        v-for="(item, i) in shoppingList"
+        :key="i"
+        :label="`${item.amount}${formatUnit(item.unit)} ${item.name}`"
+        hide-details
+      />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent, ref, onBeforeMount } from 'vue'
+<script lang="ts" setup>
+  import { ref, onBeforeMount } from 'vue'
   import { ShoppingItem } from '@/stores/types/shopping.types'
-  import moment from 'moment'
   import { useShoppingStore } from '@/stores/shopping'
+  import moment from 'moment'
 
-  export default defineComponent({
-    name: 'Shopping',
-    setup() {
-      // ** Data **
-      const shoppingStore = useShoppingStore()
+  import { XfIcon } from 'xf-cmpt-lib'
 
-      const shoppingList = ref<ShoppingItem[]>(shoppingStore.shopping)
+  // ** Data **
+  const shoppingStore = useShoppingStore()
 
-      // ** Methods **
-      const getMealIngredients = async (): Promise<void> => {
-        await shoppingStore.getShoppingRecipes()
-        shoppingList.value = shoppingStore.shopping
-      }
+  const shoppingList = ref<ShoppingItem[]>(shoppingStore.shopping)
 
-      const formatUnit = (unit: string): string => {
-        return unit === 'units' ? '' : unit
-      }
+  // ** Methods **
+  const getMealIngredients = async (): Promise<void> => {
+    await shoppingStore.getShoppingRecipes()
+    shoppingList.value = shoppingStore.shopping
+  }
 
-      // ** Lifecycle **
-      onBeforeMount(async () => {
-        if (moment().day(0).format('YYYY-MM-DD') !== shoppingStore.date) {
-          await getMealIngredients()
-        }
-      })
+  const formatUnit = (unit: string): string => {
+    return unit === 'units' ? '' : unit
+  }
 
-      return {
-        shoppingList,
-        formatUnit,
-        getMealIngredients,
-      }
-    },
+  // ** Lifecycle **
+  onBeforeMount(async () => {
+    if (moment().day(0).format('YYYY-MM-DD') !== shoppingStore.date) {
+      await getMealIngredients()
+    }
   })
 </script>
