@@ -1,6 +1,6 @@
 <template>
-  <v-app theme="dark" app>
-    <template v-if="loading?.value">
+  <!-- TODO: Add loading with xf-cmpt-lib-->
+  <!-- <template v-if="loading?.value">
       <v-overlay
         v-if="loading.type === 'fullpage'"
         class="d-flex justify-center align-center"
@@ -14,52 +14,56 @@
         height="10"
         indeterminate
       />
-    </template>
+    </template> -->
 
-    <Nav v-if="!hideNav" />
+  <!-- <Nav v-if="!hideNav" /> -->
 
-    <v-main>
-      <router-view />
-    </v-main>
+  <router-view />
 
-    <Snackbar />
-  </v-app>
+  <xf-snackbar
+    v-model="snackbar.isVisible"
+    :background-colour="snackbar.color"
+    :timeout="2000"
+  >
+    <div class="xf-text-center xf-fw-600 xf-text-ellipsis">
+      {{ snackbar.text }}
+    </div>
+  </xf-snackbar>
 </template>
 
-<script lang="ts">
-  import { defineComponent, computed } from 'vue'
-  import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
-  import { Loading } from '@/stores/types/config.types'
+<script lang="ts" setup>
+  import { computed } from 'vue'
+  import { useRoute } from 'vue-router'
   import { useConfigStore } from '@/stores/config'
+  import { storeToRefs } from 'pinia'
 
+  import { XfSnackbar } from 'xf-cmpt-lib'
   import Nav from './components/nav/Nav.vue'
-  import Snackbar from './components/snackbar/Snackbar.vue'
 
-  export default defineComponent({
-    name: 'App',
-    components: {
-      Nav,
-      Snackbar,
-    },
-    setup() {
-      // ** Data **
-      const configStore = useConfigStore()
-      const route: RouteLocationNormalizedLoaded = useRoute()
+  // ** Data **
+  const configStore = useConfigStore()
 
-      // ** Computed **
-      const loading = computed<Loading>(() => configStore.loading)
+  const route = useRoute()
 
-      const hideNav = computed<boolean>(() => !!route.meta?.hideNav)
+  const { snackbar, loading } = storeToRefs(configStore)
 
-      return {
-        loading,
-        hideNav,
-      }
-    },
-  })
+  // ** Computed **
+  const hideNav = computed<boolean>(() => !!route.meta?.hideNav)
 </script>
 
 <style lang="scss">
   @import 'xf-cmpt-lib/dist/cmpt-lib-ts.css';
-  @import 'assets/styles/main.scss';
+
+  body {
+    background: rgb(9, 0, 66);
+    background: linear-gradient(
+      144deg,
+      rgba(9, 0, 66, 1) 0%,
+      rgba(11, 0, 78, 1) 100%
+    );
+    color: white;
+
+    max-width: 450px;
+    margin: 10px auto !important;
+  }
 </style>

@@ -16,6 +16,7 @@
           </div>
         </template>
 
+        <!-- TODO: Update to use v-calendar -->
         <v-date-picker
           :model-value="mealPlan.date"
           class="xf-mt-2"
