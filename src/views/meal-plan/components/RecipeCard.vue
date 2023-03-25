@@ -1,138 +1,120 @@
 <template>
-  <v-card
-    class="d-flex mt-1 pa-4 recipe-card w-100"
+  <div
     v-for="(meal, i) in mealList"
     :key="i"
+    class="xf-flex xf-flex-align-items-center xf-mt-1 xf-p-4 xf-w-100 xf-bg-blue-darken-4"
   >
     {{ meal.name }}
 
-    <v-spacer />
-
-    <v-icon
+    <xf-icon
       v-if="addIcon"
-      size="small"
-      class="mr-2 cursor-pointer"
+      src="icons/plus.svg"
+      class="xf-ml-auto xf-mr-2 xf-cursor-pointer"
+      fill="white"
       @click="addMeal(meal)"
-    >
-      mdi-plus
-    </v-icon>
+    />
 
-    <v-icon class="cursor-pointer" size="small" @click="openInfoModal(meal)">
-      mdi-information-outline
-    </v-icon>
-  </v-card>
+    <xf-icon
+      src="icons/info.svg"
+      class="xf-cursor-pointer"
+      fill="white"
+      @click="openInfoModal(meal)"
+    />
+  </div>
 
-  <Modal v-model="infoModal">
+  <xf-modal
+    v-model="infoModal"
+    class="xf-text-colour-grey-darken-3"
+    :max-width="350"
+  >
     <div>
-      <div class="font-weight-medium mb-2">Nutrients:</div>
+      <div class="xf-fw-600 xf-mb-2">Nutrients:</div>
       <p
         v-for="(value, name, i) in selectedMeal?.nutrients"
-        class="my-0 text-capitalize"
-        style="font-size: 14px"
         :key="i"
+        class="xf-my-0 xf-text-14 xf-text-capitalize"
       >
         {{ name }}: {{ value }}
       </p>
     </div>
 
-    <div class="mt-4">
-      <div class="font-weight-medium mb-2">Ingredients:</div>
+    <div class="xf-mt-4">
+      <div class="xf-fw-600 xf-mb-2">Ingredients:</div>
       <p
         v-for="(ingredient, i) in selectedMeal?.ingredients"
-        class="my-0 text-capitalize"
-        style="font-size: 14px"
         :key="i"
+        class="xf-my-0 xf-text-14 xf-text-capitalize"
       >
         {{ ingredient.amount }}{{ formatUnit(ingredient.unit) }}
         {{ ingredient.name }}
       </p>
     </div>
 
-    <div class="d-flex mt-4">
-      <v-spacer />
-
-      <v-btn
+    <div class="xf-flex xf-mt-4">
+      <xf-button
         v-if="showEdit"
-        color="primary"
-        variant="text"
-        size="small"
+        class="xf-ml-auto"
+        background-colour="transparent"
+        text-colour="blue"
+        icon="icons/edit.svg"
         @click="$emit('edit', selectedMeal)"
       >
         Edit
-        <v-icon color="primary" class="ml-1"> mdi-pencil </v-icon>
-      </v-btn>
+      </xf-button>
 
-      <v-btn color="red" variant="text" size="small" @click="onDelete">
+      <xf-button
+        background-colour="transparent"
+        text-colour="red"
+        icon="icons/trash.svg"
+        @click="onDelete"
+      >
         Delete
-        <v-icon color="red" class="ml-1"> mdi-delete </v-icon>
-      </v-btn>
+      </xf-button>
     </div>
-  </Modal>
+  </xf-modal>
 </template>
 
-<script lang="ts">
-  import { defineComponent, PropType, ref } from 'vue'
+<script lang="ts" setup>
+  import { ref } from 'vue'
   import { Meal } from '../types/mealPlan.types'
-  import Modal from '@/components/modal/Modal.vue'
 
-  export default defineComponent({
-    name: 'RecipeCard',
-    components: {
-      Modal,
-    },
-    props: {
-      mealList: {
-        type: Array as PropType<Meal[]>,
-        default: () => [],
-      },
-      showEdit: {
-        type: Boolean,
-        default: true,
-      },
-      addIcon: {
-        type: Boolean,
-        default: false,
-      },
-    },
-    emits: ['edit', 'delete', 'meal-added'],
-    setup(props, context) {
-      // ** Data **
-      const infoModal = ref<boolean>(false)
-      const selectedMeal = ref<Meal>()
+  import { XfModal, XfButton, XfIcon } from 'xf-cmpt-lib'
 
-      // ** Methods **
-      const addMeal = (meal: Meal): void => {
-        context.emit('meal-added', meal)
-      }
+  // ** Props **
+  withDefaults(
+    defineProps<{
+      mealList: Meal[]
+      showEdit?: boolean
+      addIcon?: boolean
+    }>(),
+    {
+      showEdit: true,
+    }
+  )
 
-      const openInfoModal = (meal: Meal): void => {
-        selectedMeal.value = meal
-        infoModal.value = true
-      }
+  // ** Emits **
+  const emit = defineEmits(['edit', 'delete', 'meal-added'])
 
-      const onDelete = (): void => {
-        context.emit('delete', selectedMeal.value)
-        infoModal.value = false
-      }
+  // ** Data **
+  const infoModal = ref<boolean>(false)
+  const selectedMeal = ref<Meal>()
 
-      const formatUnit = (unit: string): string => {
-        return unit === 'units' ? '' : unit
-      }
-
-      return {
-        selectedMeal,
-        infoModal,
-        onDelete,
-        openInfoModal,
-        addMeal,
-        formatUnit,
-      }
-    },
-  })
-</script>
-
-<style lang="scss" scoped>
-  .recipe-card {
-    background: #2b2066;
+  // ** Methods **
+  const addMeal = (meal: Meal): void => {
+    emit('meal-added', meal)
   }
-</style>
+
+  const openInfoModal = (meal: Meal): void => {
+    selectedMeal.value = meal
+    infoModal.value = true
+  }
+
+  const onDelete = (): void => {
+    emit('delete', selectedMeal.value)
+    infoModal.value = false
+  }
+
+  const formatUnit = (unit: string): string => {
+    return unit === 'units' ? '' : unit
+  }
+</script>

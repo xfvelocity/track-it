@@ -8,12 +8,12 @@
         @click="changeDate(-1)"
       />
 
-      <v-menu>
-        <template v-slot:activator="{ props }">
-          <span class="xf-cursor-pointer" v-bind="props">
+      <xf-menu>
+        <template #activator>
+          <div class="xf-cursor-pointer">
             <xf-icon class="xf-mr-1" src="icons/calendar.svg" fill="white" />
             {{ formatDate(mealPlan.date) }}
-          </span>
+          </div>
         </template>
 
         <v-date-picker
@@ -21,7 +21,7 @@
           class="xf-mt-2"
           @dayclick="onDateChange"
         />
-      </v-menu>
+      </xf-menu>
 
       <xf-icon
         class="xf-cursor-pointer"
@@ -82,7 +82,7 @@
   import { useUserStore } from '@/stores/user'
   import { storeToRefs } from 'pinia'
 
-  import { XfIcon } from 'xf-cmpt-lib'
+  import { XfIcon, XfMenu } from 'xf-cmpt-lib'
   import RecipeCard from './components/RecipeCard.vue'
   import moment from 'moment'
 
