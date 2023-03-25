@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: FIX -->
   <div class="swipe-actions">
     <div
       class="swipe-actions__item"

@@ -1,95 +1,74 @@
 <template>
-  <div class="create-recipe pa-4">
-    <v-progress-linear class="mb-6" color="green" v-model="progress" />
+  <xf-text-input v-model="meal.name" colour="white" label="Meal name" />
 
-    <div v-if="currentScreen === 1">
-      <xf-text-input v-model="meal.name" label="Name" />
-    </div>
+  <h4 class="xf-mt-4 xf-mb-2 xf-text-center">Ingredients</h4>
 
-    <div v-if="currentScreen === 2" class="mt-4 mb-8">
-      <div class="d-flex align-center mb-4">
-        <p>Ingredients</p>
-      </div>
+  <div
+    class="xf-create-ingredient xf-px-4 xf-mb-1 xf-border-grey-darken-2 xf-grid"
+    v-for="(ingredient, i) in meal.ingredients"
+    :key="i"
+  >
+    <xf-select
+      class="xf-col-12"
+      colour="white"
+      :model-value="ingredient.name"
+      :options="ingredientsList"
+      autocomplete
+      free-text
+      label="Name"
+      @update:model-value="setSelectedIngredientNutrients($event, i)"
+    />
 
-      <div class="mb-4" v-for="(ingredient, i) in meal.ingredients" :key="i">
-        <xf-select
-          :model-value="ingredient.name"
-          :options="ingredientsList"
-          autocomplete
-          free-text
-          label="Ingredient"
-          @update:model-value="setSelectedIngredientNutrients($event, i)"
-        />
+    <xf-text-input
+      v-model="ingredient.amount"
+      class="xf-col-8"
+      colour="white"
+      label="Amount"
+      @focus="onFocus($event.target)"
+    />
 
-        <div class="d-flex mt-2">
-          <xf-text-input
-            v-model="ingredient.amount"
-            class="mr-2"
-            label="Amount"
-            pattern="[0-9]*"
-            @focus="onFocus($event.target)"
-          />
+    <xf-select
+      v-model="ingredient.unit"
+      class="xf-col-4"
+      :options="unitOptions"
+      colour="white"
+      label="Unit"
+    />
 
-          <xf-select
-            v-model="ingredient.unit"
-            :options="unitOptions"
-            style="width: 20%"
-            label="Unit"
-          />
-        </div>
+    <xf-text-input
+      v-for="(key, i) in nutrientKeys"
+      :key="i"
+      v-model="ingredient.nutrients[key]"
+      class="xf-text-capitalize xf-col-6 xf-mb-1"
+      :label="key"
+      colour="white"
+      @focus="onFocus($event.target)"
+    />
 
-        <div class="d-flex flex-wrap align-center my-2">
-          <xf-text-input
-            v-for="(key, i) in nutrientKeys"
-            :key="i"
-            v-model.number="ingredient.nutrients[key]"
-            class="text-capitalize mb-1"
-            :class="{ 'mr-2': i % 2 === 0 }"
-            style="width: 45%"
-            :label="key"
-            @focus="onFocus($event.target)"
-          />
-        </div>
-
-        <xf-button
-          color="error"
-          text-color="white"
-          size="x-small"
-          class="cursor-pointer w-100"
-          @click="deleteIngredient(i)"
-        >
-          Remove
-        </xf-button>
-      </div>
-
-      <xf-button
-        color="primary"
-        text-color="white"
-        size="x-small"
-        class="cursor-pointer w-100"
-        @click="addIngredient"
-      >
-        Add
-      </xf-button>
-    </div>
-
-    <div class="d-flex mt-10">
-      <v-btn color="primary" size="small" @click="backScreen">
-        <v-icon v-if="currentScreen > 1" class="mr-1">mdi-arrow-left</v-icon>
-        {{ currentScreen > 1 ? 'Back' : 'Return' }}
-      </v-btn>
-      <v-spacer />
-      <v-btn
-        color="success"
-        text-color="white"
-        size="small"
-        @click="nextScreen"
-      >
-        {{ currentScreen === 2 ? (editing ? 'Update' : 'Add Meal') : 'Next' }}
-        <v-icon v-if="currentScreen !== 2" class="ml-1">mdi-arrow-right</v-icon>
-      </v-btn>
-    </div>
+    <xf-button
+      class="xf-col-12 xf-w-100 xf-my-2"
+      background-colour="red"
+      @click="deleteIngredient(i)"
+    >
+      Remove ingredients
+    </xf-button>
   </div>
+
+  <xf-button
+    class="xf-w-100 xf-my-2"
+    background-colour="blue"
+    @click="addIngredient"
+  >
+    Add Ingredient
+  </xf-button>
+
+  <xf-button
+    class="xf-ml-auto xf-mt-10"
+    background-colour="green"
+    @click="addMeal"
+  >
+    {{ editing ? 'Update' : 'Add Meal' }}
+  </xf-button>
 </template>
 
 <script lang="ts" setup>
@@ -100,8 +79,7 @@
   import { useConfigStore } from '@/stores/config'
   import { debounce } from '@/helpers/utility'
 
-  import { XfTextInput, XfIcon, XfSelect, XfButton } from 'xf-cmpt-lib'
-  import { SelectOption } from 'xf-cmpt-lib/dist/types/app.types'
+  import { XfTextInput, XfSelect, XfButton } from 'xf-cmpt-lib'
 
   // ** Props **
   const props = defineProps<{
@@ -110,27 +88,24 @@
   }>()
 
   // ** Emits **
-  const emits = defineEmits(['return'])
+  const emit = defineEmits(['return'])
 
   // ** Data **
   const configStore = useConfigStore()
   const mealStore = useMealStore()
 
-  const currentScreen = ref<number>(1)
   const meal = ref<Meal>(mealBase)
 
   const nutrientKeys: (keyof MealNutrients)[] = Object.keys(
     meal.value.nutrients
   ) as (keyof MealNutrients)[]
-  const unitOptions: SelectOption[] = [
+  const unitOptions: any[] = [
     { text: 'g', value: 'g' },
     { text: 'ml', value: 'ml' },
     { text: 'units', value: 'units' },
   ]
 
   // ** Computed **
-  const progress = computed<number>(() => currentScreen.value * 50)
-
   const ingredientsList = computed<any[]>(() =>
     mealStore.ingredients.map((ingredient: any) => ({
       title: ingredient.name,
@@ -218,41 +193,27 @@
     })
 
     meal.value = { ...mealBase }
-    emits('return')
-  }
-
-  const backScreen = (): void => {
-    if (currentScreen.value === 1) emits('return')
-    else --currentScreen.value
-  }
-
-  const nextScreen = (): void => {
-    if (currentScreen.value === 2) addMeal()
-    else ++currentScreen.value
+    emit('return')
   }
 
   // ** Lifecycle **
   onMounted(async () => {
     await mealStore.getIngredients()
 
-    if (props.editing && Object.keys(props.editingMeal).length > 0) {
+    if (
+      props.editing &&
+      props.editingMeal &&
+      Object.keys(props.editingMeal).length > 0
+    ) {
       meal.value = props.editingMeal
     }
   })
 </script>
 
 <style lang="scss" scoped>
-  .create-recipe {
-    .ingredient-add.v-btn,
-    .ingredient-delete.v-btn {
-      padding: 0px !important;
-      min-width: 40px !important;
-    }
-
-    .ingredient-delete {
-      .material-icons {
-        color: rgb(255, 77, 77);
-      }
+  .xf-create {
+    &-ingredient {
+      border-radius: 10px;
     }
   }
 </style>

@@ -1,6 +1,7 @@
 <template>
+  <!-- TODO: UPDATE WITH XF-CMPT-LIB SNACKBAR-->
   <v-snackbar
-    content-class=" text-center font-weight-medium text-white text-ellipsis"
+    content-class="text-center font-weight-medium text-white text-ellipsis"
     v-model="snackbar.isVisible"
     :color="snackbar.color"
     timeout="2000"
@@ -10,30 +11,14 @@
   </v-snackbar>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
   import { useConfigStore } from '@/stores/config'
-  import { defineComponent, watch, ref } from 'vue'
-  import { Snackbar } from './types/Snackbar.types'
+  import { storeToRefs } from 'pinia'
 
-  export default defineComponent({
-    name: 'Snackbar',
-    setup() {
-      // ** Data **
-      const configStore = useConfigStore()
+  // ** Data **
+  const configStore = useConfigStore()
 
-      const snackbar = ref<Snackbar>(configStore.snackbar)
-
-      // ** Watchers **
-      watch(
-        () => configStore.snackbar,
-        (value) => (snackbar.value = value)
-      )
-
-      return {
-        snackbar,
-      }
-    },
-  })
+  const { snackbar } = storeToRefs(configStore)
 </script>
 
 <style lang="scss">

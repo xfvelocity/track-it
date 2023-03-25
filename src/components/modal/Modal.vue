@@ -1,8 +1,9 @@
 <template>
+  <!-- TODO: UPDATE WITH XF-CMPT-LIB MODAL -->
   <v-dialog
     :model-value="modelValue"
     width="350"
-    @click:outside="closeModal(persistent)"
+    @click:outside="closeModal(!!persistent)"
   >
     <v-card :color="colour" class="pa-4">
       <slot />
@@ -26,55 +27,36 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
+  // ** Props **
+  withDefaults(
+    defineProps<{
+      modelValue: boolean
+      persistent?: boolean
+      actionButtons?: boolean
+      closeText?: string
+      confirmText?: string
+      colour?: string
+    }>(),
+    {
+      closeText: 'Close',
+      confirmText: 'Confirm',
+      colour: 'white',
+    }
+  )
 
-  export default defineComponent({
-    name: 'Modal',
-    props: {
-      modelValue: {
-        type: Boolean,
-        default: false,
-      },
-      persistent: {
-        type: Boolean,
-        default: false,
-      },
-      actionButtons: {
-        type: Boolean,
-        default: false,
-      },
-      closeText: {
-        type: String,
-        default: 'Close',
-      },
-      confirmText: {
-        type: String,
-        default: 'Confirm',
-      },
-      colour: {
-        type: String,
-        default: 'white',
-      },
-    },
-    emits: ['update:modelValue', 'confirmed'],
-    setup(props, context) {
-      // ** Methods **
-      const closeModal = (clickOutsidePersistent: boolean): void => {
-        if (clickOutsidePersistent) return
+  // ** Emits **
+  const emit = defineEmits(['update:modelValue', 'confirmed'])
 
-        context.emit('update:modelValue')
-      }
+  // ** Methods **
+  const closeModal = (clickOutsidePersistent: boolean): void => {
+    if (clickOutsidePersistent) return
 
-      const confirm = (): void => {
-        context.emit('confirmed')
-        closeModal(false)
-      }
+    emit('update:modelValue')
+  }
 
-      return {
-        confirm,
-        closeModal,
-      }
-    },
-  })
+  const confirm = (): void => {
+    emit('confirmed')
+    closeModal(false)
+  }
 </script>

@@ -6,18 +6,11 @@
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from 'vue'
-
-  export default defineComponent({
-    name: 'Divider',
-    props: {
-      title: {
-        type: String,
-        default: '',
-      },
-    },
-  })
+<script lang="ts" setup>
+  // ** Props **
+  defineProps<{
+    title: string
+  }>()
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 <template>
   <div class="add-meal">
     <xf-icon
-      class="xf-my-2 xf-cursor-pointer"
+      class="xf-mt-4 xf-mb-2 xf-cursor-pointer"
       :size="16"
       fill="white"
       src="icons/chevron-left.svg"
@@ -15,7 +15,7 @@
       @return="onMealChange"
     />
 
-    <div v-else class="xf-pa-4">
+    <div v-else class="xf-p-4">
       <div class="xf-flex-center-between xf-h-max-content xf-mb-4">
         <h2>Meals</h2>
 

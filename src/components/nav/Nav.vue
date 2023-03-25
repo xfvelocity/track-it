@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: UPDATE WITH XF-CMPT-LIB NAVBAR -->
   <nav class="nav d-flex align-center justify-space-between mt-4 mb-6">
     <span class="nav__title d-flex align-center" @click="$router.push('/')">
       <img src="/img/icons/logo.svg" />
@@ -31,57 +32,39 @@
   </v-navigation-drawer>
 </template>
 
-<script lang="ts">
-  import { defineComponent, computed, ref } from 'vue'
+<script lang="ts" setup>
+  import { ref } from 'vue'
   import { signUserOut } from '@/api/auth'
-  import { useUserStore } from '@/stores/user'
-  import { User } from 'firebase/auth'
+
   import { Router, useRouter } from 'vue-router'
   import { MenuItem } from './types/Nav.types'
 
-  export default defineComponent({
-    name: 'Nav',
-    setup() {
-      // ** Data **
-      const userStore = useUserStore()
-      const router: Router = useRouter()
+  // ** Data **
+  const router: Router = useRouter()
 
-      const isNavOpen = ref<boolean>(false)
+  const isNavOpen = ref<boolean>(false)
 
-      const menuOptions: MenuItem[] = [
-        {
-          text: 'Meal Plan',
-          route: '/meal-plan/meals',
-          icon: 'mdi-food',
-        },
-        {
-          text: 'Shopping',
-          route: '/shopping',
-          icon: 'mdi-format-list-checks',
-        },
-      ]
-
-      // ** Computed **
-      const loggedInUser = computed<User>(() => userStore.user)
-
-      // ** Methods **
-      const handleMenuClick = (option: MenuItem): void => {
-        if (option.route) {
-          router.push(option.route)
-        } else if (option.event) {
-          option.event()
-        }
-      }
-
-      return {
-        isNavOpen,
-        loggedInUser,
-        menuOptions,
-        signUserOut,
-        handleMenuClick,
-      }
+  const menuOptions: MenuItem[] = [
+    {
+      text: 'Meal Plan',
+      route: '/meal-plan/meals',
+      icon: 'mdi-food',
     },
-  })
+    {
+      text: 'Shopping',
+      route: '/shopping',
+      icon: 'mdi-format-list-checks',
+    },
+  ]
+
+  // ** Methods **
+  const handleMenuClick = (option: MenuItem): void => {
+    if (option.route) {
+      router.push(option.route)
+    } else if (option.event) {
+      option.event()
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
