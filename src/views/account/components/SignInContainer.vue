@@ -1,7 +1,7 @@
 <template>
   <div class="login xf-flex-center">
     <div class="login-wrapper">
-      <div class="text-center mb-8">
+      <div class="text-center xf-mb-8">
         <img class="login-logo" src="/img/icons/logo.svg" alt="" />
         <h1 class="login-title xf-mt-2">
           Track <br />

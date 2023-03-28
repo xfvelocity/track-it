@@ -16,12 +16,7 @@
           </div>
         </template>
 
-        <!-- TODO: Update to use v-calendar -->
-        <v-date-picker
-          :model-value="mealPlan.date"
-          class="xf-mt-2"
-          @dayclick="onDateChange"
-        />
+        <date-picker v-model="mealPlan.date" />
       </xf-menu>
 
       <xf-icon
@@ -82,10 +77,11 @@
   import { useMealStore } from '@/stores/meals'
   import { useUserStore } from '@/stores/user'
   import { storeToRefs } from 'pinia'
+  import moment from 'moment'
 
+  import { DatePicker } from 'v-calendar'
   import { XfIcon, XfMenu } from 'xf-cmpt-lib'
   import RecipeCard from './components/RecipeCard.vue'
-  import moment from 'moment'
 
   // ** Data **
   const userStore = useUserStore()
@@ -111,7 +107,8 @@
   }
 
   const formatDate = (date: string): string => {
-    const [_year, month, day] = date.split('-')
+    const d: Date = new Date(date)
+    const [day, month, _year] = d.toLocaleDateString().split('/')
 
     return `${day}/${month}`
   }

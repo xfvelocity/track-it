@@ -16,7 +16,7 @@
       />
     </template> -->
 
-  <!-- <Nav v-if="!hideNav" /> -->
+  <Nav v-if="!hideNav" />
 
   <router-view />
 
@@ -52,6 +52,7 @@
 </script>
 
 <style lang="scss">
+  @import 'v-calendar/dist/style.css';
   @import 'xf-cmpt-lib/dist/cmpt-lib-ts.css';
 
   body {

@@ -2,7 +2,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
-import vuetify from './plugins/vuetify'
 import router from './router'
 import { registerSW } from 'virtual:pwa-register'
 import { initializeApp } from 'firebase/app'
@@ -26,4 +25,4 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 registerSW()
 
-createApp(App).use(router).use(VCalendar).use(vuetify).use(pinia).mount('#app')
+createApp(App).use(router).use(VCalendar).use(pinia).mount('#app')

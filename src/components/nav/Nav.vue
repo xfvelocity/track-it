@@ -1,59 +1,58 @@
 <template>
-  <!-- TODO: UPDATE WITH XF-CMPT-LIB NAVBAR -->
-  <nav class="nav d-flex align-center justify-space-between mt-4 mb-6">
-    <span class="nav__title d-flex align-center" @click="$router.push('/')">
+  <xf-nav
+    background-colour="transparent"
+    drawer-background-colour="blue-darken-4"
+    menu-button-colour="white"
+  >
+    <div class="xf-flex xf-flex-align-items-center" @click="router.push('/')">
       <img src="/img/icons/logo.svg" />
       <h1>Track IT</h1>
-    </span>
+    </div>
 
-    <v-icon @click="isNavOpen = !isNavOpen">mdi-menu</v-icon>
-  </nav>
-
-  <v-navigation-drawer v-model="isNavOpen" location="right" color="cardBlue">
-    <v-list class="mt-8" color="cardBlue">
-      <v-list-item
-        v-for="(option, i) in menuOptions"
-        selectable
-        :key="i"
-        @click="handleMenuClick(option)"
-      >
-        <v-icon class="mr-2"> {{ option.icon }}</v-icon>
-        {{ option.text }}
-      </v-list-item>
-    </v-list>
-
-    <template #append>
-      <v-list class="mb-8" color="cardBlue">
-        <v-list-item selectable @click="signUserOut">
-          <v-icon class="mr-2">mdi-logout</v-icon> Sign Out
-        </v-list-item>
-      </v-list>
+    <template #menu>
+      <div class="nav-menu xf-py-2 xf-px-4 xf-bg-blue-darken-4">
+        <ul>
+          <li
+            v-for="(option, i) in menuOptions"
+            :key="i"
+            class="xf-py-2 xf-hover xf-cursor-pointer"
+            @click="handleMenuClick(option)"
+          >
+            <xf-icon :src="`icons/${option.icon}.svg`" fill="white" />
+            {{ option.text }}
+          </li>
+        </ul>
+      </div>
     </template>
-  </v-navigation-drawer>
+  </xf-nav>
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
   import { signUserOut } from '@/api/auth'
 
   import { Router, useRouter } from 'vue-router'
   import { MenuItem } from './types/Nav.types'
 
+  import { XfNav, XfIcon } from 'xf-cmpt-lib'
+
   // ** Data **
   const router: Router = useRouter()
-
-  const isNavOpen = ref<boolean>(false)
 
   const menuOptions: MenuItem[] = [
     {
       text: 'Meal Plan',
       route: '/meal-plan/meals',
-      icon: 'mdi-food',
+      icon: 'food',
     },
     {
       text: 'Shopping',
       route: '/shopping',
-      icon: 'mdi-format-list-checks',
+      icon: 'shopping',
+    },
+    {
+      text: 'Sign out',
+      event: signUserOut,
+      icon: 'sign-out',
     },
   ]
 
@@ -68,43 +67,13 @@
 </script>
 
 <style lang="scss" scoped>
-  .nav {
-    &__title {
-      cursor: pointer;
-
-      h1 {
-        margin-left: 15px;
-        letter-spacing: 1.5px;
-        font-weight: 500;
-      }
-
-      img {
-        width: 50px;
-      }
-    }
-
-    &__user {
-      margin-top: 12px;
-      cursor: pointer;
-      height: 35px;
-      width: 35px;
-      border-radius: 100%;
-      background: white;
-
-      p {
-        margin-right: 10px;
-      }
-
-      img {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-      }
-    }
+  :deep(.xf-nav) {
+    box-shadow: none !important;
   }
 
-  .v-list {
-    background: #2b2066 !important;
-    color: white;
+  .nav {
+    &-menu {
+      border-radius: 10px;
+    }
   }
 </style>
