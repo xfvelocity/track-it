@@ -16,7 +16,10 @@
           </div>
         </template>
 
-        <date-picker v-model="mealPlan.date" />
+        <date-picker
+          :model-value="mealPlan.date"
+          @update:model-value="formatSelectedDate"
+        />
       </xf-menu>
 
       <xf-icon
@@ -106,9 +109,15 @@
     })
   }
 
+  const formatSelectedDate = (date: string): void => {
+    const d = new Date(date)
+    const [day, month, year] = d.toLocaleDateString().split('/')
+
+    mealPlan.value.date = `${year}-${month}-${day}`
+  }
+
   const formatDate = (date: string): string => {
-    const d: Date = new Date(date)
-    const [day, month, _year] = d.toLocaleDateString().split('/')
+    const [_year, month, day] = date.split('-')
 
     return `${day}/${month}`
   }

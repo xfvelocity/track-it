@@ -16,7 +16,7 @@
     "pinia-plugin-persistedstate": "^3.1.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
-    "xf-cmpt-lib": "^0.0.30"
+    "xf-cmpt-lib": "^0.0.31"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.56.0",

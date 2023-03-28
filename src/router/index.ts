@@ -12,28 +12,29 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     redirect: () => '/meal-plan/meals',
   },
-  {
-    path: '/account',
-    name: 'Account',
-    children: [
-      {
-        path: 'sign-up',
-        name: 'Sign up',
-        component: SignInContainer,
-        meta: {
-          hideNav: true,
-        },
-      },
-      {
-        path: 'login',
-        name: 'Login',
-        component: SignInContainer,
-        meta: {
-          hideNav: true,
-        },
-      },
-    ],
-  },
+  // TODO: Add back when user accounts are linked to meals
+  // {
+  //   path: '/account',
+  //   name: 'Account',
+  //   children: [
+  //     {
+  //       path: 'sign-up',
+  //       name: 'Sign up',
+  //       component: SignInContainer,
+  //       meta: {
+  //         hideNav: true,
+  //       },
+  //     },
+  //     {
+  //       path: 'login',
+  //       name: 'Login',
+  //       component: SignInContainer,
+  //       meta: {
+  //         hideNav: true,
+  //       },
+  //     },
+  //   ],
+  // },
   {
     path: '/meal-plan',
     name: 'Meal Plan',
@@ -72,22 +73,24 @@ router.beforeEach((to, from, next) => {
 
   configStore.loading.value = false
 
-  const isLoggedin: boolean = userStore.user.uid
-  const isLogInPage: boolean = to.name === 'Login' || to.name === 'Sign up'
+  // const isLoggedin: boolean = userStore.user.uid
+  // const isLogInPage: boolean = to.name === 'Login' || to.name === 'Sign up'
 
-  if (isLoggedin) {
-    if (isLogInPage) {
-      next('/')
-    } else {
-      next()
-    }
-  } else {
-    if (isLogInPage) {
-      next()
-    } else {
-      next('/account/login')
-    }
-  }
+  // if (isLoggedin) {
+  //   if (isLogInPage) {
+  //     next('/')
+  //   } else {
+  //     next()
+  //   }
+  // } else {
+  //   if (isLogInPage) {
+  //     next()
+  //   } else {
+  //     next('/account/login')
+  //   }
+  // }]
+
+  next()
 })
 
 export default router

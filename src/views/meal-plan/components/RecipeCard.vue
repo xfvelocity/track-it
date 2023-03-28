@@ -6,20 +6,22 @@
   >
     {{ meal.name }}
 
-    <xf-icon
-      v-if="addIcon"
-      src="icons/plus.svg"
-      class="xf-ml-auto xf-mr-2 xf-cursor-pointer"
-      fill="white"
-      @click="addMeal(meal)"
-    />
+    <div class="xf-flex xf-ml-auto">
+      <xf-icon
+        v-if="addIcon"
+        src="icons/plus.svg"
+        class="xf-mr-2 xf-cursor-pointer"
+        fill="white"
+        @click="addMeal(meal)"
+      />
 
-    <xf-icon
-      src="icons/info.svg"
-      class="xf-cursor-pointer"
-      fill="white"
-      @click="openInfoModal(meal)"
-    />
+      <xf-icon
+        src="icons/info.svg"
+        class="xf-cursor-pointer"
+        fill="white"
+        @click="openInfoModal(meal)"
+      />
+    </div>
   </div>
 
   <xf-modal
@@ -50,7 +52,7 @@
       </p>
     </div>
 
-    <div class="xf-flex xf-mt-4">
+    <div class="xf-flex xf-mt-2">
       <xf-button
         v-if="showEdit"
         class="xf-ml-auto"
@@ -63,6 +65,7 @@
       </xf-button>
 
       <xf-button
+        :class="{ 'xf-ml-auto': !showEdit }"
         background-colour="transparent"
         text-colour="red"
         icon="icons/trash.svg"
