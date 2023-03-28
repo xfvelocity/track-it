@@ -18,7 +18,9 @@
 
   <Nav v-if="!hideNav" />
 
-  <router-view />
+  <div class="xf-px-4 xf-mt-2">
+    <router-view />
+  </div>
 
   <xf-snackbar
     v-model="snackbar.isVisible"

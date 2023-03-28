@@ -6,7 +6,7 @@
   >
     <div class="xf-flex xf-flex-align-items-center" @click="router.push('/')">
       <img src="/img/icons/logo.svg" />
-      <h1>Track IT</h1>
+      <h1 class="xf-ml-2 xf-text-24">Track IT</h1>
     </div>
 
     <template #menu>
@@ -18,7 +18,11 @@
             class="xf-py-2 xf-hover xf-cursor-pointer"
             @click="handleMenuClick(option)"
           >
-            <xf-icon :src="`icons/${option.icon}.svg`" fill="white" />
+            <xf-icon
+              :src="`icons/${option.icon}.svg`"
+              class="xf-mr-1"
+              fill="white"
+            />
             {{ option.text }}
           </li>
         </ul>

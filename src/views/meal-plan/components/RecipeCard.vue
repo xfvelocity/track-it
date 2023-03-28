@@ -2,7 +2,7 @@
   <div
     v-for="(meal, i) in mealList"
     :key="i"
-    class="xf-flex xf-flex-align-items-center xf-mt-1 xf-p-4 xf-w-100 xf-bg-blue-darken-4"
+    class="recipe-card xf-mt-1 xf-px-4 xf-py-2 xf-bg-blue-darken-4"
   >
     {{ meal.name }}
 
@@ -121,3 +121,12 @@
     return unit === 'units' ? '' : unit
   }
 </script>
+
+<style lang="scss" scoped>
+  .recipe-card {
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+</style>
