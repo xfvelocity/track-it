@@ -15,7 +15,7 @@
       @return="onMealChange"
     />
 
-    <div v-else class="xf-p-4">
+    <div v-else class="xf-px-4 xf-pb-8">
       <div class="xf-flex-center-between xf-h-max-content xf-mb-4">
         <h2>Meals</h2>
 
@@ -119,13 +119,8 @@
 
 <style lang="scss" scoped>
   .add-meal {
-    .v-card {
-      background: rgb(9, 0, 66) !important;
-      background: linear-gradient(
-        144deg,
-        rgba(9, 0, 66, 1) 0%,
-        rgba(11, 0, 78, 1) 100%
-      ) !important;
+    :deep(.xf-button) {
+      padding-right: 0 !important;
     }
   }
 </style>

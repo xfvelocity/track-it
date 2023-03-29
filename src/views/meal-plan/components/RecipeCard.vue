@@ -3,25 +3,17 @@
     v-for="(meal, i) in mealList"
     :key="i"
     class="recipe-card xf-mt-1 xf-px-4 xf-py-2 xf-bg-blue-darken-4"
+    @click="openInfoModal(meal)"
   >
     {{ meal.name }}
 
-    <div class="xf-flex xf-ml-auto">
-      <xf-icon
-        v-if="addIcon"
-        src="icons/plus.svg"
-        class="xf-mr-2 xf-cursor-pointer"
-        fill="white"
-        @click="addMeal(meal)"
-      />
-
-      <xf-icon
-        src="icons/info.svg"
-        class="xf-cursor-pointer"
-        fill="white"
-        @click="openInfoModal(meal)"
-      />
-    </div>
+    <xf-icon
+      v-if="addIcon"
+      src="icons/plus.svg"
+      class="xf-ml-auto xf-cursor-pointer"
+      fill="white"
+      @click.stop="addMeal(meal)"
+    />
   </div>
 
   <xf-modal
@@ -52,27 +44,21 @@
       </p>
     </div>
 
-    <div class="xf-flex xf-mt-2">
-      <xf-button
+    <div class="xf-flex xf-mt-4">
+      <xf-icon
         v-if="showEdit"
-        class="xf-ml-auto"
-        background-colour="transparent"
-        text-colour="blue"
-        icon="icons/edit.svg"
+        src="icons/edit.svg"
+        class="xf-mr-2"
+        fill="blue"
         @click="$emit('edit', selectedMeal)"
-      >
-        Edit
-      </xf-button>
+      />
 
-      <xf-button
+      <xf-icon
         :class="{ 'xf-ml-auto': !showEdit }"
-        background-colour="transparent"
-        text-colour="red"
-        icon="icons/trash.svg"
-        @click="onDelete"
-      >
-        Delete
-      </xf-button>
+        src="icons/trash.svg"
+        fill="red"
+        @click="$emit('edit', selectedMeal)"
+      />
     </div>
   </xf-modal>
 </template>

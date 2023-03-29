@@ -18,7 +18,7 @@
 
   <Nav v-if="!hideNav" />
 
-  <div class="xf-px-4 xf-mt-2">
+  <div class="xf-px-4 xf-h-100">
     <router-view />
   </div>
 
@@ -58,15 +58,20 @@
   @import 'xf-cmpt-lib/dist/cmpt-lib-ts.css';
 
   body {
+    margin: 0;
     background: rgb(9, 0, 66);
+  }
+
+  #app {
     background: linear-gradient(
-      144deg,
-      rgba(9, 0, 66, 1) 0%,
-      rgba(11, 0, 78, 1) 100%
+      116.16deg,
+      #08003a 18.04%,
+      rgba(14, 0, 98, 0.9) 95.37%
     );
     color: white;
-
+    height: 100%;
     max-width: 450px;
-    margin: 10px auto !important;
+    padding: 10px 0;
+    margin: 0 auto !important;
   }
 </style>

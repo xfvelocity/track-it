@@ -1,17 +1,25 @@
 <template>
   <div>
-    <div class="xf-flex xf-flex-justify-content-between">
+    <div
+      class="xf-flex xf-flex-justify-content-between xf-flex-align-items-center"
+    >
       <xf-icon
         class="xf-cursor-pointer"
         src="icons/chevron-left.svg"
         fill="white"
+        :size="12"
         @click="changeDate(-1)"
       />
 
-      <xf-menu>
+      <xf-menu background-colour="" center-align>
         <template #activator>
-          <div class="xf-cursor-pointer">
-            <xf-icon class="xf-mr-1" src="icons/calendar.svg" fill="white" />
+          <div class="xf-cursor-pointer xf-text-14">
+            <xf-icon
+              class="xf-mr-1"
+              src="icons/calendar.svg"
+              :size="12"
+              fill="white"
+            />
             {{ formatDate(mealPlan.date) }}
           </div>
         </template>
@@ -26,6 +34,7 @@
         class="xf-cursor-pointer"
         src="icons/chevron-right.svg"
         fill="white"
+        :size="12"
         @click="changeDate(1)"
       />
     </div>

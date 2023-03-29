@@ -1,12 +1,15 @@
 <template>
   <xf-nav
     background-colour="transparent"
-    drawer-background-colour="blue-darken-4"
     menu-button-colour="white"
+    menu-background-colour=""
   >
-    <div class="xf-flex xf-flex-align-items-center" @click="router.push('/')">
+    <div
+      class="nav-header xf-flex xf-flex-align-items-center"
+      @click="router.push('/')"
+    >
       <img src="/img/icons/logo.svg" />
-      <h1 class="xf-ml-2 xf-text-24">Track IT</h1>
+      <h1 class="xf-ml-2">Track IT</h1>
     </div>
 
     <template #menu>
@@ -15,13 +18,14 @@
           <li
             v-for="(option, i) in menuOptions"
             :key="i"
-            class="xf-py-2 xf-hover xf-cursor-pointer"
+            class="xf-py-2 xf-text-14 xf-hover xf-cursor-pointer"
             @click="handleMenuClick(option)"
           >
             <xf-icon
               :src="`icons/${option.icon}.svg`"
               class="xf-mr-1"
               fill="white"
+              :size="14"
             />
             {{ option.text }}
           </li>
@@ -76,6 +80,17 @@
   }
 
   .nav {
+    &-header {
+      h1 {
+        font-size: 18px;
+        letter-spacing: 0.15em;
+      }
+
+      img {
+        max-width: 40px;
+      }
+    }
+
     &-menu {
       border-radius: 10px;
     }
