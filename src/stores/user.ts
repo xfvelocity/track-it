@@ -4,10 +4,10 @@ export const useUserStore = defineStore('user', {
   state: (): any => ({
     user: {},
     nutrientGoals: {
-      calories: 2400,
-      protein: 180,
-      carbs: 240,
-      fat: 80,
+      calories: 1800,
+      protein: 160,
+      carbs: 135,
+      fat: 70,
     },
   }),
   persist: true,

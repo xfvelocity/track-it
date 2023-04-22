@@ -1,7 +1,7 @@
 <template>
   <div class="login xf-flex-center">
     <div class="login-wrapper">
-      <div class="text-center xf-mb-8">
+      <div class="xf-text-center xf-mb-8">
         <img class="login-logo" src="/img/icons/logo.svg" alt="" />
         <h1 class="login-title xf-mt-2">
           Track <br />
@@ -9,29 +9,15 @@
         </h1>
       </div>
 
-      <div>
-        <sign-up v-if="isSignUp" />
-        <log-in v-else />
-      </div>
+      <router-view />
 
-      <other-options :sign-up="isSignUp" />
+      <other-options />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
-  import { RouteLocationNormalized, useRoute } from 'vue-router'
-
-  import LogIn from '../LogIn.vue'
   import OtherOptions from './OtherOptions.vue'
-  import SignUp from '../SignUp.vue'
-
-  // ** Data **
-  const route: RouteLocationNormalized = useRoute()
-
-  // ** Computed **
-  const isSignUp = computed<boolean>(() => route.name === 'Sign up')
 </script>
 
 <style lang="scss" scoped>

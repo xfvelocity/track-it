@@ -28,6 +28,7 @@
   import { signInEmailAccount } from '@/api/auth'
   import { ref } from 'vue'
   import { LogInForm } from './types/account.types'
+
   import { XfTextInput, XfButton } from 'xf-cmpt-lib'
 
   // ** Data **

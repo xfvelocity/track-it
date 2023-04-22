@@ -50,7 +50,7 @@
           <xf-icon class="xf-ml-auto" src="icons/plus.svg" fill="white" />
         </div>
 
-        <RecipeCard
+        <meal-card
           v-if="mealPlan"
           :meal-list="mealPlan[key]"
           :show-edit="false"
@@ -76,8 +76,25 @@
         >
           {{ name }}: {{ nutrient }}
         </p>
+
+        <xf-icon
+          class="xf-cursor-pointer"
+          src="icons/edit.svg"
+          fill="white"
+          @click="editNutrientsModalOpen = true"
+        />
       </div>
     </div>
+
+    <xf-modal v-model="editNutrientsModalOpen">
+      <div class="xf-text-colour-black xf-pb-6">
+        <h4 class="xf-mb-2">Edit nutrient goals:</h4>
+        <xf-text-input v-model="nutrientGoals.calories" label="Calories" />
+        <xf-text-input v-model="nutrientGoals.protein" label="Protein" />
+        <xf-text-input v-model="nutrientGoals.carbs" label="Carbs" />
+        <xf-text-input v-model="nutrientGoals.fat" label="Fat" />
+      </div>
+    </xf-modal>
   </div>
 </template>
 
@@ -92,8 +109,8 @@
   import moment from 'moment'
 
   import { DatePicker } from 'v-calendar'
-  import { XfIcon, XfMenu } from 'xf-cmpt-lib'
-  import RecipeCard from './components/RecipeCard.vue'
+  import { XfIcon, XfMenu, XfModal, XfTextInput } from 'xf-cmpt-lib'
+  import MealCard from '@/components/meal-card/MealCard.vue'
 
   // ** Data **
   const userStore = useUserStore()
@@ -103,6 +120,7 @@
   const { mealPlan } = storeToRefs(mealStore)
   const { nutrientGoals } = storeToRefs(userStore)
 
+  const editNutrientsModalOpen = ref<boolean>(false)
   const nutrients = ref<MealNutrients>(nutrientsBase)
   const keys: ['breakfast', 'lunch', 'dinner'] = [
     'breakfast',

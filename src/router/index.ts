@@ -2,39 +2,41 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { useConfigStore } from '@/stores/config'
 import { useUserStore } from '@/stores/user'
 
-import SignInContainer from '@/views/account/components/SignInContainer.vue'
+import SignInContainer from '@/components/account/SignInContainer.vue'
 import Shopping from '@/views/shopping/Shopping.vue'
 import AddMeal from '@/views/meal-plan/AddMeal.vue'
 import Meals from '@/views/meal-plan/Meals.vue'
+import SignUp from '@/views/account/SignUp.vue'
+import LogIn from '@/views/account/LogIn.vue'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: () => '/meal-plan/meals',
   },
-  // TODO: Add back when user accounts are linked to meals
-  // {
-  //   path: '/account',
-  //   name: 'Account',
-  //   children: [
-  //     {
-  //       path: 'sign-up',
-  //       name: 'Sign up',
-  //       component: SignInContainer,
-  //       meta: {
-  //         hideNav: true,
-  //       },
-  //     },
-  //     {
-  //       path: 'login',
-  //       name: 'Login',
-  //       component: SignInContainer,
-  //       meta: {
-  //         hideNav: true,
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    path: '/account',
+    name: 'Account',
+    component: SignInContainer,
+    children: [
+      {
+        path: 'sign-up',
+        name: 'Sign up',
+        component: SignUp,
+        meta: {
+          hideNav: true,
+        },
+      },
+      {
+        path: 'login',
+        name: 'Login',
+        component: LogIn,
+        meta: {
+          hideNav: true,
+        },
+      },
+    ],
+  },
   {
     path: '/meal-plan',
     name: 'Meal Plan',
@@ -73,24 +75,22 @@ router.beforeEach((to, from, next) => {
 
   configStore.loading.value = false
 
-  // const isLoggedin: boolean = userStore.user.uid
-  // const isLogInPage: boolean = to.name === 'Login' || to.name === 'Sign up'
+  const isLoggedin: boolean = userStore.user.uid
+  const isLogInPage: boolean = to.name === 'Login' || to.name === 'Sign up'
 
-  // if (isLoggedin) {
-  //   if (isLogInPage) {
-  //     next('/')
-  //   } else {
-  //     next()
-  //   }
-  // } else {
-  //   if (isLogInPage) {
-  //     next()
-  //   } else {
-  //     next('/account/login')
-  //   }
-  // }]
-
-  next()
+  if (isLoggedin) {
+    if (isLogInPage) {
+      next('/')
+    } else {
+      next()
+    }
+  } else {
+    if (isLogInPage) {
+      next()
+    } else {
+      next('/account/login')
+    }
+  }
 })
 
 export default router

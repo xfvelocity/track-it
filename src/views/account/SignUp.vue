@@ -43,11 +43,12 @@
   import { createEmailAccount } from '@/api/auth'
   import { ref } from 'vue'
   import { SignUpForm } from './types/account.types'
+
   import { XfTextInput, XfButton } from 'xf-cmpt-lib'
 
   // ** Data **
   const confirmPassword = ref<string>('')
-  const matchingPasswordError = ref<[] | string>([])
+  const matchingPasswordError = ref<string>('')
   const showPassword = ref<boolean>(false)
   const signUpdetails = ref<SignUpForm>({
     email: '',
@@ -56,27 +57,29 @@
 
   // ** Methods **
   const signUp = async (): Promise<void> => {
-    const isPasswordMatching: [] | string = validateMatchingPassword()
+    const isPasswordMatching: string = validateMatchingPassword()
 
-    if (Array.isArray(isPasswordMatching) && isPasswordMatching.length === 0) {
+    if (isPasswordMatching === '') {
       const { email, password } = signUpdetails.value
 
       createEmailAccount(email, password)
     }
   }
 
-  const validateMatchingPassword = (): [] | string => {
+  const validateMatchingPassword = (): string => {
     if (signUpdetails.value.password && confirmPassword.value) {
-      const isMatching: [] | string =
+      const isMatching: string =
         signUpdetails.value.password === confirmPassword.value
-          ? []
+          ? ''
           : "Password doesn't match"
+
       matchingPasswordError.value = isMatching
 
       return isMatching
     } else {
       matchingPasswordError.value = "Password doesn't match"
-      return "Password doesn't match"
+
+      return matchingPasswordError.value
     }
   }
 </script>

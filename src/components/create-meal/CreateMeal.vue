@@ -73,15 +73,15 @@
 
 <script lang="ts" setup>
   import { onMounted, ref, computed } from 'vue'
-  import { Meal, MealNutrients } from './types/mealPlan.types'
-  import { mealBase } from './data/mealPlan.data'
   import { useMealStore } from '@/stores/meals'
   import { useConfigStore } from '@/stores/config'
   import { debounce } from '@/helpers/utility'
+  import { mealBase } from '@/views/meal-plan/data/mealPlan.data'
+  import { Meal, MealNutrients } from '@/views/meal-plan/types/mealPlan.types'
 
   import { XfTextInput, XfSelect, XfButton } from 'xf-cmpt-lib'
 
-  // ** Props **
+  // ** Base **
   const props = defineProps<{
     editing?: boolean
     editingMeal?: Meal

@@ -8,7 +8,7 @@
       @click="backToggled"
     />
 
-    <CreateMeal
+    <create-meal
       v-if="createMeal"
       :editing="isEditing"
       :editing-meal="selectedMeal"
@@ -32,10 +32,10 @@
       <xf-text-input v-model="search" colour="white" label="Search" />
 
       <div class="xf-mt-4 xf-flex xf-flex-wrap xf-flex-justify-space-between">
-        <RecipeCard
+        <meal-card
           :meal-list="filteredMeals"
           add-icon
-          @meal-added="($event) => addMeal($event)"
+          @meal-added="addMeal"
           @edit="editMeal"
           @delete="deleteMeal"
         />
@@ -53,8 +53,8 @@
   import router from '@/router'
 
   import { XfIcon, XfButton, XfTextInput } from 'xf-cmpt-lib'
-  import RecipeCard from './components/RecipeCard.vue'
-  import CreateMeal from './CreateMeal.vue'
+  import MealCard from '@/components/meal-card/MealCard.vue'
+  import CreateMeal from '@/components/create-meal/CreateMeal.vue'
 
   // ** Data **
   const configStore = useConfigStore()

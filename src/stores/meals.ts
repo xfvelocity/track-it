@@ -1,4 +1,4 @@
-import api, { queryApi } from '@/api/api'
+import { queryApi, api } from '@/api/api'
 import { mealPlanBase } from '@/views/meal-plan/data/mealPlan.data'
 import { Meal, MealPlan } from '@/views/meal-plan/types/mealPlan.types'
 import moment from 'moment'

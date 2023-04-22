@@ -11,14 +11,14 @@
         v-for="(method, i) in loginMethods"
         :key="i"
         class="other-options-btn xf-flex-center xf-cursor-pointer"
-        :class="[{ 'xf-ml-4': i > 0, 'xf-disabled': method.disabled }]"
+        :class="[{ 'xf-ml-4': i > 0 }]"
         @click="logIn(method)"
       >
         <img :src="method.icon" alt="" />
       </div>
     </div>
 
-    <p v-if="signUp" class="other-options-text">
+    <p v-if="route.name === 'Sign up'" class="other-options-text">
       Already have an account?
       <span
         class="xf-text-center xf-text-colour-blue"
@@ -42,39 +42,38 @@
 
 <script lang="ts" setup>
   import { signIn } from '@/api/auth'
-  import { LoginMethod } from '../types/account.types'
-  import { useRouter } from 'vue-router'
-  import Divider from '../../../components/divider/Divider.vue'
+  import { useRoute, useRouter } from 'vue-router'
+  import { LoginMethod } from '@/views/account/types/account.types'
 
+  import Divider from '@/components/divider/Divider.vue'
+
+  // ** Base **
   defineProps<{
     signUp?: boolean
   }>()
 
   // ** Data **
+  const route = useRoute()
   const router = useRouter()
+
   const loginMethods: LoginMethod[] = [
     {
       icon: '/img/icons/google.svg',
       value: 'google',
-      disabled: false,
     },
     {
       icon: '/img/icons/facebook.svg',
       value: 'facebook',
-      disabled: false,
     },
-    {
-      icon: '/img/icons/apple.svg',
-      value: 'apple',
-      disabled: true,
-    },
+    // {
+    //   icon: '/img/icons/apple.svg',
+    //   value: 'apple',
+    // },
   ]
 
   // ** Methods **
   const logIn = (method: LoginMethod): void => {
-    if (!method.disabled) {
-      signIn(method.value)
-    }
+    signIn(method.value)
   }
 </script>
 

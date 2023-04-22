@@ -69,58 +69,39 @@ export async function queryRangeApi(
   )
 }
 
-export default async function api(type: string, col: string, data?: any) {
-  let res: any = null
-  let error: boolean = false
+export const api = async (type: string, col: string, data?: any) => {
   const configStore = useConfigStore()
-  const db: Firestore = getFirestore()
-  const colref: CollectionReference<DocumentData> = collection(db, col)
+  const db = getFirestore()
+  const colref = collection(db, col)
 
-  switch (type.toUpperCase()) {
-    case 'GET':
-      res = await getDocs(colref)
-        .then((snapshot) =>
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        )
-        .catch(() => {
-          error = true
-        })
-      break
+  try {
+    switch (type.toUpperCase()) {
+      case 'GET':
+        const snapshot = await getDocs(colref)
+        return snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
 
-    case 'POST':
-      res = await addDoc(colref, data)
-        .then(() => true)
-        .catch(() => {
-          error = true
-        })
-      break
+      case 'POST':
+        await addDoc(colref, data)
+        return true
 
-    case 'DEL':
-      const delRef: DocumentReference<DocumentData> = doc(db, col, data)
-      res = await deleteDoc(delRef)
-        .then(() => true)
-        .catch(() => {
-          error = true
-        })
-      break
+      case 'DEL':
+        const delRef = doc(db, col, data)
+        await deleteDoc(delRef)
+        return true
 
-    case 'PUT':
-      const updRef: DocumentReference<DocumentData> = doc(db, col, data.id)
-      res = await updateDoc(updRef, data)
-        .then(() => true)
-        .catch(() => {
-          error = true
-        })
-      break
-  }
+      case 'PUT':
+        const updRef = doc(db, col, data.id)
+        await updateDoc(updRef, data)
+        return true
 
-  if (error) {
+      default:
+        throw new Error('Invalid API type')
+    }
+  } catch (error) {
     configStore.snackbar = {
       color: 'red',
-      text: `An error occured, please try again.`,
+      text: `An error occurred, please try again.`,
       isVisible: true,
     }
   }
-
-  return res
 }

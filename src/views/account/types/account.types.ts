@@ -1,15 +1,11 @@
-export type LoginMethod = {
+export interface LoginMethod {
   icon: string
   value: string
-  disabled: boolean
 }
 
-export type SignUpForm = {
+export interface SignUpForm {
   email: string
   password: string
 }
 
-export type LogInForm = {
-  email: string
-  password: string
-}
+export interface LogInForm extends SignUpForm {}

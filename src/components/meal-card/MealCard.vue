@@ -64,12 +64,12 @@
 </template>
 
 <script lang="ts" setup>
+  import { Meal } from '@/views/meal-plan/types/mealPlan.types'
   import { ref } from 'vue'
-  import { Meal } from '../types/mealPlan.types'
 
-  import { XfModal, XfButton, XfIcon } from 'xf-cmpt-lib'
+  import { XfModal, XfIcon } from 'xf-cmpt-lib'
 
-  // ** Props **
+  // ** Base **
   withDefaults(
     defineProps<{
       mealList: Meal[]
