@@ -36,7 +36,7 @@
     />
   </div>
 
-  <div class="xf-mt-4">
+  <div class="xf-mt-6">
     <div v-for="(key, i) in keys" :key="i" class="xf-text-capitalize xf-mb-8">
       <div
         class="xf-flex xf-flex-align-items-center xf-cursor-pointer"
@@ -56,18 +56,18 @@
     </div>
 
     <div
-      class="meals-nutrients xf-px-6 xf-flex xf-flex-justify-content-between"
+      class="meals-nutrients ti-max-width xf-center-horizontal xf-px-6 xf-flex xf-flex-justify-content-between"
     >
       <div
         v-for="(nutrient, name, i) in nutrients"
         :key="i"
         class="meals-nutrients-item xf-text-center"
       >
-        <p class="xf-text-capitalize xf-text-16 xf-fw-700 xf-mb-1">
+        <p class="xf-text-capitalize xf-text-14 xf-fw-700 xf-mb-1">
           {{ name }}
         </p>
 
-        <div class="xf-text-14">{{ nutrient }} / {{ nutrientGoals[name] }}</div>
+        <p class="xf-text-14">{{ nutrient }} / {{ nutrientGoals[name] }}</p>
       </div>
     </div>
   </div>

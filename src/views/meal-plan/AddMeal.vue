@@ -70,7 +70,7 @@
   // ** Computed **
   const filteredMeals = computed<Meal[]>(() =>
     mealList.value.filter((meal) =>
-      meal.name.toLowerCase().includes(search.value.toLowerCase())
+      meal.name?.toLowerCase().includes(search.value.toLowerCase())
     )
   )
 

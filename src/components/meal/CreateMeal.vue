@@ -2,11 +2,11 @@
   <xf-text-input
     v-model="meal.name"
     colour="white"
-    placeholder="Meal name"
+    placeholder="Name"
     outlined
   />
 
-  <h4 class="xf-mt-6 xf-mb-2">Ingredients</h4>
+  <h4 class="xf-mt-4 xf-mb-2">Ingredients</h4>
   <hr class="xf-bg-white" />
 
   <template v-if="meal.ingredients">
@@ -16,7 +16,7 @@
   </template>
 
   <p
-    class="xf-p-1 xf-text-colour-blue xf-fw-600"
+    class="xf-p-1 xf-cursor-pointer xf-text-colour-blue xf-fw-600"
     @click="isNutrientModalOpen = true"
   >
     <xf-icon
@@ -29,14 +29,14 @@
   </p>
 
   <xf-button
-    class="xf-ml-auto xf-mt-15"
+    class="xf-w-100 xf-mt-15"
     background-colour="green"
     @click="addMeal"
   >
     {{ editing ? 'Update' : 'Add Meal' }}
   </xf-button>
 
-  <xf-modal
+  <!-- <xf-modal
     class="ti-max-width xf-center-horizontal"
     v-model="isNutrientModalOpen"
     background-colour="bg"
@@ -47,7 +47,7 @@
     <div v-for="(ingredient, i) in []" :key="i">
       {{ ingredient }}
     </div>
-  </xf-modal>
+  </xf-modal> -->
 </template>
 
 <script lang="ts" setup>

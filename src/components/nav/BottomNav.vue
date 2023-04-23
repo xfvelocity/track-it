@@ -1,6 +1,11 @@
 <template>
-  <div class="bottom-nav xf-px-4 xf-py-4">
-    <xf-icon src="icons/chevron-left.svg" fill="white" @click="$emit('back')" />
+  <div class="bottom-nav ti-max-width xf-center-horizontal xf-px-4 xf-py-4">
+    <xf-icon
+      class="xf-cursor-pointer"
+      src="icons/chevron-left.svg"
+      fill="white"
+      @click="$emit('back')"
+    />
   </div>
 </template>
 

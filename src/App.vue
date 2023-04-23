@@ -1,9 +1,8 @@
 <template>
   <!-- TODO: Add loading with xf-cmpt-lib-->
-
   <Nav v-if="!hideNav" />
 
-  <div class="xf-px-6 xf-min-h-100" :class="hideNav ? 'xf-pt-6' : 'xf-pt-2'">
+  <div class="xf-px-6" :class="hideNav ? 'xf-pt-6' : 'xf-pt-2'">
     <router-view />
   </div>
 
