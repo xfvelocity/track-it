@@ -15,7 +15,7 @@ body {
     rgba(14, 0, 98, 0.9) 95.37%
   );
   color: white;
-  height: 100%;
+  min-height: 100%;
   padding: 10px 0;
 
   @extend .ti-max-width;

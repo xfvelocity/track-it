@@ -1,100 +1,75 @@
 <template>
-  <div>
-    <div
-      class="xf-flex xf-flex-justify-content-between xf-flex-align-items-center"
-    >
-      <xf-icon
-        class="xf-cursor-pointer"
-        src="icons/chevron-left.svg"
-        fill="white"
-        :size="12"
-        @click="changeDate(-1)"
-      />
+  <div class="xf-flex-center-between">
+    <xf-icon
+      class="xf-cursor-pointer"
+      src="icons/chevron-left.svg"
+      fill="white"
+      :size="12"
+      @click="changeDate(-1)"
+    />
 
-      <xf-menu background-colour="" center-align>
-        <template #activator>
-          <div class="xf-cursor-pointer xf-text-14">
-            <xf-icon
-              class="xf-mr-1"
-              src="icons/calendar.svg"
-              :size="12"
-              fill="white"
-            />
-            {{ formatDate(mealPlan.date) }}
-          </div>
-        </template>
-
-        <date-picker
-          :model-value="mealPlan.date"
-          @update:model-value="formatSelectedDate"
-        />
-      </xf-menu>
-
-      <xf-icon
-        class="xf-cursor-pointer"
-        src="icons/chevron-right.svg"
-        fill="white"
-        :size="12"
-        @click="changeDate(1)"
-      />
-    </div>
-
-    <div class="xf-mt-4">
-      <div v-for="(key, i) in keys" :key="i" class="xf-text-capitalize xf-mb-8">
-        <div
-          class="xf-flex xf-flex-align-items-center xf-cursor-pointer"
-          @click="toggleAddMealModal(key)"
-        >
-          <h4 class="xf-text-capitalize">{{ key }}</h4>
-
-          <xf-icon class="xf-ml-auto" src="icons/plus.svg" fill="white" />
+    <xf-menu background-colour="" center-align>
+      <template #activator>
+        <div class="xf-cursor-pointer xf-text-14">
+          <xf-icon
+            class="xf-mr-1"
+            src="icons/calendar.svg"
+            :size="12"
+            fill="white"
+          />
+          {{ formatDate(mealPlan.date) }}
         </div>
+      </template>
 
-        <meal-card
-          v-if="mealPlan"
-          :meal-list="mealPlan[key]"
-          :show-edit="false"
-          @delete="deleteMeal($event, key)"
-        />
+      <date-picker
+        :model-value="mealPlan.date"
+        @update:model-value="formatSelectedDate"
+      />
+    </xf-menu>
+
+    <xf-icon
+      class="xf-cursor-pointer"
+      src="icons/chevron-right.svg"
+      fill="white"
+      :size="12"
+      @click="changeDate(1)"
+    />
+  </div>
+
+  <div class="xf-mt-4">
+    <div v-for="(key, i) in keys" :key="i" class="xf-text-capitalize xf-mb-8">
+      <div
+        class="xf-flex xf-flex-align-items-center xf-cursor-pointer"
+        @click="toggleAddMealModal(key)"
+      >
+        <h4 class="xf-text-capitalize">{{ key }}</h4>
+
+        <xf-icon class="xf-ml-auto" src="icons/plus.svg" fill="white" />
       </div>
 
-      <div class="xf-flex xf-pt-6">
-        <p
-          v-for="(nutrient, name, i) in nutrients"
-          :key="i"
-          class="xf-text-capitalize xf-text-14 xf-mr-3"
-        >
-          {{ name }}: {{ nutrient }}
-        </p>
-      </div>
-
-      <div class="xf-flex xf-pt-2">
-        <p
-          v-for="(nutrient, name, i) in nutrientGoals"
-          :key="i"
-          class="xf-text-capitalize xf-text-14 xf-mr-3"
-        >
-          {{ name }}: {{ nutrient }}
-        </p>
-
-        <xf-icon
-          class="xf-cursor-pointer"
-          src="icons/edit.svg"
-          fill="white"
-          @click="editNutrientsModalOpen = true"
-        />
-      </div>
+      <meal-card
+        v-if="mealPlan"
+        :meal-list="mealPlan[key]"
+        :show-edit="false"
+        @delete="deleteMeal($event, key)"
+      />
     </div>
 
-    <xf-modal v-model="editNutrientsModalOpen">
-      <div class="xf-text-colour-black xf-pb-6">
-        <h4 class="xf-mb-2">Edit nutrient goals:</h4>
-        <xf-text-input v-model="nutrientGoals.calories" label="Calories" />
-        <xf-text-input v-model="nutrientGoals.protein" label="Protein" />
-        <xf-text-input v-model="nutrientGoals.carbs" label="Carbs" />
-        <xf-text-input v-model="nutrientGoals.fat" label="Fat" />
+    <div
+      class="meals-nutrients xf-px-6 xf-flex xf-flex-justify-content-between"
+    >
+      <div
+        v-for="(nutrient, name, i) in nutrients"
+        :key="i"
+        class="meals-nutrients-item xf-text-center"
+      >
+        <p class="xf-text-capitalize xf-text-16 xf-fw-700 xf-mb-1">
+          {{ name }}
+        </p>
+
+        <div class="xf-text-14">{{ nutrient }} / {{ nutrientGoals[name] }}</div>
       </div>
-    </xf-modal>
+    </div>
   </div>
 </template>
 
@@ -202,3 +177,18 @@
   // ** Watchers **
   watch(mealPlan, calculateNutrients)
 </script>
+
+<style lang="scss" scoped>
+  .meals {
+    &-nutrients {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      width: 100%;
+
+      &-item {
+        width: 60px;
+      }
+    }
+  }
+</style>

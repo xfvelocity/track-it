@@ -1,24 +1,9 @@
 <template>
   <!-- TODO: Add loading with xf-cmpt-lib-->
-  <!-- <template v-if="loading?.value">
-      <v-overlay
-        v-if="loading.type === 'fullpage'"
-        class="d-flex justify-center align-center"
-        v-model="loading.value"
-      >
-        <v-progress-circular color="white" indeterminate size="64" />
-      </v-overlay>
-      <v-progress-linear
-        v-else
-        color="blue-darken-2"
-        height="10"
-        indeterminate
-      />
-    </template> -->
 
   <Nav v-if="!hideNav" />
 
-  <div class="xf-px-4 xf-h-100">
+  <div class="xf-px-6 xf-min-h-100" :class="hideNav ? 'xf-pt-6' : 'xf-pt-2'">
     <router-view />
   </div>
 

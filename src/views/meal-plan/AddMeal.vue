@@ -1,13 +1,5 @@
 <template>
   <div class="add-meal">
-    <xf-icon
-      class="xf-mt-4 xf-mb-2 xf-cursor-pointer"
-      :size="16"
-      fill="white"
-      src="icons/chevron-left.svg"
-      @click="backToggled"
-    />
-
     <create-meal
       v-if="createMeal"
       :editing="isEditing"
@@ -15,12 +7,12 @@
       @return="onMealChange"
     />
 
-    <div v-else class="xf-px-4 xf-pb-8">
+    <template v-else>
       <div class="xf-flex-center-between xf-h-max-content xf-mb-4">
         <h2>Meals</h2>
 
         <xf-button
-          class="xf-ml-auto"
+          class="xf-ml-auto add-meal-create-meal-btn"
           background-colour="transparent"
           icon="icons/plus.svg"
           @click="createMeal = true"
@@ -29,7 +21,12 @@
         </xf-button>
       </div>
 
-      <xf-text-input v-model="search" colour="white" label="Search" />
+      <xf-text-input
+        v-model="search"
+        colour="white"
+        outlined
+        placeholder="Search"
+      />
 
       <div class="xf-mt-4 xf-flex xf-flex-wrap xf-flex-justify-space-between">
         <meal-card
@@ -40,8 +37,10 @@
           @delete="deleteMeal"
         />
       </div>
-    </div>
+    </template>
   </div>
+
+  <bottom-nav @back="backToggled" />
 </template>
 
 <script lang="ts" setup>
@@ -55,6 +54,7 @@
   import { XfIcon, XfButton, XfTextInput } from 'xf-cmpt-lib'
   import MealCard from '@/components/meal-card/MealCard.vue'
   import CreateMeal from '@/components/meal/CreateMeal.vue'
+  import BottomNav from '@/components/nav/BottomNav.vue'
 
   // ** Data **
   const configStore = useConfigStore()
@@ -116,3 +116,11 @@
   // ** Lifecycle **
   onBeforeMount(getMeals)
 </script>
+
+<style lang="scss" scoped>
+  .add-meal {
+    &-create-meal-btn {
+      padding-right: 0 !important;
+    }
+  }
+</style>
