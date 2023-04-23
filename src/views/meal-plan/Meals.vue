@@ -1,39 +1,7 @@
 <template>
-  <div class="xf-flex-center-between">
-    <xf-icon
-      class="xf-cursor-pointer"
-      src="icons/chevron-left.svg"
-      fill="white"
-      :size="12"
-      @click="changeDate(-1)"
-    />
-
-    <xf-menu background-colour="" center-align>
-      <template #activator>
-        <div class="xf-cursor-pointer xf-text-14">
-          <xf-icon
-            class="xf-mr-1"
-            src="icons/calendar.svg"
-            :size="12"
-            fill="white"
-          />
-          {{ formatDate(mealPlan.date) }}
-        </div>
-      </template>
-
-      <date-picker
-        :model-value="mealPlan.date"
-        @update:model-value="formatSelectedDate"
-      />
-    </xf-menu>
-
-    <xf-icon
-      class="xf-cursor-pointer"
-      src="icons/chevron-right.svg"
-      fill="white"
-      :size="12"
-      @click="changeDate(1)"
-    />
+  <div>
+    <xf-icon class="xf-mr-2" src="icons/calendar.svg" fill="white" :size="16" />
+    <span>This week</span>
   </div>
 
   <div class="xf-mt-6">
@@ -83,8 +51,7 @@
   import { storeToRefs } from 'pinia'
   import moment from 'moment'
 
-  import { DatePicker } from 'v-calendar'
-  import { XfIcon, XfMenu, XfModal, XfTextInput } from 'xf-cmpt-lib'
+  import { XfIcon } from 'xf-cmpt-lib'
   import MealCard from '@/components/meal-card/MealCard.vue'
 
   // ** Data **
@@ -95,7 +62,6 @@
   const { mealPlan } = storeToRefs(mealStore)
   const { nutrientGoals } = storeToRefs(userStore)
 
-  const editNutrientsModalOpen = ref<boolean>(false)
   const nutrients = ref<MealNutrients>(nutrientsBase)
   const keys: ['breakfast', 'lunch', 'dinner'] = [
     'breakfast',
@@ -109,36 +75,6 @@
       path: '/meal-plan/add-meal',
       query: { time: mealTime },
     })
-  }
-
-  const formatSelectedDate = (date: string): void => {
-    const d = new Date(date)
-    const [day, month, year] = d.toLocaleDateString().split('/')
-
-    mealPlan.value.date = `${year}-${month}-${day}`
-  }
-
-  const formatDate = (date: string): string => {
-    const [_year, month, day] = date.split('-')
-
-    return `${day}/${month}`
-  }
-
-  const onDateChange = async (date: any): Promise<void> => {
-    await mealStore.getMeals(date.id)
-  }
-
-  const changeDate = (val: number): void => {
-    const date: Date = new Date(mealPlan.value.date)
-
-    if (val === -1) {
-      date.setDate(date.getDate() - 1)
-    } else {
-      date.setDate(date.getDate() + 1)
-    }
-
-    const [day, month, year] = date.toLocaleDateString().split('/')
-    onDateChange({ id: `${year}-${month}-${day}` })
   }
 
   const calculateNutrients = (): void => {
