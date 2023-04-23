@@ -4,6 +4,7 @@
     label="Email"
     type="email"
     colour="grey"
+    @keydown.enter="logIn"
   />
 
   <xf-text-input
@@ -13,6 +14,7 @@
     :append-icon="showPassword ? 'icons/eye.svg' : 'icons/eye-slash.svg'"
     colour="grey"
     @click:append="showPassword = !showPassword"
+    @keydown.enter="logIn"
   />
 
   <xf-button

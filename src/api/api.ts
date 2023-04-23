@@ -7,41 +7,35 @@ import {
   deleteDoc,
   doc,
   updateDoc,
-  Firestore,
-  CollectionReference,
-  DocumentData,
-  DocumentReference,
   where,
   query,
-  Query,
   WhereFilterOp,
-  QuerySnapshot,
 } from 'firebase/firestore'
 
-export async function queryApi(
+export const queryApi = async (
   col: string,
   queryData: {
     where: string
     operator: WhereFilterOp
     value: string
   }
-) {
-  const db: Firestore = getFirestore()
-  const colref: CollectionReference<DocumentData> = collection(db, col)
+) => {
+  const db = getFirestore()
+  const colref = collection(db, col)
 
-  const matchingQuery: Query<DocumentData> = query(
+  const matchingQuery = query(
     colref,
     where(queryData.where, queryData.operator, queryData.value)
   )
 
-  const results: QuerySnapshot<DocumentData> = await getDocs(matchingQuery)
+  const results = await getDocs(matchingQuery)
 
   return results.docs.map((doc: any) =>
     'id' in doc.data() ? doc.data() : { id: doc.id, ...doc.data() }
   )
 }
 
-export async function queryRangeApi(
+export const queryRangeApi = async (
   col: string,
   queryOne: {
     where: string
@@ -53,16 +47,16 @@ export async function queryRangeApi(
     operator: WhereFilterOp
     value: string
   }
-) {
-  const db: Firestore = getFirestore()
-  const colref: CollectionReference<DocumentData> = collection(db, col)
-  const matchingQuery: Query<DocumentData> = query(
+) => {
+  const db = getFirestore()
+  const colref = collection(db, col)
+  const matchingQuery = query(
     colref,
     where(queryOne.where, queryOne.operator, queryOne.value),
     where(queryTwo.where, queryTwo.operator, queryTwo.value)
   )
 
-  const results: QuerySnapshot<DocumentData> = await getDocs(matchingQuery)
+  const results = await getDocs(matchingQuery)
 
   return results.docs.map((doc: any) =>
     'id' in doc.data() ? doc.data() : { id: doc.id, ...doc.data() }

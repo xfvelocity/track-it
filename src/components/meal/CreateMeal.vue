@@ -1,74 +1,53 @@
 <template>
-  <xf-text-input v-model="meal.name" colour="white" label="Meal name" />
+  <xf-text-input
+    v-model="meal.name"
+    colour="white"
+    placeholder="Meal name"
+    outlined
+  />
 
-  <h4 class="xf-mt-4 xf-mb-2 xf-text-center">Ingredients</h4>
+  <h4 class="xf-mt-6 xf-mb-2">Ingredients</h4>
+  <hr class="xf-bg-white" />
 
-  <div
-    class="xf-create-ingredient xf-px-4 xf-mb-1 xf-border-grey-darken-2 xf-grid"
-    v-for="(ingredient, i) in meal.ingredients"
-    :key="i"
+  <template v-if="meal.ingredients">
+    <div v-for="(ingredient, i) in meal.ingredients" :key="i">
+      {{ ingredient.name }}
+    </div>
+  </template>
+
+  <p
+    class="xf-p-1 xf-text-colour-blue xf-fw-600"
+    @click="isNutrientModalOpen = true"
   >
-    <xf-select
-      class="xf-col-12"
-      colour="white"
-      :model-value="ingredient.name"
-      :options="ingredientsList"
-      autocomplete
-      free-text
-      label="Name"
-      @update:model-value="setSelectedIngredientNutrients($event, i)"
+    <xf-icon
+      class="xf-mr-1"
+      src="icons/plus.svg"
+      fill="blue"
+      style="padding-top: 2px"
     />
-
-    <xf-text-input
-      v-model="ingredient.amount"
-      class="xf-col-8"
-      colour="white"
-      label="Amount"
-      @focus="onFocus($event.target)"
-    />
-
-    <xf-select
-      v-model="ingredient.unit"
-      class="xf-col-4"
-      :options="unitOptions"
-      colour="white"
-      label="Unit"
-    />
-
-    <xf-text-input
-      v-for="(key, i) in nutrientKeys"
-      :key="i"
-      v-model="ingredient.nutrients[key]"
-      class="xf-text-capitalize xf-col-6 xf-mb-1"
-      :label="key"
-      colour="white"
-      @focus="onFocus($event.target)"
-    />
-
-    <xf-button
-      class="xf-col-12 xf-w-100 xf-my-2"
-      background-colour="red"
-      @click="deleteIngredient(i)"
-    >
-      Remove ingredients
-    </xf-button>
-  </div>
+    Add ingredient
+  </p>
 
   <xf-button
-    class="xf-w-100 xf-my-2"
-    background-colour="blue"
-    @click="addIngredient"
-  >
-    Add Ingredient
-  </xf-button>
-
-  <xf-button
-    class="xf-ml-auto xf-mt-10"
+    class="xf-ml-auto xf-mt-15"
     background-colour="green"
     @click="addMeal"
   >
     {{ editing ? 'Update' : 'Add Meal' }}
   </xf-button>
+
+  <xf-modal
+    class="ti-max-width xf-center-horizontal"
+    v-model="isNutrientModalOpen"
+    background-colour="bg"
+    fullscreen
+  >
+    <h3>Add ingredient</h3>
+
+    <div v-for="(ingredient, i) in []" :key="i">
+      {{ ingredient }}
+    </div>
+  </xf-modal>
 </template>
 
 <script lang="ts" setup>
@@ -79,7 +58,7 @@
   import { mealBase } from '@/views/meal-plan/data/mealPlan.data'
   import { Meal, MealNutrients } from '@/views/meal-plan/types/mealPlan.types'
 
-  import { XfTextInput, XfSelect, XfButton } from 'xf-cmpt-lib'
+  import { XfTextInput, XfIcon, XfButton, XfModal } from 'xf-cmpt-lib'
 
   // ** Base **
   const props = defineProps<{
@@ -95,6 +74,7 @@
   const mealStore = useMealStore()
 
   const meal = ref<Meal>(mealBase)
+  const isNutrientModalOpen = ref<boolean>(false)
 
   const nutrientKeys: (keyof MealNutrients)[] = Object.keys(
     meal.value.nutrients
@@ -114,6 +94,7 @@
   )
 
   // ** Methods **
+  const toggleIngredientsModal = (): void => {}
   const setSelectedIngredientNutrients = debounce(
     (val: any, index: number): void => {
       const matchingIngredient = ingredientsList.value.find(

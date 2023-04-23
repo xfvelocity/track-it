@@ -55,7 +55,9 @@ export default defineConfig({
   define: { 'process.env': {} },
   css: {
     preprocessorOptions: {
-      scss: {},
+      scss: {
+        additionalData: '@import "@/assets/styles/variables.scss";',
+      },
     },
   },
 })

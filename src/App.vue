@@ -56,22 +56,5 @@
 <style lang="scss">
   @import 'v-calendar/dist/style.css';
   @import 'xf-cmpt-lib/dist/cmpt-lib-ts.css';
-
-  body {
-    margin: 0;
-    background: rgb(9, 0, 66);
-  }
-
-  #app {
-    background: linear-gradient(
-      116.16deg,
-      #08003a 18.04%,
-      rgba(14, 0, 98, 0.9) 95.37%
-    );
-    color: white;
-    height: 100%;
-    max-width: 450px;
-    padding: 10px 0;
-    margin: 0 auto !important;
-  }
+  @import '@/assets/styles/index.scss';
 </style>

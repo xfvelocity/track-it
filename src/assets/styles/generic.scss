@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  background: rgb(9, 0, 66);
+}
+
+.ti-max-width {
+  max-width: 450px !important;
+  margin: 0 auto !important;
+}
+
+#app {
+  background: linear-gradient(
+    116.16deg,
+    #08003a 18.04%,
+    rgba(14, 0, 98, 0.9) 95.37%
+  );
+  color: white;
+  height: 100%;
+  padding: 10px 0;
+
+  @extend .ti-max-width;
+}
+
+// Extend on xf colour variables
+@each $name, $colour in $ti-colours {
+  .xf-bg-#{$name} {
+    background: $colour;
+  }
+
+  .xf-icon-colour-#{$name} {
+    :deep(path),
+    :deep(rect) {
+      fill: #{$colour} !important;
+    }
+  }
+
+  .xf-text-colour-#{$name} {
+    color: $colour;
+  }
+}

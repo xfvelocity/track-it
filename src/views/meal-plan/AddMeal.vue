@@ -54,7 +54,7 @@
 
   import { XfIcon, XfButton, XfTextInput } from 'xf-cmpt-lib'
   import MealCard from '@/components/meal-card/MealCard.vue'
-  import CreateMeal from '@/components/create-meal/CreateMeal.vue'
+  import CreateMeal from '@/components/meal/CreateMeal.vue'
 
   // ** Data **
   const configStore = useConfigStore()
@@ -116,11 +116,3 @@
   // ** Lifecycle **
   onBeforeMount(getMeals)
 </script>
-
-<style lang="scss" scoped>
-  .add-meal {
-    :deep(.xf-button) {
-      padding-right: 0 !important;
-    }
-  }
-</style>
