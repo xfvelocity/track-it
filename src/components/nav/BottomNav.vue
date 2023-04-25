@@ -9,17 +9,8 @@
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from 'vue'
-
+<script lang="ts" setup>
   import { XfIcon } from 'xf-cmpt-lib'
-
-  export default defineComponent({
-    name: 'BottomNav',
-    components: {
-      XfIcon,
-    },
-  })
 </script>
 
 <style lang="scss" scoped>

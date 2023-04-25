@@ -2,27 +2,16 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { useConfigStore } from '@/stores/config'
 import { useUserStore } from '@/stores/user'
 
-import SignInContainer from '@/components/account/SignInContainer.vue'
-import Shopping from '@/views/shopping/Shopping.vue'
-import AddMeal from '@/views/meal-plan/AddMeal.vue'
-import Meals from '@/views/meal-plan/Meals.vue'
-import SignUp from '@/views/account/SignUp.vue'
-import LogIn from '@/views/account/LogIn.vue'
-
 const routes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    redirect: () => '/meal-plan/meals',
-  },
   {
     path: '/account',
     name: 'Account',
-    component: SignInContainer,
+    component: () => import('@/components/account/SignInContainer.vue'),
     children: [
       {
         path: 'sign-up',
         name: 'Sign up',
-        component: SignUp,
+        component: () => import('@/views/account/SignUp.vue'),
         meta: {
           hideNav: true,
         },
@@ -30,7 +19,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'login',
         name: 'Login',
-        component: LogIn,
+        component: () => import('@/views/account/LogIn.vue'),
         meta: {
           hideNav: true,
         },
@@ -38,27 +27,37 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/meal-plan',
+    path: '/',
     name: 'Meal Plan',
+    component: () => import('@/views/meal-plan/Meals.vue'),
+  },
+  {
+    path: '/add-meal',
+    component: () => import('@/views/meal-plan/add-meal/AddMealContainer.vue'),
+    meta: {
+      hideNav: true,
+    },
     children: [
       {
-        path: 'meals',
-        name: 'Meal Plan - Meals',
-        component: Meals,
+        path: '',
+        name: 'Meals - Add Meal',
+        component: () => import('@/views/meal-plan/AddMeal.vue'),
       },
       {
-        path: 'add-meal',
-        name: 'Meals - Add Meal',
-        component: AddMeal,
-        meta: {
-          hideNav: true,
-        },
+        path: 'create-meal',
+        name: 'Meals - Create meal',
+        component: () => import('@/views/meal-plan/CreateMeal.vue'),
+      },
+      {
+        path: 'add-ingredient',
+        name: 'Meals - Add ingredient',
+        component: () => import('@/views/meal-plan/AddIngredient.vue'),
       },
     ],
   },
   {
     path: '/shopping',
-    component: Shopping,
+    component: () => import('@/views/shopping/Shopping.vue'),
     name: 'Shopping',
   },
 ]

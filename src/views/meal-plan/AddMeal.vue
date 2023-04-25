@@ -1,46 +1,35 @@
 <template>
   <div class="add-meal">
-    <create-meal
-      v-if="createMeal"
-      :editing="isEditing"
-      :editing-meal="selectedMeal"
-      @return="onMealChange"
+    <div class="xf-flex-center-between xf-h-max-content xf-mb-4">
+      <h2>Meals</h2>
+
+      <xf-button
+        class="xf-ml-auto add-meal-create-meal-btn"
+        background-colour="transparent"
+        icon="icons/plus.svg"
+        @click="router.push('/add-meal/create-meal')"
+      >
+        Create Meal
+      </xf-button>
+    </div>
+
+    <xf-text-input
+      v-model="search"
+      colour="white"
+      outlined
+      placeholder="Search"
     />
 
-    <template v-else>
-      <div class="xf-flex-center-between xf-h-max-content xf-mb-4">
-        <h2>Meals</h2>
-
-        <xf-button
-          class="xf-ml-auto add-meal-create-meal-btn"
-          background-colour="transparent"
-          icon="icons/plus.svg"
-          @click="createMeal = true"
-        >
-          Create Meal
-        </xf-button>
-      </div>
-
-      <xf-text-input
-        v-model="search"
-        colour="white"
-        outlined
-        placeholder="Search"
+    <div class="xf-mt-4 xf-flex xf-flex-wrap xf-flex-justify-space-between">
+      <meal-card
+        :meal-list="filteredMeals"
+        add-icon
+        @meal-added="addMeal"
+        @edit="editMeal"
+        @delete="deleteMeal"
       />
-
-      <div class="xf-mt-4 xf-flex xf-flex-wrap xf-flex-justify-space-between">
-        <meal-card
-          :meal-list="filteredMeals"
-          add-icon
-          @meal-added="addMeal"
-          @edit="editMeal"
-          @delete="deleteMeal"
-        />
-      </div>
-    </template>
+    </div>
   </div>
-
-  <bottom-nav @back="backToggled" />
 </template>
 
 <script lang="ts" setup>
@@ -51,10 +40,8 @@
   import { useConfigStore } from '@/stores/config'
   import router from '@/router'
 
-  import { XfIcon, XfButton, XfTextInput } from 'xf-cmpt-lib'
+  import { XfButton, XfTextInput } from 'xf-cmpt-lib'
   import MealCard from '@/components/meal-card/MealCard.vue'
-  import CreateMeal from '@/components/meal/CreateMeal.vue'
-  import BottomNav from '@/components/nav/BottomNav.vue'
 
   // ** Data **
   const configStore = useConfigStore()
@@ -62,7 +49,6 @@
   const route = useRoute()
 
   const mealList = ref<Meal[]>([])
-  const createMeal = ref<boolean>(false)
   const selectedMeal = ref<Meal>()
   const isEditing = ref<boolean>(false)
   const search = ref<string>('')
@@ -82,11 +68,9 @@
   const editMeal = (meal: Meal): void => {
     selectedMeal.value = meal
     isEditing.value = true
-    createMeal.value = true
   }
 
   const onMealChange = (): void => {
-    createMeal.value = false
     isEditing.value = false
     selectedMeal.value = undefined
   }
@@ -103,14 +87,6 @@
 
   const deleteMeal = async (meal: Meal): Promise<void> => {
     await mealStore.delRecipe(meal)
-  }
-
-  const backToggled = (): void => {
-    if (createMeal.value) {
-      onMealChange()
-    } else {
-      router.push('/meal-plan/meals')
-    }
   }
 
   // ** Lifecycle **

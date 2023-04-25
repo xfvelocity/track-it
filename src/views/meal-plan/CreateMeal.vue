@@ -17,7 +17,7 @@
 
   <p
     class="xf-p-1 xf-cursor-pointer xf-text-colour-blue xf-fw-600"
-    @click="isNutrientModalOpen = true"
+    @click="router.push('/add-meal/add-ingredient')"
   >
     <xf-icon
       class="xf-mr-1"
@@ -35,19 +35,6 @@
   >
     {{ editing ? 'Update' : 'Add Meal' }}
   </xf-button>
-
-  <!-- <xf-modal
-    class="ti-max-width xf-center-horizontal"
-    v-model="isNutrientModalOpen"
-    background-colour="bg"
-    fullscreen
-  >
-    <h3>Add ingredient</h3>
-
-    <div v-for="(ingredient, i) in []" :key="i">
-      {{ ingredient }}
-    </div>
-  </xf-modal> -->
 </template>
 
 <script lang="ts" setup>
@@ -57,8 +44,9 @@
   import { debounce } from '@/helpers/utility'
   import { mealBase } from '@/views/meal-plan/data/mealPlan.data'
   import { Meal, MealNutrients } from '@/views/meal-plan/types/mealPlan.types'
+  import { useRouter } from 'vue-router'
 
-  import { XfTextInput, XfIcon, XfButton, XfModal } from 'xf-cmpt-lib'
+  import { XfTextInput, XfIcon, XfButton } from 'xf-cmpt-lib'
 
   // ** Base **
   const props = defineProps<{
@@ -70,11 +58,11 @@
   const emit = defineEmits(['return'])
 
   // ** Data **
+  const router = useRouter()
   const configStore = useConfigStore()
   const mealStore = useMealStore()
 
   const meal = ref<Meal>(mealBase)
-  const isNutrientModalOpen = ref<boolean>(false)
 
   const nutrientKeys: (keyof MealNutrients)[] = Object.keys(
     meal.value.nutrients
@@ -94,7 +82,6 @@
   )
 
   // ** Methods **
-  const toggleIngredientsModal = (): void => {}
   const setSelectedIngredientNutrients = debounce(
     (val: any, index: number): void => {
       const matchingIngredient = ingredientsList.value.find(

@@ -8,7 +8,7 @@
     <div v-for="(key, i) in keys" :key="i" class="xf-text-capitalize xf-mb-8">
       <div
         class="xf-flex xf-flex-align-items-center xf-cursor-pointer"
-        @click="toggleAddMealModal(key)"
+        @click="router.push('/add-meal')"
       >
         <h4 class="xf-text-capitalize">{{ key }}</h4>
 
@@ -70,13 +70,6 @@
   ]
 
   // ** Methods **
-  const toggleAddMealModal = (mealTime: string): void => {
-    router.push({
-      path: '/meal-plan/add-meal',
-      query: { time: mealTime },
-    })
-  }
-
   const calculateNutrients = (): void => {
     nutrients.value = { ...nutrientsBase }
 
