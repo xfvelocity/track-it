@@ -49,7 +49,7 @@
   const menuOptions: MenuItem[] = [
     {
       text: 'Meal Plan',
-      route: '/meal-plan/meals',
+      route: '',
       icon: 'food',
     },
     {
