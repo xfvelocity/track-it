@@ -1,5 +1,7 @@
 <template>
-  <div class="bottom-nav ti-max-width xf-center-horizontal xf-px-4 xf-py-4">
+  <div
+    class="bottom-nav ti-max-width xf-center-horizontal xf-px-6 xf-pt-4 xf-pb-6"
+  >
     <xf-icon
       class="xf-cursor-pointer"
       src="icons/chevron-left.svg"

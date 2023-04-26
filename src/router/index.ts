@@ -53,6 +53,12 @@ const routes: RouteRecordRaw[] = [
         name: 'Meals - Add ingredient',
         component: () => import('@/views/meal-plan/add-meal/AddIngredient.vue'),
       },
+      {
+        path: 'create-ingredient',
+        name: 'Meals - Create ingredient',
+        component: () =>
+          import('@/views/meal-plan/add-meal/CreateIngredient.vue'),
+      },
     ],
   },
   {
