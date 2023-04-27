@@ -1,5 +1,6 @@
 <template>
-  <!-- TODO: Add loading with xf-cmpt-lib-->
+  <xf-loading-bar v-if="loading" />
+
   <Nav v-if="!hideNav" />
 
   <div class="xf-px-6" :class="hideNav ? 'xf-pt-6' : 'xf-pt-2'">
@@ -23,7 +24,7 @@
   import { useConfigStore } from '@/stores/config'
   import { storeToRefs } from 'pinia'
 
-  import { XfSnackbar } from 'xf-cmpt-lib'
+  import { XfSnackbar, XfLoadingBar } from 'xf-cmpt-lib'
   import Nav from './components/nav/Nav.vue'
 
   // ** Data **

@@ -1,20 +1,11 @@
-import { Snackbar } from '@/components/snackbar/types/Snackbar.types'
-import { MealNutrients } from '@/views/meal-plan/types/mealPlan.types'
-import { User } from 'firebase/auth'
+export interface Snackbar {
+  color: string
+  text: string
+  isVisible: boolean
+}
 
 export type ConfigState = {
-  loading: Loading
+  loading: boolean
   snackbar: Snackbar
-  currentUser: User
-  userData: UserData
   error: any
-}
-
-export type UserData = {
-  nutrientGoals: MealNutrients
-}
-
-export type Loading = {
-  type: string
-  value: boolean
 }

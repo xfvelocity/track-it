@@ -1,4 +1,5 @@
 import { useConfigStore } from '@/stores/config'
+import { useUserStore } from '@/stores/user'
 import {
   getFirestore,
   collection,
@@ -10,6 +11,9 @@ import {
   where,
   query,
   WhereFilterOp,
+  setDoc,
+  getDoc,
+  arrayUnion,
 } from 'firebase/firestore'
 
 export const queryApi = async (
@@ -64,38 +68,49 @@ export const queryRangeApi = async (
 }
 
 export const api = async (type: string, col: string, data?: any) => {
+  const userStore = useUserStore()
   const configStore = useConfigStore()
+
   const db = getFirestore()
   const colref = collection(db, col)
 
-  try {
-    switch (type.toUpperCase()) {
-      case 'GET':
-        const snapshot = await getDocs(colref)
-        return snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  switch (type.toUpperCase()) {
+    case 'GET':
+      const snapshot = await getDocs(colref)
+      return snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
 
-      case 'POST':
-        await addDoc(colref, data)
-        return true
+    case 'POST':
+      const ref = doc(db, col, userStore.user.uid)
 
-      case 'DEL':
-        const delRef = doc(db, col, data)
-        await deleteDoc(delRef)
-        return true
+      await getDoc(ref).then(async (snapshot) => {
+        if (snapshot.exists()) {
+          await updateDoc(ref, {
+            data: arrayUnion(data),
+          })
+        } else {
+          await setDoc(doc(db, col, userStore.user.uid), { data: [data] })
+        }
+      })
 
-      case 'PUT':
-        const updRef = doc(db, col, data.id)
-        await updateDoc(updRef, data)
-        return true
+      return true
 
-      default:
-        throw new Error('Invalid API type')
-    }
-  } catch (error) {
-    configStore.snackbar = {
-      color: 'red',
-      text: `An error occurred, please try again.`,
-      isVisible: true,
-    }
+    case 'DEL':
+      const delRef = doc(db, col, data)
+      await deleteDoc(delRef)
+      return true
+
+    case 'PUT':
+      const updRef = doc(db, col, data.id)
+      await updateDoc(updRef, data)
+      return true
+
+    default:
+      throw new Error('Invalid API type')
   }
+
+  //   configStore.snackbar = {
+  //     color: 'red',
+  //     text: `An error occurred, please try again.`,
+  //     isVisible: true,
+  //   }
 }

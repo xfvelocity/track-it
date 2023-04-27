@@ -78,7 +78,7 @@ router.beforeEach((to, from, next) => {
   const configStore = useConfigStore()
   document.title = `Track IT - ${String(to.name)}`
 
-  configStore.loading.value = false
+  configStore.loading = false
 
   const isLoggedin: boolean = userStore.user.uid
   const isLogInPage: boolean = to.name === 'Login' || to.name === 'Sign up'

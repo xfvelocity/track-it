@@ -1,7 +1,7 @@
 <template>
   <h3 class="xf-mb-0">Create ingredient</h3>
 
-  <div class="xf-grid">
+  <div class="xf-grid xf-col-gap-3">
     <xf-text-input
       v-model="ingredient.name"
       class="xf-col-12"
@@ -11,14 +11,14 @@
 
     <xf-text-input
       v-model="ingredient.amount"
-      class="xf-col-7"
+      class="xf-col-6"
       colour="white"
       label="Amount"
     />
 
     <xf-select
       v-model="ingredient.unit"
-      class="xf-col-5 create-ingredient-units"
+      class="xf-col-6 create-ingredient-units"
       :options="unitOptions"
       colour="white"
       label="Unit"
@@ -27,7 +27,7 @@
     <xf-text-input
       v-for="(key, i) in Object.keys(ingredient.macros)"
       :key="i"
-      v-model="ingredient.macros[key]"
+      v-model="ingredient.macros[key as keyof IngredientMacros]"
       class="xf-text-capitalize xf-col-6 xf-mb-1"
       :label="key"
       colour="white"
@@ -45,13 +45,23 @@
 
 <script lang="ts" setup>
   import { ref } from 'vue'
+  import { useMealStore } from '@/stores/meals'
+  import { Ingredient, IngredientMacros } from './types/addMeal.types'
+  import { useRouter } from 'vue-router'
 
   import { XfTextInput, XfSelect, XfButton } from 'xf-cmpt-lib'
 
   // ** Data **
-  const unitOptions = [{ text: 'g', value: 'g' }]
+  const router = useRouter()
+  const mealStore = useMealStore()
 
-  const ingredient = ref<any>({
+  const unitOptions = [
+    { text: 'g', value: 'g' },
+    { text: 'ml', value: 'ml' },
+    { text: 'unit', value: 'unit' },
+  ]
+
+  const ingredient = ref<Ingredient>({
     name: '',
     amount: 0,
     unit: 'g',
@@ -63,8 +73,11 @@
     },
   })
 
-  const createIngredient = (): void => {
-    console.log(ingredient.value)
+  // ** Methods **
+  const createIngredient = async (): Promise<void> => {
+    await mealStore.createIngredient(ingredient.value)
+
+    router.push('/add-meal/add-ingredient')
   }
 </script>
 

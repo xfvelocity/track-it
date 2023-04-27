@@ -3,6 +3,7 @@ import { mealPlanBase } from '@/views/meal-plan/data/mealPlan.data'
 import { Meal, MealPlan } from '@/views/meal-plan/types/mealPlan.types'
 import moment from 'moment'
 import { defineStore } from 'pinia'
+import { useConfigStore } from './config'
 
 export const useMealStore = defineStore('meals', {
   state: (): any => ({
@@ -12,6 +13,21 @@ export const useMealStore = defineStore('meals', {
     lastUpdated: '',
   }),
   actions: {
+    async createIngredient(ingredient: any): Promise<void> {
+      const configStore = useConfigStore()
+
+      configStore.loading = true
+
+      await api('POST', 'ingredients', ingredient)
+
+      configStore.loading = false
+
+      configStore.snackbar = {
+        color: 'green',
+        isVisible: true,
+        text: 'Ingredient successfully created',
+      }
+    },
     async addMeal(
       time: 'breakfast' | 'lunch' | 'dinner',
       meal: Meal,
@@ -21,9 +37,7 @@ export const useMealStore = defineStore('meals', {
 
       await api(mealPlan.id ? 'PUT' : 'POST', 'meals', mealPlan)
     },
-    async addIngredients(ingredient: any): Promise<void> {
-      await api('POST', 'ingredients', ingredient)
-    },
+
     async getIngredients(): Promise<void> {
       this.ingredients = await api('GET', 'ingredients')
     },

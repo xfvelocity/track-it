@@ -1,11 +1,9 @@
 import { defineStore } from 'pinia'
+import { ConfigState } from './types/config.types'
 
 export const useConfigStore = defineStore('config', {
-  state: (): any => ({
-    loading: {
-      type: 'bar',
-      value: false,
-    },
+  state: (): ConfigState => ({
+    loading: false,
     snackbar: {
       color: '',
       text: '',
