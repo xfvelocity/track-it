@@ -67,50 +67,71 @@ export const queryRangeApi = async (
   )
 }
 
-export const api = async (type: string, col: string, data?: any) => {
+export const api = async (
+  type: string,
+  col: string,
+  data?: any
+): Promise<any> => {
+  let res: any = []
+  let error = false
+
   const userStore = useUserStore()
   const configStore = useConfigStore()
 
   const db = getFirestore()
-  const colref = collection(db, col)
+  const ref = doc(db, col, userStore.user.uid)
 
   switch (type.toUpperCase()) {
     case 'GET':
-      const snapshot = await getDocs(colref)
-      return snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      await getDoc(ref)
+        .then((snapshot) => {
+          res = snapshot.data()
+        })
+        .catch((err) => (error = err))
+
+      break
 
     case 'POST':
-      const ref = doc(db, col, userStore.user.uid)
+      await getDoc(ref)
+        .then(async (snapshot) => {
+          if (snapshot.exists()) {
+            await updateDoc(ref, {
+              data: arrayUnion(data),
+            })
+          } else {
+            await setDoc(doc(db, col, userStore.user.uid), { data: [data] })
+          }
 
-      await getDoc(ref).then(async (snapshot) => {
-        if (snapshot.exists()) {
-          await updateDoc(ref, {
-            data: arrayUnion(data),
-          })
-        } else {
-          await setDoc(doc(db, col, userStore.user.uid), { data: [data] })
-        }
-      })
+          res = true
+        })
+        .catch((err) => (error = err))
 
-      return true
+      break
 
-    case 'DEL':
-      const delRef = doc(db, col, data)
-      await deleteDoc(delRef)
-      return true
+    // case 'DEL':
+    //   const delRef = doc(db, col, data)
+    //   await deleteDoc(delRef)
 
-    case 'PUT':
-      const updRef = doc(db, col, data.id)
-      await updateDoc(updRef, data)
-      return true
+    //   res = true
 
-    default:
-      throw new Error('Invalid API type')
+    // case 'PUT':
+    //   const updRef = doc(db, col, data.id)
+    //   await updateDoc(updRef, data)
+
+    //   res = true
   }
 
-  //   configStore.snackbar = {
-  //     color: 'red',
-  //     text: `An error occurred, please try again.`,
-  //     isVisible: true,
-  //   }
+  console.log(error)
+
+  if (error) {
+    configStore.snackbar = {
+      color: 'red',
+      text: `An error occurred, please try again.`,
+      isVisible: true,
+    }
+
+    return false
+  } else {
+    return res
+  }
 }
