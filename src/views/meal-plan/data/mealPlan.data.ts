@@ -43,6 +43,17 @@ export const mealPlanBase: MealPlan = {
   date: getTodaysDate(),
 }
 
+export const creatingMealBase: any = {
+  name: '',
+  ingredients: [],
+  macros: {
+    calories: 0,
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+  },
+}
+
 export const nutrientsBase: MealNutrients = {
   calories: 0,
   protein: 0,

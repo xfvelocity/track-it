@@ -21,13 +21,7 @@
     />
 
     <div class="xf-mt-4 xf-flex xf-flex-wrap xf-flex-justify-space-between">
-      <meal-card
-        :meal-list="filteredMeals"
-        add-icon
-        @meal-added="addMeal"
-        @edit="editMeal"
-        @delete="deleteMeal"
-      />
+      <meal-card :meal-list="filteredMeals" @meal-added="addedMeal" />
     </div>
   </div>
 </template>
@@ -44,13 +38,9 @@
   import MealCard from '@/components/meal-card/MealCard.vue'
 
   // ** Data **
-  const configStore = useConfigStore()
   const mealStore = useMealStore()
-  const route = useRoute()
 
   const mealList = ref<Meal[]>([])
-  const selectedMeal = ref<Meal>()
-  const isEditing = ref<boolean>(false)
   const search = ref<string>('')
 
   // ** Computed **
@@ -62,35 +52,31 @@
 
   // ** Methods **
   const getMeals = async (): Promise<void> => {
-    mealList.value = await mealStore.getRecipes()
+    mealList.value = await mealStore.getMeals()
   }
 
-  const editMeal = (meal: Meal): void => {
-    selectedMeal.value = meal
-    isEditing.value = true
-  }
+  const addedMeal = async (meal: any): Promise<void> => {
+    await mealStore.addToMealPlan(meal)
 
-  const onMealChange = (): void => {
-    isEditing.value = false
-    selectedMeal.value = undefined
-  }
-
-  const addMeal = async (meal: Meal): Promise<void> => {
-    await mealStore.addMeal(route.query.time, meal, mealStore.mealPlan)
-
-    configStore.snackbar = {
-      color: 'green',
-      text: `${meal.name} added for ${route.query.time}`,
-      isVisible: true,
-    }
-  }
-
-  const deleteMeal = async (meal: Meal): Promise<void> => {
-    await mealStore.delRecipe(meal)
+    router.push('/')
   }
 
   // ** Lifecycle **
   onBeforeMount(getMeals)
+
+  // const editMeal = (meal: Meal): void => {
+  //   selectedMeal.value = meal
+  //   isEditing.value = true
+  // }
+
+  // const onMealChange = (): void => {
+  //   isEditing.value = false
+  //   selectedMeal.value = undefined
+  // }
+
+  // const deleteMeal = async (meal: Meal): Promise<void> => {
+  //   await mealStore.delRecipe(meal)
+  // }
 </script>
 
 <style lang="scss" scoped>

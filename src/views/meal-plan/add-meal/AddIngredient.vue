@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: Add details modal -->
   <div class="add-ingredient">
     <div class="xf-flex-center-between xf-h-max-content xf-mb-4">
       <h4>Ingredients</h4>
@@ -21,13 +22,23 @@
     />
 
     <div class="xf-mt-4">
-      <xf-expansion-panel
-        :list="ingredients"
-        text-colour="white"
-        background-colour="blue-darken-4"
-        secondary-text-colour="white"
-        secondary-background-colour="blue-darken-3"
-      />
+      <div
+        v-for="(ingredient, i) in ingredients"
+        :key="i"
+        class="add-ingredient-ingredient xf-py-2 xf-pl-1"
+        @click="addIngredient(ingredient)"
+      >
+        <h5>{{ ingredient.name }}</h5>
+
+        <xf-icon
+          class="xf-ml-auto xf-mr-4"
+          style="margin-top: 2px"
+          :size="10"
+          src="icons/info.svg"
+          fill="white"
+          @click.stop="toggleDetailsModal"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -36,15 +47,28 @@
   import { onMounted, ref } from 'vue'
   import { useMealStore } from '@/stores/meals'
   import { useRouter } from 'vue-router'
+  import { Ingredient } from './types/addMeal.types'
 
-  import { XfTextInput, XfButton, XfExpansionPanel } from 'xf-cmpt-lib'
+  import { XfTextInput, XfButton, XfIcon } from 'xf-cmpt-lib'
 
   // ** Data **
   const router = useRouter()
   const mealStore = useMealStore()
 
   const search = ref<string>('')
-  const ingredients = ref<any[]>([])
+  const ingredients = ref<Ingredient[]>([])
+  const isDetailsModalOpen = ref<boolean>(false)
+
+  // ** Methods **
+  const toggleDetailsModal = (): void => {
+    isDetailsModalOpen.value = !isDetailsModalOpen.value
+  }
+
+  const addIngredient = (ingredient: Ingredient): void => {
+    mealStore.creatingMeal.ingredients.push(ingredient)
+
+    router.push('/add-meal/create-meal')
+  }
 
   // ** Lifecycle **
   onMounted(async () => {
@@ -54,8 +78,10 @@
 
 <style lang="scss" scoped>
   .add-ingredient {
-    &-card {
-      border-radius: 3px;
+    &-ingredient {
+      border-bottom: 1px solid grey;
+      display: flex;
+      align-items: center;
     }
 
     &-create-btn {

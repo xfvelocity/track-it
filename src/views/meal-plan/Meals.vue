@@ -8,19 +8,14 @@
     <div v-for="(key, i) in keys" :key="i" class="xf-text-capitalize xf-mb-8">
       <div
         class="xf-flex xf-flex-align-items-center xf-cursor-pointer"
-        @click="router.push('/add-meal')"
+        @click="addMeal(key)"
       >
         <h4 class="xf-text-capitalize">{{ key }}</h4>
 
         <xf-icon class="xf-ml-auto" src="icons/plus.svg" fill="white" />
       </div>
 
-      <meal-card
-        v-if="mealPlan"
-        :meal-list="mealPlan[key]"
-        :show-edit="false"
-        @delete="deleteMeal($event, key)"
-      />
+      <meal-card :meal-list="mealPlan[key]" :show-edit="false" />
     </div>
 
     <div
@@ -42,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { onBeforeMount, ref, watch } from 'vue'
+  import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
   import { Meal, MealNutrients } from './types/mealPlan.types'
   import { nutrientsBase } from './data/mealPlan.data'
   import { useRouter } from 'vue-router'
@@ -70,41 +65,53 @@
   ]
 
   // ** Methods **
-  const calculateNutrients = (): void => {
-    nutrients.value = { ...nutrientsBase }
+  const addMeal = (time: string): void => {
+    mealStore.mealTime = time
 
-    keys.forEach((key) => {
-      mealPlan.value[key].forEach((meal: Meal) => {
-        Object.keys(nutrients.value).forEach((nutrientKey) => {
-          nutrients.value[nutrientKey as keyof MealNutrients]! +=
-            meal.nutrients[nutrientKey as keyof MealNutrients] || 0
-        })
-      })
-    })
-  }
-
-  const deleteMeal = async (meal: Meal, time: string): Promise<void> => {
-    await mealStore.delMeal(meal, mealPlan.value, time)
+    router.push('/add-meal')
   }
 
   // ** Lifecycle **
-  onBeforeMount(async () => {
-    const today: string = moment().format('YYYY-MM-DD')
-    const isBefore: boolean = moment(mealStore.lastUpdated).isBefore(
-      today,
-      'day'
-    )
-
-    // If meals were last updated a day ago - update with todays date
-    if (isBefore) {
-      mealPlan.value.date = today
-    }
-
-    await mealStore.getMeals(mealPlan.value.date)
+  onMounted(async () => {
+    await mealStore.getMealPlan()
   })
 
-  // ** Watchers **
-  watch(mealPlan, calculateNutrients)
+  // ** Methods **
+  // const calculateNutrients = (): void => {
+  //   nutrients.value = { ...nutrientsBase }
+
+  //   keys.forEach((key) => {
+  //     mealPlan.value[key].forEach((meal: Meal) => {
+  //       Object.keys(nutrients.value).forEach((nutrientKey) => {
+  //         nutrients.value[nutrientKey as keyof MealNutrients]! +=
+  //           meal.nutrients[nutrientKey as keyof MealNutrients] || 0
+  //       })
+  //     })
+  //   })
+  // }
+
+  // const deleteMeal = async (meal: Meal, time: string): Promise<void> => {
+  //   await mealStore.delMeal(meal, mealPlan.value, time)
+  // }
+
+  // // ** Lifecycle **
+  // onBeforeMount(async () => {
+  //   const today: string = moment().format('YYYY-MM-DD')
+  //   const isBefore: boolean = moment(mealStore.lastUpdated).isBefore(
+  //     today,
+  //     'day'
+  //   )
+
+  //   // If meals were last updated a day ago - update with todays date
+  //   if (isBefore) {
+  //     mealPlan.value.date = today
+  //   }
+
+  //   await mealStore.getMeals(mealPlan.value.date)
+  // })
+
+  // // ** Watchers **
+  // watch(mealPlan, calculateNutrients)
 </script>
 
 <style lang="scss" scoped>

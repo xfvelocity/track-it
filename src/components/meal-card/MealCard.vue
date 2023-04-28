@@ -2,17 +2,18 @@
   <div
     v-for="(meal, i) in mealList"
     :key="i"
-    class="recipe-card xf-mt-1 xf-px-4 xf-py-2 xf-bg-blue-darken-4"
-    @click="openInfoModal(meal)"
+    class="meal-card xf-mt-1 xf-px-2 xf-py-1"
+    @click="addMeal(meal)"
   >
     {{ meal.name }}
 
     <xf-icon
-      v-if="addIcon"
-      src="icons/plus.svg"
-      class="xf-ml-auto xf-cursor-pointer"
+      class="xf-ml-auto xf-mr-4"
+      style="margin-top: 2px"
+      :size="10"
+      src="icons/info.svg"
       fill="white"
-      @click.stop="addMeal(meal)"
+      @click.stop="openInfoModal"
     />
   </div>
 
@@ -46,7 +47,7 @@
 
     <div class="xf-flex xf-mt-4">
       <xf-icon
-        v-if="showEdit"
+        v-if="!inMealPlan"
         src="icons/edit.svg"
         class="xf-mr-2"
         fill="blue"
@@ -54,7 +55,7 @@
       />
 
       <xf-icon
-        :class="{ 'xf-ml-auto': !showEdit }"
+        :class="{ 'xf-ml-auto': inMealPlan }"
         src="icons/trash.svg"
         fill="red"
         @click="$emit('edit', selectedMeal)"
@@ -69,15 +70,14 @@
 
   import { XfModal, XfIcon } from 'xf-cmpt-lib'
 
-  // ** Base **
-  withDefaults(
+  // ** Props **
+  const props = withDefaults(
     defineProps<{
       mealList: Meal[]
-      showEdit?: boolean
-      addIcon?: boolean
+      inMealPlan?: boolean
     }>(),
     {
-      showEdit: true,
+      inMealPlan: false,
     }
   )
 
@@ -90,7 +90,9 @@
 
   // ** Methods **
   const addMeal = (meal: Meal): void => {
-    emit('meal-added', meal)
+    if (!props.inMealPlan) {
+      emit('meal-added', meal)
+    }
   }
 
   const openInfoModal = (meal: Meal): void => {
@@ -109,10 +111,10 @@
 </script>
 
 <style lang="scss" scoped>
-  .recipe-card {
-    border-radius: 10px;
-    width: 100%;
+  .meal-card {
+    border-bottom: 1px solid grey;
     display: flex;
+    width: 100%;
     align-items: center;
   }
 </style>

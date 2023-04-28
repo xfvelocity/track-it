@@ -1,4 +1,5 @@
 export interface MealState {
-  recipes: any[]
   mealPlan: any
+  creatingMeal: any
+  mealTime: string
 }

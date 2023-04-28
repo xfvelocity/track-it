@@ -1,15 +1,19 @@
-import { queryApi, api } from '@/api/api'
-import { mealPlanBase } from '@/views/meal-plan/data/mealPlan.data'
-import { Meal, MealPlan } from '@/views/meal-plan/types/mealPlan.types'
-import moment from 'moment'
+import { api } from '@/api/api'
+import {
+  creatingMealBase,
+  mealPlanBase,
+} from '@/views/meal-plan/data/mealPlan.data'
 import { defineStore } from 'pinia'
 import { useConfigStore } from './config'
 import { MealState } from './types/meal.types'
 
 export const useMealStore = defineStore('meals', {
   state: (): MealState => ({
-    recipes: [],
     mealPlan: { ...mealPlanBase },
+    mealTime: '',
+    creatingMeal: {
+      ...creatingMealBase,
+    },
   }),
   actions: {
     async createIngredient(ingredient: any): Promise<void> {
@@ -38,77 +42,63 @@ export const useMealStore = defineStore('meals', {
 
       return res?.data
     },
-    // async addMeal(
-    //   time: 'breakfast' | 'lunch' | 'dinner',
-    //   meal: Meal,
-    //   mealPlan: MealPlan
-    // ): Promise<void> {
-    //   mealPlan[time].push(meal)
+    async addMeal(): Promise<void> {
+      const configStore = useConfigStore()
 
-    //   await api(mealPlan.id ? 'PUT' : 'POST', 'meals', mealPlan)
-    // },
-    // async getMeals(date: string): Promise<void> {
-    //   let res: any = await queryApi('meals', {
-    //     where: 'date',
-    //     operator: '==',
-    //     value: date,
-    //   })
+      configStore.loading = true
 
-    //   if (!res.length) {
-    //     res = JSON.parse(JSON.stringify(mealPlanBase))
-    //     res.date = this.mealPlan.date
+      await api('POST', 'meals', this.creatingMeal)
 
-    //     this.mealPlan = res
-    //   } else {
-    //     this.mealPlan = res[0]
-    //   }
+      configStore.loading = false
 
-    //   if (this.mealPlan.date !== date) {
-    //     this.mealPlan.date = date
-    //   }
+      configStore.snackbar = {
+        color: 'green',
+        isVisible: true,
+        text: 'Meal added',
+      }
 
-    //   this.lastUpdated = moment().format('YYYY-MM-DD')
-    // },
-    // async delMeal(
-    //   meal: Meal,
-    //   mealPlan: MealPlan,
-    //   time: 'breakfast' | 'lunch' | 'dinner'
-    // ): Promise<void> {
-    //   const matchingIndex: number = mealPlan[time].indexOf(meal)
-    //   mealPlan[time].splice(matchingIndex, 1)
+      this.creatingMeal = { ...creatingMealBase }
+    },
+    async getMeals(): Promise<any> {
+      const configStore = useConfigStore()
 
-    //   await api('PUT', 'meals', mealPlan)
-    // },
-    // async addRecipe(meal: Meal): Promise<void> {
-    //   await api('POST', 'recipes', meal)
+      configStore.loading = true
 
-    //   meal.ingredients.forEach((ingredient) => {
-    //     const matchingIngredient = this.ingredients.find(
-    //       (i: any) => i.name === ingredient.name
-    //     )
+      const res = await api('GET', 'meals')
 
-    //     if (!matchingIngredient) {
-    //       this.addIngredients(ingredient)
-    //     }
-    //   })
+      configStore.loading = false
 
-    //   this.recipes.push(meal)
-    // },
-    // async getRecipes(): Promise<Meal[] | boolean> {
-    //   const res: any = await api('GET', 'recipes')
+      return res?.data
+    },
+    async addToMealPlan(meal: any): Promise<any> {
+      const configStore = useConfigStore()
 
-    //   this.recipes = res
+      configStore.loading = true
 
-    //   return res
-    // },
-    // async editRecipe(meal: Meal): Promise<void> {
-    //   await api('PUT', 'recipes', meal)
-    // },
-    // async delRecipe(recipe: Meal): Promise<void> {
-    //   await api('DEL', 'recipes', recipe.id)
+      await api('POST', 'meal-plan', { time: this.mealTime, ...meal })
 
-    //   this.recipes.splice(this.recipes.indexOf(recipe), 1)
-    // },
+      this.mealTime = ''
+
+      configStore.loading = false
+    },
+    async getMealPlan(): Promise<void> {
+      const configStore = useConfigStore()
+      const plan: any = {
+        breakfast: [],
+        lunch: [],
+        dinner: [],
+      }
+
+      configStore.loading = true
+
+      const res = await api('GET', 'meal-plan')
+
+      res?.data.forEach((meal: any) => plan[meal.time].push(meal))
+
+      this.mealPlan = plan
+
+      configStore.loading = false
+    },
   },
   persist: true,
 })
