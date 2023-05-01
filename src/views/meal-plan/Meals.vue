@@ -47,6 +47,10 @@
   import { useUserStore } from '@/stores/user'
   import { storeToRefs } from 'pinia'
   import { IngredientMacros } from './add-meal/types/addMeal.types'
+  import { formatMealPlan, keys } from '@/helpers/utility'
+  import { useShoppingStore } from '@/stores/shopping'
+
+  import { doc, getFirestore, onSnapshot } from 'firebase/firestore'
 
   import { XfIcon } from 'xf-cmpt-lib'
   import MealCard from '@/components/meal-card/MealCard.vue'
@@ -54,16 +58,11 @@
   // ** Data **
   const userStore = useUserStore()
   const mealStore = useMealStore()
+  const shoppingStore = useShoppingStore()
   const router = useRouter()
 
   const { mealPlan } = storeToRefs(mealStore)
   const { nutrientGoals } = storeToRefs(userStore)
-
-  const keys: ['breakfast', 'lunch', 'dinner'] = [
-    'breakfast',
-    'lunch',
-    'dinner',
-  ]
 
   // ** Computed **
   const calculatedMacros = computed<IngredientMacros>(() => {
@@ -96,9 +95,13 @@
     await mealStore.delFromMealPlan(meal.uuid)
   }
 
-  // ** Lifecycle **
-  onMounted(async () => {
-    await mealStore.getMealPlan()
+  // ** Firebase **
+  const db = getFirestore()
+
+  onSnapshot(doc(db, 'meal-plan', userStore.user.uid), (doc) => {
+    mealPlan.value = formatMealPlan(doc.data())
+
+    shoppingStore.setShopping()
   })
 </script>
 

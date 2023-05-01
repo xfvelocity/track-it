@@ -3,6 +3,12 @@ import {
   IngredientMacros,
 } from '@/views/meal-plan/add-meal/types/addMeal.types'
 
+export const keys: ['breakfast', 'lunch', 'dinner'] = [
+  'breakfast',
+  'lunch',
+  'dinner',
+]
+
 export const validationSchema = {
   email(value: string): [] | string {
     const isValid: boolean = !!value
@@ -59,4 +65,16 @@ export const calculateMacros = (meal: any): IngredientMacros => {
   })
 
   return macros
+}
+
+export const formatMealPlan = (obj: any): any => {
+  const plan: any = {
+    breakfast: [],
+    lunch: [],
+    dinner: [],
+  }
+
+  obj.data.forEach((meal: any) => plan[meal.time].push(meal))
+
+  return plan
 }

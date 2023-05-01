@@ -16,7 +16,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { onMounted } from 'vue'
   import { useShoppingStore } from '@/stores/shopping'
   import { storeToRefs } from 'pinia'
   import { formatIngredient } from '@/helpers/utility'
@@ -27,12 +26,4 @@
   const shoppingStore = useShoppingStore()
 
   const { shopping } = storeToRefs(shoppingStore)
-
-  // ** Methods **
-  const setShopping = async (): Promise<void> => {
-    await shoppingStore.setShopping()
-  }
-
-  // ** Lifecycle **
-  onMounted(setShopping)
 </script>

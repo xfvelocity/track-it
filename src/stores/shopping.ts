@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { useMealStore } from './meals'
+import { keys } from '@/helpers/utility'
 
 export const useShoppingStore = defineStore('shopping', {
   state: (): any => ({
@@ -8,31 +9,30 @@ export const useShoppingStore = defineStore('shopping', {
   actions: {
     setShopping(): void {
       const mealStore = useMealStore()
-      const keys: ['breakfast', 'lunch', 'dinner'] = [
-        'breakfast',
-        'lunch',
-        'dinner',
-      ]
 
-      keys.forEach((key) =>
-        mealStore.mealPlan[key].forEach((item) =>
-          item.ingredients.forEach((ingredient) => {
-            const matchingIngredient = this.shopping.find(
-              (x) => x.name === ingredient.name
-            )
+      this.shopping = []
 
-            if (matchingIngredient) {
-              matchingIngredient.amount = parseInt(matchingIngredient.amount)
-              matchingIngredient.amount += parseInt(ingredient.amount)
+      setTimeout(() => {
+        keys.forEach((key) =>
+          mealStore.mealPlan[key].forEach((item) =>
+            item.ingredients.forEach((ingredient) => {
+              const matchingIngredient = this.shopping.find(
+                (x) => x.name === ingredient.name
+              )
 
-              this.shopping[this.shopping.indexOf(matchingIngredient)] =
-                matchingIngredient
-            } else {
-              this.shopping.push(ingredient)
-            }
-          })
+              if (matchingIngredient) {
+                matchingIngredient.amount = parseInt(matchingIngredient.amount)
+                matchingIngredient.amount += parseInt(ingredient.amount)
+
+                this.shopping[this.shopping.indexOf(matchingIngredient)] =
+                  matchingIngredient
+              } else {
+                this.shopping.push(ingredient)
+              }
+            })
+          )
         )
-      )
+      }, 100)
     },
   },
   persist: true,

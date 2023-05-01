@@ -6,15 +6,23 @@ import {
 import { defineStore } from 'pinia'
 import { useConfigStore } from './config'
 import { MealState } from './types/meal.types'
+import { formatMealPlan } from '@/helpers/utility'
 
 export const useMealStore = defineStore('meals', {
   state: (): MealState => ({
+    updateShopping: false,
+    updateMealPlan: true,
     mealPlan: { ...mealPlanBase },
     mealTime: '',
     creatingMeal: {
       ...creatingMealBase,
     },
   }),
+  getters: {
+    isMealPlanPopulated(): boolean {
+      return Object.values(this.mealPlan).some((x) => x.length)
+    },
+  },
   actions: {
     async createIngredient(ingredient: any): Promise<void> {
       const configStore = useConfigStore()
@@ -83,19 +91,12 @@ export const useMealStore = defineStore('meals', {
     },
     async getMealPlan(): Promise<void> {
       const configStore = useConfigStore()
-      const plan: any = {
-        breakfast: [],
-        lunch: [],
-        dinner: [],
-      }
 
       configStore.loading = true
 
       const res = await api('GET', 'meal-plan')
 
-      res?.data.forEach((meal: any) => plan[meal.time].push(meal))
-
-      this.mealPlan = plan
+      this.mealPlan = formatMealPlan(res)
 
       configStore.loading = false
     },
