@@ -23,10 +23,10 @@
     </div>
 
     <div
-      class="meals-nutrients ti-max-width xf-center-horizontal xf-px-6 xf-flex xf-flex-justify-content-between"
+      class="meals-nutrients ti-max-width xf-center-horizontal xf-px-4 xf-flex xf-flex-justify-content-between"
     >
       <div
-        v-for="(nutrient, name, i) in nutrients"
+        v-for="(macros, name, i) in calculatedMacros"
         :key="i"
         class="meals-nutrients-item xf-text-center"
       >
@@ -34,21 +34,19 @@
           {{ name }}
         </p>
 
-        <p class="xf-text-14">{{ nutrient }} / {{ nutrientGoals[name] }}</p>
+        <p class="xf-text-14">{{ macros }} / {{ nutrientGoals[name] }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { onMounted, ref } from 'vue'
-  import { Meal, MealNutrients } from './types/mealPlan.types'
-  import { nutrientsBase } from './data/mealPlan.data'
+  import { computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { useMealStore } from '@/stores/meals'
   import { useUserStore } from '@/stores/user'
   import { storeToRefs } from 'pinia'
-  import moment from 'moment'
+  import { IngredientMacros } from './add-meal/types/addMeal.types'
 
   import { XfIcon } from 'xf-cmpt-lib'
   import MealCard from '@/components/meal-card/MealCard.vue'
@@ -61,12 +59,31 @@
   const { mealPlan } = storeToRefs(mealStore)
   const { nutrientGoals } = storeToRefs(userStore)
 
-  const nutrients = ref<MealNutrients>(nutrientsBase)
   const keys: ['breakfast', 'lunch', 'dinner'] = [
     'breakfast',
     'lunch',
     'dinner',
   ]
+
+  // ** Computed **
+  const calculatedMacros = computed<IngredientMacros>(() => {
+    let macros: IngredientMacros = {
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fat: 0,
+    }
+
+    keys.forEach((key) => {
+      mealPlan.value[key].forEach((meal) => {
+        Object.keys(meal.macros).forEach((key) => {
+          macros[key as keyof IngredientMacros] += parseInt(meal.macros[key])
+        })
+      })
+    })
+
+    return macros
+  })
 
   // ** Methods **
   const addMeal = (time: string): void => {
@@ -94,7 +111,7 @@
       width: 100%;
 
       &-item {
-        width: 60px;
+        width: 70px;
       }
     }
   }
