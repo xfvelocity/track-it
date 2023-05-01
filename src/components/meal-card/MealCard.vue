@@ -80,7 +80,7 @@
   const selectedMeal = ref<any>()
 
   // ** Methods **
-  const addMeal = (meal: Meal): void => {
+  const addMeal = (meal: any): void => {
     emit('meal-added', meal)
   }
 
@@ -93,18 +93,15 @@
     emit('delete', selectedMeal.value)
     infoModal.value = false
   }
-
-  const formatUnit = (unit: string): string => {
-    return unit === 'units' ? '' : unit
-  }
 </script>
 
 <style lang="scss" scoped>
   .meal-card {
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     width: 100%;
     align-items: center;
+    color: rgba(255, 255, 255, 0.7) !important;
 
     &-modal {
       &-container {

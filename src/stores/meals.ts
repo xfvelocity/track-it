@@ -6,7 +6,8 @@ import {
 import { defineStore } from 'pinia'
 import { useConfigStore } from './config'
 import { MealState } from './types/meal.types'
-import { formatMealPlan } from '@/helpers/utility'
+import { calculateMacros, formatMealPlan, keys } from '@/helpers/utility'
+import { IngredientMacros } from '@/views/meal-plan/add-meal/types/addMeal.types'
 
 export const useMealStore = defineStore('meals', {
   state: (): MealState => ({
@@ -18,11 +19,6 @@ export const useMealStore = defineStore('meals', {
       ...creatingMealBase,
     },
   }),
-  getters: {
-    isMealPlanPopulated(): boolean {
-      return Object.values(this.mealPlan).some((x) => x.length)
-    },
-  },
   actions: {
     async createIngredient(ingredient: any): Promise<void> {
       const configStore = useConfigStore()
@@ -54,6 +50,8 @@ export const useMealStore = defineStore('meals', {
       const configStore = useConfigStore()
 
       configStore.loading = true
+
+      this.creatingMeal.macros = calculateMacros(this.creatingMeal)
 
       await api('POST', 'meals', this.creatingMeal)
 

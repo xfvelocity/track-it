@@ -3,7 +3,7 @@
 
   <Nav v-if="!hideNav" />
 
-  <div class="xf-px-6" :class="hideNav ? 'xf-pt-6' : 'xf-pt-2'">
+  <div class="xf-px-4" :class="hideNav ? 'xf-pt-6' : 'xf-pt-2'">
     <router-view />
   </div>
 

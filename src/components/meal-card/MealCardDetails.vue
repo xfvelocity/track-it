@@ -35,11 +35,7 @@
   <hr class="xf-bg-white" />
 
   <div class="meal-card-details-macros xf-px-2">
-    <div
-      v-for="(nutrient, name, i) in calculateMacros(meal)"
-      :key="i"
-      class="xf-text-center"
-    >
+    <div v-for="(nutrient, name, i) in meal" :key="i" class="xf-text-center">
       <p class="xf-text-capitalize xf-text-14 xf-fw-700 xf-mb-1">
         {{ name }}
       </p>
@@ -50,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { calculateMacros, formatIngredient } from '@/helpers/utility'
+  import { formatIngredient } from '@/helpers/utility'
   import { useRouter } from 'vue-router'
 
   import { XfTextInput, XfIcon } from 'xf-cmpt-lib'

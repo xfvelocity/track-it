@@ -36,11 +36,17 @@ const getTodaysDate = (): string => {
   return `${today.getFullYear()}-${month}-${day}`
 }
 
-export const mealPlanBase: MealPlan = {
+export const mealPlanBase: any = {
   breakfast: [],
   lunch: [],
   dinner: [],
   date: getTodaysDate(),
+  macros: {
+    calories: 0,
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+  },
 }
 
 export const creatingMealBase: any = {

@@ -2,6 +2,7 @@ import {
   Ingredient,
   IngredientMacros,
 } from '@/views/meal-plan/add-meal/types/addMeal.types'
+import { mealPlanBase } from '@/views/meal-plan/data/mealPlan.data'
 
 export const keys: ['breakfast', 'lunch', 'dinner'] = [
   'breakfast',
@@ -68,13 +69,16 @@ export const calculateMacros = (meal: any): IngredientMacros => {
 }
 
 export const formatMealPlan = (obj: any): any => {
-  const plan: any = {
-    breakfast: [],
-    lunch: [],
-    dinner: [],
-  }
-
+  const plan: any = { ...mealPlanBase }
   obj.data.forEach((meal: any) => plan[meal.time].push(meal))
+
+  keys.forEach((key) => {
+    plan[key].forEach((meal) => {
+      Object.keys(meal.macros).forEach((key) => {
+        plan.macros[key as keyof IngredientMacros] += parseInt(meal.macros[key])
+      })
+    })
+  })
 
   return plan
 }

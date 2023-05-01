@@ -34,9 +34,7 @@
 <script lang="ts" setup>
   import { onBeforeMount, ref, computed } from 'vue'
   import { Meal } from '../types/mealPlan.types'
-  import { useRoute } from 'vue-router'
   import { useMealStore } from '@/stores/meals'
-  import { useConfigStore } from '@/stores/config'
   import router from '@/router'
 
   import { XfButton, XfTextInput } from 'xf-cmpt-lib'
