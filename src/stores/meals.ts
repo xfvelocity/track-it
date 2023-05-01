@@ -7,17 +7,12 @@ import { defineStore } from 'pinia'
 import { useConfigStore } from './config'
 import { MealState } from './types/meal.types'
 import { calculateMacros, formatMealPlan, keys } from '@/helpers/utility'
-import { IngredientMacros } from '@/views/meal-plan/add-meal/types/addMeal.types'
 
 export const useMealStore = defineStore('meals', {
   state: (): MealState => ({
-    updateShopping: false,
-    updateMealPlan: true,
-    mealPlan: { ...mealPlanBase },
     mealTime: '',
-    creatingMeal: {
-      ...creatingMealBase,
-    },
+    mealPlan: JSON.parse(JSON.stringify({ ...mealPlanBase })),
+    creatingMeal: JSON.parse(JSON.stringify({ ...creatingMealBase })),
   }),
   actions: {
     async createIngredient(ingredient: any): Promise<void> {

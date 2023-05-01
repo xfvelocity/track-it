@@ -69,11 +69,12 @@ export const calculateMacros = (meal: any): IngredientMacros => {
 }
 
 export const formatMealPlan = (obj: any): any => {
-  const plan: any = { ...mealPlanBase }
+  const plan: any = JSON.parse(JSON.stringify({ ...mealPlanBase }))
+
   obj.data.forEach((meal: any) => plan[meal.time].push(meal))
 
   keys.forEach((key) => {
-    plan[key].forEach((meal) => {
+    plan[key].forEach((meal: any) => {
       Object.keys(meal.macros).forEach((key) => {
         plan.macros[key as keyof IngredientMacros] += parseInt(meal.macros[key])
       })
