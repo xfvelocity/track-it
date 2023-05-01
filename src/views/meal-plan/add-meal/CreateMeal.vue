@@ -1,53 +1,5 @@
 <template>
-  <xf-text-input
-    v-model="creatingMeal.name"
-    colour="white"
-    placeholder="Name"
-    outlined
-  />
-
-  <h4 class="xf-mt-4 xf-mb-2">Ingredients</h4>
-  <hr class="xf-bg-white" />
-
-  <template v-if="creatingMeal.ingredients">
-    <div
-      v-for="(ingredient, i) in creatingMeal.ingredients"
-      :key="i"
-      class="xf-pl-1"
-    >
-      <p>{{ formatIngredient(ingredient) }}</p>
-    </div>
-  </template>
-
-  <p
-    class="xf-p-1 xf-cursor-pointer xf-text-colour-blue xf-fw-600"
-    @click="router.push('/add-meal/add-ingredient')"
-  >
-    <xf-icon
-      class="xf-mt-1 xf-mr-1"
-      src="icons/plus.svg"
-      fill="blue"
-      style="padding-top: 2px"
-    />
-    Add ingredient
-  </p>
-
-  <h4 class="xf-mt-8 xf-mb-2">Macros</h4>
-  <hr class="xf-bg-white" />
-
-  <div class="create-meal-macros xf-px-2">
-    <div
-      v-for="(nutrient, name, i) in calculatedMacros"
-      :key="i"
-      class="xf-text-center"
-    >
-      <p class="xf-text-capitalize xf-text-14 xf-fw-700 xf-mb-1">
-        {{ name }}
-      </p>
-
-      <p class="xf-text-14">{{ nutrient }}</p>
-    </div>
-  </div>
+  <meal-card-details :meal="creatingMeal" editing-meal />
 
   <xf-button
     class="xf-w-100 xf-mt-8"
@@ -59,13 +11,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
   import { useMealStore } from '@/stores/meals'
   import { storeToRefs } from 'pinia'
   import { useRouter } from 'vue-router'
-  import { Ingredient, IngredientMacros } from './types/addMeal.types'
 
-  import { XfTextInput, XfIcon, XfButton } from 'xf-cmpt-lib'
+  import { XfButton } from 'xf-cmpt-lib'
+  import MealCardDetails from '@/components/meal-card/MealCardDetails.vue'
 
   // ** Data **
   const router = useRouter()
@@ -74,36 +25,6 @@
   const { creatingMeal } = storeToRefs(mealStore)
 
   // ** Methods **
-  const calculateMacros = (): IngredientMacros => {
-    let macros: IngredientMacros = {
-      calories: 0,
-      protein: 0,
-      carbs: 0,
-      fat: 0,
-    }
-
-    creatingMeal.value.ingredients.forEach((ingredient: any) => {
-      Object.keys(creatingMeal.value.macros).forEach((key) => {
-        macros[key as keyof IngredientMacros] += parseInt(
-          ingredient.macros[key]
-        )
-      })
-    })
-
-    creatingMeal.value.macros = macros
-
-    return macros
-  }
-
-  // ** Computed **
-  const calculatedMacros = computed<IngredientMacros>(calculateMacros)
-
-  const formatIngredient = (ingredient: Ingredient): string => {
-    const unit: string = ingredient.unit === 'unit' ? '' : ingredient.unit
-
-    return `${ingredient.amount}${unit} ${ingredient.name}`
-  }
-
   const addMeal = async (): Promise<void> => {
     await mealStore.addMeal()
 
@@ -258,5 +179,3 @@
     }
   }
 </style>
-
-<script></script>

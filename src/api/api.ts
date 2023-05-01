@@ -15,6 +15,7 @@ import {
   getDoc,
   arrayUnion,
 } from 'firebase/firestore'
+import { v4 as uuidv4 } from 'uuid'
 
 export const queryApi = async (
   col: string,
@@ -62,9 +63,7 @@ export const queryRangeApi = async (
 
   const results = await getDocs(matchingQuery)
 
-  return results.docs.map((doc: any) =>
-    'id' in doc.data() ? doc.data() : { id: doc.id, ...doc.data() }
-  )
+  return results.docs.map((doc: any) => doc.data())
 }
 
 export const api = async (
@@ -96,7 +95,7 @@ export const api = async (
         .then(async (snapshot) => {
           if (snapshot.exists()) {
             await updateDoc(ref, {
-              data: arrayUnion(data),
+              data: arrayUnion({ uuid: uuidv4(), ...data }),
             })
           } else {
             await setDoc(doc(db, col, userStore.user.uid), { data: [data] })
@@ -109,19 +108,10 @@ export const api = async (
       break
 
     // case 'DEL':
-    //   const delRef = doc(db, col, data)
-    //   await deleteDoc(delRef)
-
-    //   res = true
-
+    //   break
     // case 'PUT':
-    //   const updRef = doc(db, col, data.id)
-    //   await updateDoc(updRef, data)
-
-    //   res = true
+    //   break
   }
-
-  console.log(error)
 
   if (error) {
     configStore.snackbar = {

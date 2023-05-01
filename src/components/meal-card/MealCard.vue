@@ -2,65 +2,58 @@
   <div
     v-for="(meal, i) in mealList"
     :key="i"
-    class="meal-card xf-mt-1 xf-px-2 xf-py-1"
-    @click="addMeal(meal)"
+    class="meal-card xf-mt-1 xf-py-1"
+    @click="openInfoModal(meal)"
   >
-    {{ meal.name }}
-
-    <xf-icon
-      class="xf-ml-auto xf-mr-4"
-      style="margin-top: 2px"
-      :size="10"
-      src="icons/info.svg"
-      fill="white"
-      @click.stop="openInfoModal"
-    />
+    <span class="xf-pl-1">{{ meal.name }}</span>
   </div>
 
   <xf-modal
     v-model="infoModal"
-    class="xf-text-colour-grey-darken-3"
+    background-colour="bg"
+    fullscreen
     :max-width="350"
   >
-    <div>
-      <div class="xf-fw-600 xf-mb-2">Nutrients:</div>
-      <p
-        v-for="(value, name, i) in selectedMeal?.nutrients"
-        :key="i"
-        class="xf-my-0 xf-text-14 xf-text-capitalize"
-      >
-        {{ name }}: {{ value }}
-      </p>
+    <div class="meal-card-modal-container xf-mt-4">
+      <meal-card-details :meal="selectedMeal" />
+
+      <div class="meal-card-modal-btns xf-grid xf-gap-1 xf-mt-auto">
+        <xf-button
+          v-if="showEdit"
+          class="xf-col-6"
+          content-class="xf-w-100"
+          background-colour="blue"
+          icon="icons/edit.svg"
+          disabled
+          @click="$emit('edit', selectedMeal)"
+        >
+          Edit
+        </xf-button>
+
+        <xf-button
+          :class="showEdit ? 'xf-col-6' : 'xf-col-12'"
+          content-class="xf-w-100"
+          background-colour="red-darken-2"
+          icon="icons/trash.svg"
+          @click="onDelete"
+        >
+          Delete
+        </xf-button>
+
+        <xf-button
+          v-if="showAddMeal"
+          class="xf-mt-1 xf-col-12"
+          content-class="xf-w-100"
+          background-colour="green-darken-2"
+          icon="icons/plus.svg"
+          @click="addMeal(selectedMeal)"
+        >
+          Add
+        </xf-button>
+      </div>
     </div>
 
-    <div class="xf-mt-4">
-      <div class="xf-fw-600 xf-mb-2">Ingredients:</div>
-      <p
-        v-for="(ingredient, i) in selectedMeal?.ingredients"
-        :key="i"
-        class="xf-my-0 xf-text-14 xf-text-capitalize"
-      >
-        {{ ingredient.amount }}{{ formatUnit(ingredient.unit) }}
-        {{ ingredient.name }}
-      </p>
-    </div>
-
-    <div class="xf-flex xf-mt-4">
-      <xf-icon
-        v-if="!inMealPlan"
-        src="icons/edit.svg"
-        class="xf-mr-2"
-        fill="blue"
-        @click="$emit('edit', selectedMeal)"
-      />
-
-      <xf-icon
-        :class="{ 'xf-ml-auto': inMealPlan }"
-        src="icons/trash.svg"
-        fill="red"
-        @click="$emit('edit', selectedMeal)"
-      />
-    </div>
+    <bottom-nav @back="infoModal = false" />
   </xf-modal>
 </template>
 
@@ -68,31 +61,27 @@
   import { Meal } from '@/views/meal-plan/types/mealPlan.types'
   import { ref } from 'vue'
 
-  import { XfModal, XfIcon } from 'xf-cmpt-lib'
+  import { XfModal, XfButton } from 'xf-cmpt-lib'
+  import BottomNav from '../nav/BottomNav.vue'
+  import MealCardDetails from './MealCardDetails.vue'
 
   // ** Props **
-  const props = withDefaults(
-    defineProps<{
-      mealList: Meal[]
-      inMealPlan?: boolean
-    }>(),
-    {
-      inMealPlan: false,
-    }
-  )
+  defineProps<{
+    mealList: Meal[]
+    showAddMeal?: boolean
+    showEdit?: boolean
+  }>()
 
   // ** Emits **
   const emit = defineEmits(['edit', 'delete', 'meal-added'])
 
   // ** Data **
   const infoModal = ref<boolean>(false)
-  const selectedMeal = ref<Meal>()
+  const selectedMeal = ref<any>()
 
   // ** Methods **
   const addMeal = (meal: Meal): void => {
-    if (!props.inMealPlan) {
-      emit('meal-added', meal)
-    }
+    emit('meal-added', meal)
   }
 
   const openInfoModal = (meal: Meal): void => {
@@ -116,5 +105,17 @@
     display: flex;
     width: 100%;
     align-items: center;
+
+    &-modal {
+      &-container {
+        position: relative;
+        height: 100%;
+      }
+
+      &-btns {
+        position: absolute;
+        bottom: 100px;
+      }
+    }
   }
 </style>

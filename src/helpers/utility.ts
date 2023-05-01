@@ -1,3 +1,8 @@
+import {
+  Ingredient,
+  IngredientMacros,
+} from '@/views/meal-plan/add-meal/types/addMeal.types'
+
 export const validationSchema = {
   email(value: string): [] | string {
     const isValid: boolean = !!value
@@ -31,4 +36,27 @@ export const debounce = (func: Function, delay: number): any => {
       func.apply(this, args)
     }, delay)
   }
+}
+
+export const formatIngredient = (ingredient: Ingredient): string => {
+  const unit: string = ingredient.unit === 'unit' ? '' : ingredient.unit
+
+  return `${ingredient.amount}${unit} ${ingredient.name}`
+}
+
+export const calculateMacros = (meal: any): IngredientMacros => {
+  let macros: IngredientMacros = {
+    calories: 0,
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+  }
+
+  meal.ingredients.forEach((ingredient: any) => {
+    Object.keys(meal.macros).forEach((key) => {
+      macros[key as keyof IngredientMacros] += parseInt(ingredient.macros[key])
+    })
+  })
+
+  return macros
 }

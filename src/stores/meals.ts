@@ -99,6 +99,15 @@ export const useMealStore = defineStore('meals', {
 
       configStore.loading = false
     },
+    async delFromMealPlan(meal: any): Promise<void> {
+      const configStore = useConfigStore()
+
+      configStore.loading = true
+
+      await api('DEL', 'meal-plan', meal)
+
+      configStore.loading = false
+    },
   },
   persist: true,
 })

@@ -21,7 +21,12 @@
     />
 
     <div class="xf-mt-4 xf-flex xf-flex-wrap xf-flex-justify-space-between">
-      <meal-card :meal-list="filteredMeals" @meal-added="addedMeal" />
+      <meal-card
+        :meal-list="filteredMeals"
+        show-add-meal
+        show-edit
+        @meal-added="addedMeal"
+      />
     </div>
   </div>
 </template>
@@ -44,11 +49,15 @@
   const search = ref<string>('')
 
   // ** Computed **
-  const filteredMeals = computed<Meal[]>(() =>
-    mealList.value.filter((meal) =>
-      meal.name?.toLowerCase().includes(search.value.toLowerCase())
-    )
-  )
+  const filteredMeals = computed<Meal[]>(() => {
+    if (mealList.value?.length) {
+      return mealList.value.filter((meal) =>
+        meal.name?.toLowerCase().includes(search.value.toLowerCase())
+      )
+    } else {
+      return []
+    }
+  })
 
   // ** Methods **
   const getMeals = async (): Promise<void> => {
@@ -82,7 +91,9 @@
 <style lang="scss" scoped>
   .add-meal {
     &-create-meal-btn {
-      padding-right: 0 !important;
+      :deep(.xf-button) {
+        padding-right: 0 !important;
+      }
     }
   }
 </style>
